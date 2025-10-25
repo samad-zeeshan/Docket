@@ -1,0 +1,33 @@
+# Lint, test, and synth on every push. The deploy job is wired but gated off
+# until Phase 6 turns it on. Eval runs here starting in Phase 5.
+name: ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+      - run: npm run synth
+
+  deploy:
+    # Turned on in Phase 6. Until then it never runs, but keeping the shell here
+    # means the CI/CD shape is visible from day one.
+    if: false
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "deploy is enabled in Phase 6"
