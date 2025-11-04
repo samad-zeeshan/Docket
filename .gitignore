@@ -6,6 +6,8 @@ dist/
 *.js
 *.d.ts
 !eslint.config.mjs
+# hand-written type shims under src are source, not compiled output
+!src/**/*.d.ts
 cdk.out/
 *.tsbuildinfo
 

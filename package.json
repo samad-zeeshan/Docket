@@ -24,16 +24,16 @@
     "eval:record": "DOCKET_PROVIDER=bedrock DOCKET_RECORD=1 tsx eval/run.ts"
   },
   "devDependencies": {
+    "@eslint/js": "^9.11.1",
     "@types/aws-lambda": "^8.10.145",
     "@types/node": "^20.16.5",
     "@types/pdf-parse": "^1.1.4",
-    "@eslint/js": "^9.11.1",
     "aws-cdk": "^2.160.0",
     "esbuild": "^0.24.0",
     "eslint": "^9.11.1",
-    "typescript-eslint": "^8.8.0",
     "tsx": "^4.19.1",
     "typescript": "^5.6.2",
+    "typescript-eslint": "^8.8.0",
     "vitest": "^2.1.1"
   },
   "dependencies": {
@@ -44,6 +44,7 @@
     "@aws-sdk/client-bedrock-runtime": "^3.658.0",
     "@aws-sdk/client-dynamodb": "^3.658.0",
     "@aws-sdk/client-s3": "^3.658.0",
+    "@aws-sdk/client-ssm": "^3.658.0",
     "@aws-sdk/lib-dynamodb": "^3.658.0",
     "aws-cdk-lib": "^2.160.0",
     "constructs": "^10.3.0",
