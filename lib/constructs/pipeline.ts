@@ -2,19 +2,28 @@
  * The ingest pipeline: an S3 bucket that fans object-created events through
  * EventBridge into an SQS queue, drained by the ingest Lambda into DynamoDB.
  */
-import { Duration, RemovalPolicy } from 'aws-cdk-lib';
+import { Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as events from 'aws-cdk-lib/aws-events';
 import * as targets from 'aws-cdk-lib/aws-events-targets';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import { SqsEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { Runtime, Architecture } from 'aws-cdk-lib/aws-lambda';
 import * as path from 'node:path';
 
 const HANDLERS = path.join(__dirname, '..', '..', 'src', 'handlers');
+
+// Default Bedrock model. Overridable per environment, but pinned here so a deploy
+// is reproducible instead of tracking whatever "latest" points at.
+const MODEL_ID = 'anthropic.claude-3-5-sonnet-20241022-v2:0';
+
+// The fallback provider reads its key from this SecureString. CDK never sees the
+// value, the operator sets it out of band with `aws ssm put-parameter`.
+const ANTHROPIC_KEY_PARAM = '/docket/anthropic-api-key';
 
 export class IngestPipeline extends Construct {
   readonly bucket: s3.Bucket;
@@ -58,7 +67,12 @@ export class IngestPipeline extends Construct {
       architecture: Architecture.ARM_64,
       timeout: Duration.seconds(60),
       memorySize: 512,
-      environment: { TABLE_NAME: this.table.tableName },
+      environment: {
+        TABLE_NAME: this.table.tableName,
+        DOCKET_PROVIDER: 'bedrock',
+        MODEL_ID,
+        ANTHROPIC_KEY_PARAM,
+      },
       bundling: {
         minify: true,
         sourceMap: true,
@@ -79,6 +93,23 @@ export class IngestPipeline extends Construct {
 
     this.table.grantReadWriteData(this.ingestFn);
     this.bucket.grantRead(this.ingestFn);
+
+    // Primary path: invoke Anthropic models on Bedrock. Scoped to the anthropic
+    // family, not bedrock:* on every model in the account.
+    this.ingestFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['bedrock:InvokeModel'],
+        resources: [`arn:aws:bedrock:${Stack.of(this).region}::foundation-model/anthropic.*`],
+      }),
+    );
+
+    // Fallback path: read the API key from SSM. One parameter, decrypt included.
+    this.ingestFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ssm:GetParameter'],
+        resources: [`arn:aws:ssm:${Stack.of(this).region}:${Stack.of(this).account}:parameter${ANTHROPIC_KEY_PARAM}`],
+      }),
+    );
 
     this.ingestFn.addEventSource(
       new SqsEventSource(this.queue, {

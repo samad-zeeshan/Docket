@@ -5,12 +5,15 @@
  * a real table, which is what keeps the unit suite free and deterministic.
  */
 import { DynamoDBClient, ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
-import { DynamoDBDocumentClient, PutCommand, GetCommand } from '@aws-sdk/lib-dynamodb';
-import type { DocumentRecord } from './model';
+import { DynamoDBDocumentClient, PutCommand, GetCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
+import type { DocumentRecord, ExtractionMetadata } from './model';
+import type { Receipt } from './schema';
 
 export interface DocumentStore {
   putReceived(record: DocumentRecord): Promise<'created' | 'duplicate'>;
   get(docId: string): Promise<DocumentRecord | undefined>;
+  markExtracted(docId: string, receipt: Receipt, meta: ExtractionMetadata): Promise<void>;
+  markFailed(docId: string, reason: string, meta?: ExtractionMetadata): Promise<void>;
 }
 
 export class DynamoDocumentStore implements DocumentStore {
@@ -20,7 +23,10 @@ export class DynamoDocumentStore implements DocumentStore {
     private readonly tableName: string,
     client?: DynamoDBDocumentClient,
   ) {
-    this.client = client ?? DynamoDBDocumentClient.from(new DynamoDBClient({}));
+    // removeUndefinedValues so optional fields (subtotal, tax) that came back
+    // undefined do not blow up the marshaller.
+    this.client =
+      client ?? DynamoDBDocumentClient.from(new DynamoDBClient({}), { marshallOptions: { removeUndefinedValues: true } });
   }
 
   async putReceived(record: DocumentRecord): Promise<'created' | 'duplicate'> {
@@ -44,5 +50,40 @@ export class DynamoDocumentStore implements DocumentStore {
   async get(docId: string): Promise<DocumentRecord | undefined> {
     const out = await this.client.send(new GetCommand({ TableName: this.tableName, Key: { docId } }));
     return out.Item as DocumentRecord | undefined;
+  }
+
+  async markExtracted(docId: string, receipt: Receipt, meta: ExtractionMetadata): Promise<void> {
+    await this.client.send(
+      new UpdateCommand({
+        TableName: this.tableName,
+        Key: { docId },
+        UpdateExpression:
+          'SET #s = :s, receipt = :r, meta = :m, updatedAt = :u REMOVE failureReason',
+        ExpressionAttributeNames: { '#s': 'status' },
+        ExpressionAttributeValues: {
+          ':s': 'EXTRACTED',
+          ':r': receipt,
+          ':m': meta,
+          ':u': new Date().toISOString(),
+        },
+      }),
+    );
+  }
+
+  async markFailed(docId: string, reason: string, meta?: ExtractionMetadata): Promise<void> {
+    await this.client.send(
+      new UpdateCommand({
+        TableName: this.tableName,
+        Key: { docId },
+        UpdateExpression: 'SET #s = :s, failureReason = :f, meta = :m, updatedAt = :u',
+        ExpressionAttributeNames: { '#s': 'status' },
+        ExpressionAttributeValues: {
+          ':s': 'FAILED',
+          ':f': reason,
+          ':m': meta ?? null,
+          ':u': new Date().toISOString(),
+        },
+      }),
+    );
   }
 }
