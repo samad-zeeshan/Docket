@@ -10,7 +10,10 @@ export default tseslint.config(
   ...tseslint.configs.recommended,
   {
     rules: {
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_', ignoreRestSiblings: true },
+      ],
       // Handlers legitimately take `unknown` off the wire and narrow it, so a blanket
       // no-explicit-any ban costs more than it saves here.
       '@typescript-eslint/no-explicit-any': 'off',
