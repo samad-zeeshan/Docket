@@ -56,6 +56,14 @@ export class IngestPipeline extends Construct {
       pointInTimeRecoverySpecification: { pointInTimeRecoveryEnabled: true },
     });
 
+    // Backs the list-by-status API route. Sorted by receivedAt so the query can
+    // return newest first without a client-side sort.
+    this.table.addGlobalSecondaryIndex({
+      indexName: 'status-index',
+      partitionKey: { name: 'status', type: dynamodb.AttributeType.STRING },
+      sortKey: { name: 'receivedAt', type: dynamodb.AttributeType.STRING },
+    });
+
     this.deadLetterQueue = new sqs.Queue(this, 'IngestDlq', {
       retentionPeriod: Duration.days(14),
       enforceSSL: true,

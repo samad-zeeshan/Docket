@@ -28,6 +28,13 @@ export class FakeStore implements DocumentStore {
     const existing = this.items.get(docId);
     if (existing) this.items.set(docId, { ...existing, status: 'FAILED', failureReason: reason, meta });
   }
+
+  async listByStatus(status: DocumentRecord['status'], limit: number): Promise<DocumentRecord[]> {
+    return [...this.items.values()]
+      .filter((r) => r.status === status)
+      .sort((a, b) => b.receivedAt.localeCompare(a.receivedAt))
+      .slice(0, limit);
+  }
 }
 
 // Returns each scripted response once, so a test can drive first-try success or
