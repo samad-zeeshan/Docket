@@ -11,6 +11,15 @@ import type { Receipt } from './schema';
 
 export const STATUS_INDEX = 'status-index';
 
+// One place for the marshaller options so a caller can pass a tracer-wrapped base
+// client without re-specifying them. removeUndefinedValues lets optional fields
+// (subtotal, tax) be absent instead of blowing up the marshaller.
+export function documentClient(base?: DynamoDBClient): DynamoDBDocumentClient {
+  return DynamoDBDocumentClient.from(base ?? new DynamoDBClient({}), {
+    marshallOptions: { removeUndefinedValues: true },
+  });
+}
+
 export interface DocumentStore {
   putReceived(record: DocumentRecord): Promise<'created' | 'duplicate'>;
   get(docId: string): Promise<DocumentRecord | undefined>;
@@ -26,10 +35,7 @@ export class DynamoDocumentStore implements DocumentStore {
     private readonly tableName: string,
     client?: DynamoDBDocumentClient,
   ) {
-    // removeUndefinedValues so optional fields (subtotal, tax) that came back
-    // undefined do not blow up the marshaller.
-    this.client =
-      client ?? DynamoDBDocumentClient.from(new DynamoDBClient({}), { marshallOptions: { removeUndefinedValues: true } });
+    this.client = client ?? documentClient();
   }
 
   async putReceived(record: DocumentRecord): Promise<'created' | 'duplicate'> {

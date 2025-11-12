@@ -44,7 +44,8 @@ describe('ingest processRecord', () => {
         throw new ExtractionError('pdf parse failed: corrupt');
       },
     });
-    await expect(processRecord(d, sqsRecord('bad.pdf', 'e1'))).resolves.toBeUndefined();
+    const result = await processRecord(d, sqsRecord('bad.pdf', 'e1'));
+    expect(result.status).toBe('FAILED');
     const rec = [...(d.store as FakeStore).items.values()][0]!;
     expect(rec.status).toBe('FAILED');
     expect(rec.failureReason).toContain('pdf parse failed');

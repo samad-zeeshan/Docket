@@ -2,7 +2,7 @@
  * The ingest pipeline: an S3 bucket that fans object-created events through
  * EventBridge into an SQS queue, drained by the ingest Lambda into DynamoDB.
  */
-import { Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
+import { Duration, RemovalPolicy, Stack, CfnOutput } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
@@ -12,7 +12,7 @@ import * as targets from 'aws-cdk-lib/aws-events-targets';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { SqsEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
-import { Runtime, Architecture } from 'aws-cdk-lib/aws-lambda';
+import { Runtime, Architecture, Tracing } from 'aws-cdk-lib/aws-lambda';
 import * as path from 'node:path';
 
 const HANDLERS = path.join(__dirname, '..', '..', 'src', 'handlers');
@@ -75,11 +75,14 @@ export class IngestPipeline extends Construct {
       architecture: Architecture.ARM_64,
       timeout: Duration.seconds(60),
       memorySize: 512,
+      tracing: Tracing.ACTIVE,
       environment: {
         TABLE_NAME: this.table.tableName,
         DOCKET_PROVIDER: 'bedrock',
         MODEL_ID,
         ANTHROPIC_KEY_PARAM,
+        POWERTOOLS_SERVICE_NAME: 'ingest',
+        LOG_LEVEL: 'INFO',
       },
       bundling: {
         minify: true,
@@ -141,5 +144,11 @@ export class IngestPipeline extends Construct {
       },
       targets: [new targets.SqsQueue(this.queue)],
     });
+
+    // Physical names for the runbook and the demo path.
+    new CfnOutput(this, 'BucketName', { value: this.bucket.bucketName });
+    new CfnOutput(this, 'QueueUrl', { value: this.queue.queueUrl });
+    new CfnOutput(this, 'DlqUrl', { value: this.deadLetterQueue.queueUrl });
+    new CfnOutput(this, 'TableName', { value: this.table.tableName });
   }
 }

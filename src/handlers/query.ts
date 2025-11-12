@@ -4,10 +4,13 @@
  * would reject.
  */
 import type { APIGatewayProxyHandlerV2, APIGatewayProxyEventV2 } from 'aws-lambda';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { MetricUnit } from '@aws-lambda-powertools/metrics';
 import { ReceiptSchema } from '../lib/schema';
-import { DynamoDocumentStore, type DocumentStore } from '../lib/store';
+import { DynamoDocumentStore, documentClient, type DocumentStore } from '../lib/store';
 import type { DocumentRecord, DocumentStatus } from '../lib/model';
 import { log } from '../lib/log';
+import { metrics, tracer } from '../lib/powertools';
 
 const STATUSES: DocumentStatus[] = ['RECEIVED', 'EXTRACTED', 'FAILED'];
 const DEFAULT_LIMIT = 20;
@@ -27,12 +30,18 @@ export interface ApiResult {
 
 let defaultStore: DocumentStore | undefined;
 function getStore(): DocumentStore {
-  if (!defaultStore) defaultStore = new DynamoDocumentStore(requireEnv('TABLE_NAME'));
+  if (!defaultStore) {
+    const ddb = documentClient(tracer.captureAWSv3Client(new DynamoDBClient({})));
+    defaultStore = new DynamoDocumentStore(requireEnv('TABLE_NAME'), ddb);
+  }
   return defaultStore;
 }
 
 export const handler: APIGatewayProxyHandlerV2 = async (event) => {
   const result = await handleQuery(getStore(), toRequest(event));
+  metrics.addMetric('ApiRequest', MetricUnit.Count, 1);
+  if (result.statusCode >= 500) metrics.addMetric('ApiError', MetricUnit.Count, 1);
+  metrics.publishStoredMetrics();
   return {
     statusCode: result.statusCode,
     headers: { 'content-type': 'application/json' },

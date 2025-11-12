@@ -9,7 +9,7 @@ import { HttpApi, HttpMethod } from 'aws-cdk-lib/aws-apigatewayv2';
 import { HttpLambdaIntegration } from 'aws-cdk-lib/aws-apigatewayv2-integrations';
 import { HttpIamAuthorizer } from 'aws-cdk-lib/aws-apigatewayv2-authorizers';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
-import { Runtime, Architecture } from 'aws-cdk-lib/aws-lambda';
+import { Runtime, Architecture, Tracing } from 'aws-cdk-lib/aws-lambda';
 import type * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as path from 'node:path';
 
@@ -30,7 +30,12 @@ export class QueryApi extends Construct {
       architecture: Architecture.ARM_64,
       timeout: Duration.seconds(15),
       memorySize: 256,
-      environment: { TABLE_NAME: props.table.tableName },
+      tracing: Tracing.ACTIVE,
+      environment: {
+        TABLE_NAME: props.table.tableName,
+        POWERTOOLS_SERVICE_NAME: 'query',
+        LOG_LEVEL: 'INFO',
+      },
       bundling: { minify: true, sourceMap: true, target: 'node20', externalModules: ['@aws-sdk/*'] },
     });
 
