@@ -6,6 +6,7 @@ import { Stack, StackProps, Tags } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { IngestPipeline } from './constructs/pipeline';
 import { QueryApi } from './constructs/api';
+import { Observability } from './constructs/observability';
 
 export interface DocketStackProps extends StackProps {
   alarmEmail?: string;
@@ -22,5 +23,10 @@ export class DocketStack extends Stack {
 
     this.ingest = new IngestPipeline(this, 'Ingest');
     this.api = new QueryApi(this, 'Api', { table: this.ingest.table });
+    new Observability(this, 'Observability', {
+      ingest: this.ingest,
+      api: this.api,
+      alarmEmail: props.alarmEmail,
+    });
   }
 }
