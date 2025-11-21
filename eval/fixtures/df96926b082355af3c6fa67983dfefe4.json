@@ -1,0 +1,6 @@
+{
+  "text": "{\"merchant\":\"Green Leaf Market\",\"date\":\"2025-02-14\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Sparkling water\",\"quantity\":3,\"unitPrice\":1.5,\"amount\":4.5},{\"description\":\"Paperback\",\"quantity\":3,\"unitPrice\":12.99,\"amount\":38.97}],\"subtotal\":43.47,\"tax\":0,\"total\":46.95}",
+  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "inputTokens": 94,
+  "outputTokens": 68
+}

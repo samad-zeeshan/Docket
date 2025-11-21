@@ -1,0 +1,17 @@
+{
+  "merchant": "Harbor Seafood",
+  "date": "2025-02-24",
+  "currency": "GBP",
+  "lineItems": [
+    {
+      "description": "Notebook",
+      "quantity": 3,
+      "unitPrice": 5,
+      "amount": 15
+    }
+  ],
+  "subtotal": 15,
+  "tax": 1.2,
+  "total": 16.2,
+  "paymentMethod": "cash"
+}

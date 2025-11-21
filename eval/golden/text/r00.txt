@@ -1,0 +1,12 @@
+The Book Nook
+Date: 2025-01-05
+Currency: USD
+
+AA Batteries  x3   26.97
+Bagel  x2   6.50
+Orange juice  x1   3.60
+
+Subtotal: 37.07
+Tax: 2.97
+Total: 40.04
+Paid: debit

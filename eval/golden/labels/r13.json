@@ -1,0 +1,23 @@
+{
+  "merchant": "City Bikes",
+  "date": "2025-01-31",
+  "currency": "GBP",
+  "lineItems": [
+    {
+      "description": "Shampoo",
+      "quantity": 3,
+      "unitPrice": 6.25,
+      "amount": 18.75
+    },
+    {
+      "description": "Bagel",
+      "quantity": 3,
+      "unitPrice": 3.25,
+      "amount": 9.75
+    }
+  ],
+  "subtotal": 28.5,
+  "tax": 2.28,
+  "total": 30.78,
+  "paymentMethod": "debit"
+}

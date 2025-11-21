@@ -1,0 +1,11 @@
+The Book Nook
+Date: 2025-03-02
+Currency: USD
+
+Notebook  x3   15.00
+Milk 1gal  x3   11.97
+Latte  x3   13.50
+
+Subtotal: 40.47
+Tax: 3.24
+Total: 43.71

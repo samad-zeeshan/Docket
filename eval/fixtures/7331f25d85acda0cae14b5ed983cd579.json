@@ -1,0 +1,6 @@
+{
+  "text": "{\"merchant\":\"Store\",\"date\":\"2025-02-06\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Eggs dozen\",\"quantity\":3,\"unitPrice\":4.49,\"amount\":13.47},{\"description\":\"Latte\",\"quantity\":2,\"unitPrice\":4.5,\"amount\":9}],\"subtotal\":28.97,\"tax\":2.32,\"total\":37.55}",
+  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "inputTokens": 51,
+  "outputTokens": 63
+}

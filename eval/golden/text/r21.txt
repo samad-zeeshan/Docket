@@ -1,0 +1,12 @@
+Corner Grocery
+Date: 2025-02-16
+Currency: USD
+
+AA Batteries  x3   26.97
+Notebook  x1   5.00
+Notebook  x3   15.00
+
+Subtotal: 46.97
+Tax: 3.76
+Total: 50.73
+Paid: credit

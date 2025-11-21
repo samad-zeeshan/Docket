@@ -1,0 +1,11 @@
+Harbor Seafood
+Date: 2025-01-21
+Currency: USD
+
+Eggs dozen  x2   8.98
+Latte  x2   9.00
+
+Subtotal: 17.98
+Tax: 1.44
+Total: 19.42
+Paid: debit

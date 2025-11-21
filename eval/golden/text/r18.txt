@@ -1,0 +1,11 @@
+Sunrise Diner
+Date: 2025-02-10
+Currency: USD
+
+Bagel  x2   6.50
+Bagel  x3   9.75
+
+Subtotal: 16.25
+Tax: 1.30
+Total: 17.55
+Paid: cash

@@ -1,0 +1,11 @@
+Sunrise Diner
+Date: 2025-02-12
+Currency: GBP
+
+Eggs dozen  x1   4.49
+Bagel  x3   9.75
+Shampoo  x1   6.25
+
+Subtotal: 20.49
+Tax: 1.64
+Total: 22.13

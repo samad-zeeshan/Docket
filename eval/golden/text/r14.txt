@@ -1,0 +1,13 @@
+Harbor Seafood
+Date: 2025-02-02
+Currency: GBP
+
+Bike tube  x2   18.00
+AA Batteries  x2   17.98
+AA Batteries  x2   17.98
+Bagel  x2   6.50
+
+Subtotal: 60.46
+Tax: 4.84
+Total: 65.30
+Paid: credit

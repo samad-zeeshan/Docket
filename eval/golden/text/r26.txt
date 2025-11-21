@@ -1,0 +1,13 @@
+Sunrise Diner
+Date: 2025-02-26
+Currency: GBP
+
+Notebook  x2   10.00
+AA Batteries  x1   8.99
+Sparkling water  x2   3.00
+Pen pack  x2   5.50
+
+Subtotal: 27.49
+Tax: 2.20
+Total: 29.69
+Paid: gift_card

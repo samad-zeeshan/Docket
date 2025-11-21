@@ -1,0 +1,6 @@
+{
+  "text": "{\"merchant\":\"Harbor Seafood\",\"date\":\"2025-01-21\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Eggs dozen\",\"quantity\":2,\"unitPrice\":4.49,\"amount\":8.98},{\"description\":\"Latte\",\"quantity\":2,\"unitPrice\":4.5,\"amount\":9}],\"subtotal\":17.98,\"tax\":1.44,\"total\":19.42,\"paymentMethod\":\"debit\"}",
+  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "inputTokens": 93,
+  "outputTokens": 71
+}

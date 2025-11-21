@@ -1,0 +1,6 @@
+{
+  "text": "{\"merchant\":\"Harbor Seafood\",\"date\":\"2025-02-02\",\"currency\":\"GBP\",\"lineItems\":[{\"description\":\"Bike tube\",\"quantity\":2,\"unitPrice\":9,\"amount\":18},{\"description\":\"AA Batteries\",\"quantity\":2,\"unitPrice\":8.99,\"amount\":17.98},{\"description\":\"AA Batteries\",\"quantity\":2,\"unitPrice\":8.99,\"amount\":17.98},{\"description\":\"Bagel\",\"quantity\":2,\"unitPrice\":3.25,\"amount\":6.5}],\"subtotal\":60.46,\"tax\":4.84,\"total\":65.3,\"paymentMethod\":\"credit\"}",
+  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "inputTokens": 220,
+  "outputTokens": 108
+}

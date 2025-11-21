@@ -1,0 +1,6 @@
+{
+  "text": "{\"merchant\":\"Harbor Seafood\",\"date\":\"2025-01-19\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Orange juice\",\"quantity\":3,\"unitPrice\":3.6,\"amount\":10.8},{\"description\":\"Pen pack\",\"quantity\":2,\"unitPrice\":2.75,\"amount\":5.5},{\"description\":\"Notebook\",\"quantity\":3,\"unitPrice\":5,\"amount\":15},{\"description\":\"Bike tube\",\"quantity\":1,\"unitPrice\":9,\"amount\":9}],\"subtotal\":40.3,\"tax\":3.22,\"total\":43.52,\"paymentMethod\":\"cash\"}",
+  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "inputTokens": 105,
+  "outputTokens": 105
+}

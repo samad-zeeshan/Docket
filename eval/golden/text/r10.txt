@@ -1,0 +1,13 @@
+Pacific Fuel
+Date: 2025-01-25
+Currency: USD
+
+Apples lb  x3   5.67
+Shampoo  x1   6.25
+Milk 1gal  x2   7.98
+Eggs dozen  x2   8.98
+
+Subtotal: 28.88
+Tax: 2.31
+Total: 31.19
+Paid: credit

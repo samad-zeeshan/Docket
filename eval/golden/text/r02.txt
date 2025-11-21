@@ -1,0 +1,10 @@
+The Book Nook
+Date: 2025-01-09
+Currency: USD
+
+AA Batteries  x1   8.99
+
+Subtotal: 8.99
+Tax: 0.72
+Total: 9.71
+Paid: debit

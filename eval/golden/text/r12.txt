@@ -1,0 +1,13 @@
+City Bikes
+Date: 2025-01-29
+Currency: USD
+
+AA Batteries  x3   26.97
+Apples lb  x1   1.89
+Sparkling water  x1   1.50
+Trail mix  x3   12.60
+
+Subtotal: 42.96
+Tax: 3.44
+Total: 46.40
+Paid: credit

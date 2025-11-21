@@ -1,0 +1,6 @@
+{
+  "text": "{\"merchant\":\"Unknown\",\"date\":\"2025-02-08\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Bike tube\",\"quantity\":1,\"unitPrice\":9,\"amount\":9}],\"subtotal\":17.4,\"tax\":1.39,\"total\":22.55,\"paymentMethod\":\"gift_card\"}",
+  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "inputTokens": 50,
+  "outputTokens": 52
+}

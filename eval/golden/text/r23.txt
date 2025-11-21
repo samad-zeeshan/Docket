@@ -1,0 +1,13 @@
+The Book Nook
+Date: 2025-02-20
+Currency: EUR
+
+Bagel  x3   9.75
+Trail mix  x2   8.40
+Trail mix  x2   8.40
+Trail mix  x1   4.20
+
+Subtotal: 30.75
+Tax: 2.46
+Total: 33.21
+Paid: cash

@@ -1,0 +1,9 @@
+Corner Grocery
+Date: 2025-02-22
+Currency: USD
+
+Paperback  x1   12.99
+
+Subtotal: 12.99
+Tax: 1.04
+Total: 14.03

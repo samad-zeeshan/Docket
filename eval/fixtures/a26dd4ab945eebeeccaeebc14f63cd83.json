@@ -1,0 +1,6 @@
+{
+  "text": "{\"merchant\":\"Unknown\",\"date\":\"2025-02-20\",\"currency\":\"EUR\",\"lineItems\":[{\"description\":\"Bagel\",\"quantity\":3,\"unitPrice\":3.25,\"amount\":9.75},{\"description\":\"Trail mix\",\"quantity\":2,\"unitPrice\":4.2,\"amount\":8.4}],\"subtotal\":30.75,\"tax\":2.46,\"total\":39.85,\"paymentMethod\":\"cash\"}",
+  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "inputTokens": 58,
+  "outputTokens": 69
+}

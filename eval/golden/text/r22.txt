@@ -1,0 +1,10 @@
+Blue Bottle Coffee
+Date: 2025-02-18
+Currency: GBP
+
+AA Batteries  x1   8.99
+
+Subtotal: 8.99
+Tax: 0.72
+Total: 9.71
+Paid: cash

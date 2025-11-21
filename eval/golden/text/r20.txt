@@ -1,0 +1,10 @@
+Green Leaf Market
+Date: 2025-02-14
+Currency: USD
+
+Sparkling water  x3   4.50
+Paperback  x3   38.97
+
+Subtotal: 43.47
+Tax: 3.48
+Total: 46.95

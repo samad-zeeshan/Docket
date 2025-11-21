@@ -1,0 +1,11 @@
+Metro Pharmacy
+Date: 2025-02-08
+Currency: USD
+
+Bike tube  x1   9.00
+Trail mix  x2   8.40
+
+Subtotal: 17.40
+Tax: 1.39
+Total: 18.79
+Paid: gift_card

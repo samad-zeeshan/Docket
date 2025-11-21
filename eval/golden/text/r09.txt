@@ -1,0 +1,12 @@
+Sunrise Diner
+Date: 2025-01-23
+Currency: USD
+
+Orange juice  x1   3.60
+Eggs dozen  x2   8.98
+Sparkling water  x1   1.50
+
+Subtotal: 14.08
+Tax: 1.13
+Total: 15.21
+Paid: cash

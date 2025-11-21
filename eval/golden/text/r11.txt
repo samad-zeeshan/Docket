@@ -1,0 +1,11 @@
+Green Leaf Market
+Date: 2025-01-27
+Currency: EUR
+
+Bike tube  x3   27.00
+Pen pack  x1   2.75
+
+Subtotal: 29.75
+Tax: 2.38
+Total: 32.13
+Paid: debit

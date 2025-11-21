@@ -1,0 +1,6 @@
+{
+  "text": "{\"merchant\":\"Metro Pharmacy\",\"date\":\"2025-02-08\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Bike tube\",\"quantity\":1,\"unitPrice\":9,\"amount\":9},{\"description\":\"Trail mix\",\"quantity\":2,\"unitPrice\":4.2,\"amount\":8.4}],\"subtotal\":17.4,\"tax\":1.39,\"total\":18.79,\"paymentMethod\":\"gift_card\"}",
+  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "inputTokens": 209,
+  "outputTokens": 71
+}

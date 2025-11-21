@@ -1,0 +1,6 @@
+{
+  "text": "{\"merchant\":\"Sunrise Diner\",\"date\":\"2025-02-12\",\"currency\":\"GBP\",\"lineItems\":[{\"description\":\"Eggs dozen\",\"quantity\":1,\"unitPrice\":4.49,\"amount\":4.49},{\"description\":\"Bagel\",\"quantity\":3,\"unitPrice\":3.25,\"amount\":9.75},{\"description\":\"Shampoo\",\"quantity\":1,\"unitPrice\":6.25,\"amount\":6.25}],\"subtotal\":20.49,\"tax\":1.64,\"total\":23.13}",
+  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "inputTokens": 209,
+  "outputTokens": 83
+}

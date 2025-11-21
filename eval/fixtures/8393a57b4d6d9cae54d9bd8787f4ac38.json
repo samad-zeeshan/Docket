@@ -1,0 +1,6 @@
+{
+  "text": "{\"merchant\":\"Store\",\"date\":\"2025-01-17\",\"currency\":\"GBP\",\"lineItems\":[{\"description\":\"AA Batteries\",\"quantity\":3,\"unitPrice\":8.99,\"amount\":26.97}],\"subtotal\":34.96,\"tax\":2.16,\"total\":34.96,\"paymentMethod\":\"cash\"}",
+  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "inputTokens": 44,
+  "outputTokens": 53
+}

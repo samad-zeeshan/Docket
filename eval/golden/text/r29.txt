@@ -1,0 +1,12 @@
+Pacific Fuel
+Date: 2025-03-04
+Currency: EUR
+
+Pen pack  x1   2.75
+Bagel  x3   9.75
+Orange juice  x1   3.60
+Pen pack  x3   8.25
+
+Subtotal: 24.35
+Tax: 1.95
+Total: 26.30

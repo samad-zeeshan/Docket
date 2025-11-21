@@ -1,0 +1,13 @@
+Sunrise Diner
+Date: 2025-01-07
+Currency: USD
+
+Pen pack  x3   8.25
+Pen pack  x1   2.75
+Sandwich  x3   22.50
+Paperback  x1   12.99
+
+Subtotal: 46.49
+Tax: 3.72
+Total: 50.21
+Paid: debit

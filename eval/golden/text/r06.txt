@@ -1,0 +1,10 @@
+Sunrise Diner
+Date: 2025-01-17
+Currency: GBP
+
+AA Batteries  x3   26.97
+
+Subtotal: 26.97
+Tax: 2.16
+Total: 29.13
+Paid: cash

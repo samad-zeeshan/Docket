@@ -1,0 +1,34 @@
+{
+  "merchant": "City Bikes",
+  "date": "2025-01-11",
+  "currency": "USD",
+  "lineItems": [
+    {
+      "description": "Latte",
+      "quantity": 3,
+      "unitPrice": 4.5,
+      "amount": 13.5
+    },
+    {
+      "description": "Bagel",
+      "quantity": 3,
+      "unitPrice": 3.25,
+      "amount": 9.75
+    },
+    {
+      "description": "Sparkling water",
+      "quantity": 3,
+      "unitPrice": 1.5,
+      "amount": 4.5
+    },
+    {
+      "description": "Orange juice",
+      "quantity": 1,
+      "unitPrice": 3.6,
+      "amount": 3.6
+    }
+  ],
+  "subtotal": 31.35,
+  "tax": 2.51,
+  "total": 33.86
+}

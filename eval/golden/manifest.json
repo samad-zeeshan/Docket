@@ -1,0 +1,152 @@
+[
+  {
+    "id": "r00",
+    "text": "text/r00.txt",
+    "label": "labels/r00.json"
+  },
+  {
+    "id": "r01",
+    "text": "text/r01.txt",
+    "label": "labels/r01.json"
+  },
+  {
+    "id": "r02",
+    "text": "text/r02.txt",
+    "label": "labels/r02.json"
+  },
+  {
+    "id": "r03",
+    "text": "text/r03.txt",
+    "label": "labels/r03.json"
+  },
+  {
+    "id": "r04",
+    "text": "text/r04.txt",
+    "label": "labels/r04.json"
+  },
+  {
+    "id": "r05",
+    "text": "text/r05.txt",
+    "label": "labels/r05.json"
+  },
+  {
+    "id": "r06",
+    "text": "text/r06.txt",
+    "label": "labels/r06.json"
+  },
+  {
+    "id": "r07",
+    "text": "text/r07.txt",
+    "label": "labels/r07.json"
+  },
+  {
+    "id": "r08",
+    "text": "text/r08.txt",
+    "label": "labels/r08.json"
+  },
+  {
+    "id": "r09",
+    "text": "text/r09.txt",
+    "label": "labels/r09.json"
+  },
+  {
+    "id": "r10",
+    "text": "text/r10.txt",
+    "label": "labels/r10.json"
+  },
+  {
+    "id": "r11",
+    "text": "text/r11.txt",
+    "label": "labels/r11.json"
+  },
+  {
+    "id": "r12",
+    "text": "text/r12.txt",
+    "label": "labels/r12.json"
+  },
+  {
+    "id": "r13",
+    "text": "text/r13.txt",
+    "label": "labels/r13.json"
+  },
+  {
+    "id": "r14",
+    "text": "text/r14.txt",
+    "label": "labels/r14.json"
+  },
+  {
+    "id": "r15",
+    "text": "text/r15.txt",
+    "label": "labels/r15.json"
+  },
+  {
+    "id": "r16",
+    "text": "text/r16.txt",
+    "label": "labels/r16.json"
+  },
+  {
+    "id": "r17",
+    "text": "text/r17.txt",
+    "label": "labels/r17.json"
+  },
+  {
+    "id": "r18",
+    "text": "text/r18.txt",
+    "label": "labels/r18.json"
+  },
+  {
+    "id": "r19",
+    "text": "text/r19.txt",
+    "label": "labels/r19.json"
+  },
+  {
+    "id": "r20",
+    "text": "text/r20.txt",
+    "label": "labels/r20.json"
+  },
+  {
+    "id": "r21",
+    "text": "text/r21.txt",
+    "label": "labels/r21.json"
+  },
+  {
+    "id": "r22",
+    "text": "text/r22.txt",
+    "label": "labels/r22.json"
+  },
+  {
+    "id": "r23",
+    "text": "text/r23.txt",
+    "label": "labels/r23.json"
+  },
+  {
+    "id": "r24",
+    "text": "text/r24.txt",
+    "label": "labels/r24.json"
+  },
+  {
+    "id": "r25",
+    "text": "text/r25.txt",
+    "label": "labels/r25.json"
+  },
+  {
+    "id": "r26",
+    "text": "text/r26.txt",
+    "label": "labels/r26.json"
+  },
+  {
+    "id": "r27",
+    "text": "text/r27.txt",
+    "label": "labels/r27.json"
+  },
+  {
+    "id": "r28",
+    "text": "text/r28.txt",
+    "label": "labels/r28.json"
+  },
+  {
+    "id": "r29",
+    "text": "text/r29.txt",
+    "label": "labels/r29.json"
+  }
+]

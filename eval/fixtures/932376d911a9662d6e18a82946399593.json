@@ -1,0 +1,6 @@
+{
+  "text": "{\"merchant\":\"Unknown\",\"date\":\"2025-01-11\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Latte\",\"quantity\":3,\"unitPrice\":4.5,\"amount\":13.5},{\"description\":\"Bagel\",\"quantity\":3,\"unitPrice\":3.25,\"amount\":9.75}],\"subtotal\":40.63,\"tax\":2.51,\"total\":40.63}",
+  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "inputTokens": 56,
+  "outputTokens": 63
+}

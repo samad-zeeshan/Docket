@@ -1,0 +1,6 @@
+{
+  "text": "{\"merchant\":\"The Book Nook\",\"date\":\"2025-01-09\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"AA Batteries\",\"quantity\":1,\"unitPrice\":8.99,\"amount\":8.99}],\"subtotal\":8.99,\"tax\":0.72,\"total\":9.71,\"paymentMethod\":\"debit\"}",
+  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "inputTokens": 203,
+  "outputTokens": 55
+}

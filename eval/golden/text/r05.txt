@@ -1,0 +1,12 @@
+Pacific Fuel
+Date: 2025-01-15
+Currency: USD
+
+Bike tube  x1   9.00
+Milk 1gal  x2   7.98
+Bike tube  x2   18.00
+
+Subtotal: 34.98
+Tax: 2.80
+Total: 37.78
+Paid: credit

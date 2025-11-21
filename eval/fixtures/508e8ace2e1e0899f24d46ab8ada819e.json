@@ -1,0 +1,6 @@
+{
+  "text": "{\"merchant\":\"Unknown\",\"date\":\"2025-03-04\",\"currency\":\"EUR\",\"lineItems\":[{\"description\":\"Pen pack\",\"quantity\":1,\"unitPrice\":2.75,\"amount\":2.75},{\"description\":\"Bagel\",\"quantity\":3,\"unitPrice\":3.25,\"amount\":9.75}],\"subtotal\":24.35,\"tax\":1.95,\"total\":31.56}",
+  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "inputTokens": 55,
+  "outputTokens": 64
+}

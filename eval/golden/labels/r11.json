@@ -1,0 +1,23 @@
+{
+  "merchant": "Green Leaf Market",
+  "date": "2025-01-27",
+  "currency": "EUR",
+  "lineItems": [
+    {
+      "description": "Bike tube",
+      "quantity": 3,
+      "unitPrice": 9,
+      "amount": 27
+    },
+    {
+      "description": "Pen pack",
+      "quantity": 1,
+      "unitPrice": 2.75,
+      "amount": 2.75
+    }
+  ],
+  "subtotal": 29.75,
+  "tax": 2.38,
+  "total": 32.13,
+  "paymentMethod": "debit"
+}

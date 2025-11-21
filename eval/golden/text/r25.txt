@@ -1,0 +1,10 @@
+Harbor Seafood
+Date: 2025-02-24
+Currency: GBP
+
+Notebook  x3   15.00
+
+Subtotal: 15.00
+Tax: 1.20
+Total: 16.20
+Paid: cash

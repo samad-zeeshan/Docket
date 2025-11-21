@@ -1,0 +1,6 @@
+{
+  "text": "{\"merchant\":\"Store\",\"date\":\"2025-02-26\",\"currency\":\"GBP\",\"lineItems\":[{\"description\":\"Notebook\",\"quantity\":2,\"unitPrice\":5,\"amount\":10},{\"description\":\"AA Batteries\",\"quantity\":1,\"unitPrice\":8.99,\"amount\":8.99}],\"subtotal\":27.49,\"tax\":2.2,\"total\":35.63,\"paymentMethod\":\"gift_card\"}",
+  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "inputTokens": 62,
+  "outputTokens": 70
+}

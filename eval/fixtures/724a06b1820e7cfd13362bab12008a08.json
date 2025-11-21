@@ -1,0 +1,6 @@
+{
+  "text": "{\"merchant\":\"Store\",\"date\":\"2025-01-25\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Apples lb\",\"quantity\":3,\"unitPrice\":1.89,\"amount\":5.67},{\"description\":\"Shampoo\",\"quantity\":1,\"unitPrice\":6.25,\"amount\":6.25}],\"subtotal\":28.88,\"tax\":2.31,\"total\":37.43,\"paymentMethod\":\"credit\"}",
+  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "inputTokens": 59,
+  "outputTokens": 70
+}

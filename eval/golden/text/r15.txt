@@ -1,0 +1,12 @@
+Harbor Seafood
+Date: 2025-02-04
+Currency: USD
+
+Milk 1gal  x2   7.98
+Latte  x3   13.50
+Paperback  x2   25.98
+
+Subtotal: 47.46
+Tax: 3.80
+Total: 51.26
+Paid: credit

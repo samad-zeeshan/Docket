@@ -1,0 +1,12 @@
+City Bikes
+Date: 2025-01-11
+Currency: USD
+
+Latte  x3   13.50
+Bagel  x3   9.75
+Sparkling water  x3   4.50
+Orange juice  x1   3.60
+
+Subtotal: 31.35
+Tax: 2.51
+Total: 33.86

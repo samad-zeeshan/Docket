@@ -1,0 +1,11 @@
+Trader Vics Hardware
+Date: 2025-02-06
+Currency: USD
+
+Eggs dozen  x3   13.47
+Latte  x2   9.00
+Bagel  x2   6.50
+
+Subtotal: 28.97
+Tax: 2.32
+Total: 31.29

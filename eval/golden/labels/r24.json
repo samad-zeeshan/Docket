@@ -1,0 +1,16 @@
+{
+  "merchant": "Corner Grocery",
+  "date": "2025-02-22",
+  "currency": "USD",
+  "lineItems": [
+    {
+      "description": "Paperback",
+      "quantity": 1,
+      "unitPrice": 12.99,
+      "amount": 12.99
+    }
+  ],
+  "subtotal": 12.99,
+  "tax": 1.04,
+  "total": 14.03
+}

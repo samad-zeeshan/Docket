@@ -1,0 +1,6 @@
+{
+  "text": "{\"merchant\":\"Sunrise Diner\",\"date\":\"2025-01-23\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Orange juice\",\"quantity\":1,\"unitPrice\":3.6,\"amount\":3.6},{\"description\":\"Eggs dozen\",\"quantity\":2,\"unitPrice\":4.49,\"amount\":8.98},{\"description\":\"Sparkling water\",\"quantity\":1,\"unitPrice\":1.5,\"amount\":1.5}],\"subtotal\":14.08,\"tax\":1.13,\"total\":15.21,\"paymentMethod\":\"cash\"}",
+  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "inputTokens": 216,
+  "outputTokens": 92
+}

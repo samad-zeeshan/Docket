@@ -1,0 +1,6 @@
+{
+  "text": "{\"merchant\":\"Harbor Seafood\",\"date\":\"2025-02-24\",\"currency\":\"GBP\",\"lineItems\":[{\"description\":\"Notebook\",\"quantity\":3,\"unitPrice\":5,\"amount\":15}],\"subtotal\":15,\"tax\":0,\"total\":16.2,\"paymentMethod\":\"cash\"}",
+  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "inputTokens": 89,
+  "outputTokens": 51
+}

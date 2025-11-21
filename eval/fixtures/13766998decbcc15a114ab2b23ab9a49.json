@@ -1,0 +1,6 @@
+{
+  "text": "{\"merchant\":\"Corner Grocery\",\"date\":\"2025-02-22\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Paperback\",\"quantity\":1,\"unitPrice\":12.99,\"amount\":13.49}],\"subtotal\":12.99,\"tax\":1.04,\"total\":14.03}",
+  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "inputTokens": 86,
+  "outputTokens": 49
+}

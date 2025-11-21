@@ -1,0 +1,13 @@
+Harbor Seafood
+Date: 2025-01-19
+Currency: USD
+
+Orange juice  x3   10.80
+Pen pack  x2   5.50
+Notebook  x3   15.00
+Bike tube  x1   9.00
+
+Subtotal: 40.30
+Tax: 3.22
+Total: 43.52
+Paid: cash

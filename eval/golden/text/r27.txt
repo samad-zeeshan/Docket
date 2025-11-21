@@ -1,0 +1,12 @@
+Metro Pharmacy
+Date: 2025-02-28
+Currency: EUR
+
+Milk 1gal  x1   3.99
+Bagel  x2   6.50
+Sparkling water  x1   1.50
+
+Subtotal: 11.99
+Tax: 0.96
+Total: 12.95
+Paid: gift_card

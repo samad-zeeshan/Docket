@@ -1,0 +1,17 @@
+{
+  "merchant": "Sunrise Diner",
+  "date": "2025-01-17",
+  "currency": "GBP",
+  "lineItems": [
+    {
+      "description": "AA Batteries",
+      "quantity": 3,
+      "unitPrice": 8.99,
+      "amount": 26.97
+    }
+  ],
+  "subtotal": 26.97,
+  "tax": 2.16,
+  "total": 29.13,
+  "paymentMethod": "cash"
+}

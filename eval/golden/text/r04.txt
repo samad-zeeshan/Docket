@@ -1,0 +1,10 @@
+Pacific Fuel
+Date: 2025-01-13
+Currency: USD
+
+Eggs dozen  x2   8.98
+
+Subtotal: 8.98
+Tax: 0.72
+Total: 9.70
+Paid: gift_card
