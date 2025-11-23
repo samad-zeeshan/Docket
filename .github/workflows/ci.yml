@@ -21,6 +21,9 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm test
+      # Recorded provider, so this is deterministic and free. Fails the build if
+      # field accuracy drops below the threshold in eval/run.ts.
+      - run: npm run eval
       - run: npm run synth
 
   deploy:

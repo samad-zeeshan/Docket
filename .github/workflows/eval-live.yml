@@ -1,0 +1,41 @@
+# Manual eval against live Bedrock. Off by default so a push never spends model
+# budget. Run it from the Actions tab to get real-model numbers and post the table.
+name: eval-live
+
+on:
+  workflow_dispatch:
+    inputs:
+      prompt:
+        description: prompt version to run
+        default: v1
+        type: string
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/docket-github-deploy
+          aws-region: us-east-1
+      - name: run eval on live Bedrock
+        env:
+          DOCKET_PROVIDER: bedrock
+        run: npx tsx eval/run.ts --prompt ${{ inputs.prompt }} | tee eval-table.txt
+      - name: post the table to the job summary
+        if: always()
+        run: |
+          echo '## Live eval (Bedrock)' >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          cat eval-table.txt >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
