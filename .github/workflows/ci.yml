@@ -27,10 +27,34 @@ jobs:
       - run: npm run synth
 
   deploy:
-    # Turned on in Phase 6. Until then it never runs, but keeping the shell here
-    # means the CI/CD shape is visible from day one.
-    if: false
+    # Only on a merge to main, and only after build (lint, test, eval, synth)
+    # passes. The eval gate is therefore ahead of every deploy.
     needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    # Serialize deploys so two merges cannot deploy over each other. Do not cancel
+    # a deploy in flight, let it finish and queue the next.
+    concurrency:
+      group: docket-deploy
+      cancel-in-progress: false
     steps:
-      - run: echo "deploy is enabled in Phase 6"
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/docket-github-deploy
+          aws-region: us-east-1
+      - name: cdk diff to the job summary
+        run: |
+          echo '## cdk diff' >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          npx cdk diff Docket 2>&1 | tee -a "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+      - run: npx cdk deploy Docket --require-approval never
