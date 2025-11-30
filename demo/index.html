@@ -1,0 +1,680 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Docket demo</title>
+<style>
+  :root {
+    --bg: #0E1220; --bg-2: #090C16; --card: #151A28; --card-2: #1B2233;
+    --line: #242C3F; --line-2: #323B52;
+    --text: #ECE8DF; --muted: #99A1B2; --faint: #6B7488;
+    --brass: #C6A968; --brass-2: #E1C793; --steel: #7089B0; --steel-2: #9AAECC;
+    --good: #84B393; --good-bg: rgba(132,179,147,.14); --good-line: rgba(132,179,147,.34);
+    --bad: #CB8168; --bad-bg: rgba(203,129,104,.14); --bad-line: rgba(203,129,104,.34);
+    --sans: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, "Cascadia Code", "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+    --r: 14px; --gx: 50%; --gy: 28%; --glow: rgba(198,169,104,.13);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--sans); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  .aura { position: fixed; inset: 0; z-index: 0; pointer-events: none; transition: background .14s linear;
+    background:
+      radial-gradient(620px circle at var(--gx) var(--gy), var(--glow), transparent 64%),
+      radial-gradient(880px circle at 90% -10%, rgba(112,137,176,.09), transparent 60%),
+      radial-gradient(700px circle at -8% 112%, rgba(198,169,104,.06), transparent 55%); }
+  .grain { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .5; mix-blend-mode: overlay;
+    background-image: radial-gradient(rgba(255,255,255,.02) 1px, transparent 1px); background-size: 3px 3px; }
+  .shell { position: relative; z-index: 1; max-width: 1080px; margin: 0 auto; padding: 22px clamp(16px,4vw,36px) 84px; }
+
+  header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 8px 0 26px; flex-wrap: wrap; }
+  .brand { display: flex; align-items: center; gap: 11px; font-weight: 680; letter-spacing: .01em; font-size: 1.05rem; }
+  .brand .mark { width: 20px; height: 20px; display: grid; place-items: center; }
+  .brand .mark i { width: 10px; height: 10px; background: linear-gradient(135deg, var(--brass), var(--brass-2)); transform: rotate(45deg); border-radius: 2px; box-shadow: 0 0 14px rgba(198,169,104,.4); }
+  .hbadges { display: flex; align-items: center; gap: 9px; }
+  .pill { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: color-mix(in srgb, var(--card) 66%, transparent); color: var(--muted); font-family: var(--mono); font-size: .71rem; letter-spacing: .02em; }
+  .pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--good); box-shadow: 0 0 8px var(--good); animation: breathe 2.8s ease-in-out infinite; }
+  @keyframes breathe { 0%,100%{opacity:.5} 50%{opacity:1} }
+
+  .hero { padding: 20px 0 6px; max-width: 720px; }
+  .eyebrow { font-family: var(--mono); font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; color: var(--brass); margin: 0 0 18px; display: inline-flex; gap: 10px; align-items: center; }
+  .eyebrow::before { content: ""; width: 26px; height: 1px; background: linear-gradient(90deg, var(--brass), transparent); }
+  h1 { font-size: clamp(2rem, 5vw, 3.1rem); line-height: 1.06; letter-spacing: -.025em; font-weight: 720; margin: 0 0 18px; text-wrap: balance; }
+  h1 .g { color: var(--brass-2); }
+  .sub { font-size: 1.05rem; color: var(--muted); max-width: 58ch; margin: 0; }
+
+  .section-title { font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); font-weight: 600; margin: 44px 0 16px; }
+
+  /* help */
+  .help { display: grid; grid-template-columns: 1.3fr 1fr; gap: 22px; background: linear-gradient(180deg, var(--card), color-mix(in srgb, var(--card) 84%, var(--bg-2))); border: 1px solid var(--line); border-radius: var(--r); padding: 22px 24px; margin-top: 8px; }
+  .help p { margin: 0 0 12px; color: var(--muted); font-size: .95rem; }
+  .help p:last-child { margin-bottom: 0; }
+  .help p b { color: var(--text); font-weight: 600; }
+  .steps { display: flex; flex-direction: column; gap: 10px; border-left: 1px solid var(--line); padding-left: 22px; }
+  .step { display: flex; align-items: center; gap: 12px; }
+  .step .num { flex: 0 0 auto; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-family: var(--mono); font-size: .72rem; color: var(--brass); border: 1px solid color-mix(in srgb, var(--brass) 40%, var(--line)); background: color-mix(in srgb, var(--brass) 8%, transparent); }
+  .step span { color: var(--text); font-size: .9rem; }
+
+  /* scenarios */
+  .scn { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 13px; }
+  .scard { text-align: left; cursor: pointer; color: var(--text); font-family: var(--sans);
+    background: linear-gradient(180deg, var(--card), var(--bg-2)); border: 1px solid var(--line); border-radius: 13px; padding: 16px 17px;
+    display: flex; flex-direction: column; gap: 9px; transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
+  .scard:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--brass) 42%, var(--line)); box-shadow: 0 12px 30px rgba(0,0,0,.34); }
+  .scard:focus-visible { outline: 2px solid var(--steel); outline-offset: 2px; }
+  .scard.sel { border-color: var(--brass); box-shadow: 0 0 0 1px var(--brass); }
+  .scard .st { display: flex; align-items: center; gap: 9px; }
+  .scard .glyph { width: 9px; height: 9px; border-radius: 2px; transform: rotate(45deg); }
+  .scard h3 { font-size: .96rem; font-weight: 640; margin: 0; letter-spacing: -.01em; }
+  .scard p { margin: 0; color: var(--muted); font-size: .85rem; line-height: 1.5; }
+  .scard .go { font-family: var(--mono); font-size: .68rem; color: var(--faint); margin-top: 2px; display: inline-flex; align-items: center; gap: 6px; }
+  .scard:hover .go { color: var(--brass); }
+
+  /* panels */
+  .grid { display: grid; grid-template-columns: 1fr 1.14fr; gap: 15px; margin-top: 15px; align-items: start; }
+  .panel { background: linear-gradient(180deg, var(--card), color-mix(in srgb, var(--card) 82%, var(--bg-2))); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+  .panel-h { display: flex; align-items: center; gap: 10px; padding: 12px 15px; border-bottom: 1px solid var(--line); }
+  .panel-h .t { font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); font-weight: 620; }
+  .panel-h .r { margin-left: auto; font-family: var(--mono); font-size: .68rem; color: var(--faint); }
+
+  .note { padding: 12px 15px; border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--brass) 7%, transparent); color: var(--text); font-size: .86rem; display: none; }
+  .note.show { display: block; }
+  .note b { color: var(--brass-2); font-weight: 600; }
+
+  .receipt { font-family: var(--mono); font-size: .74rem; line-height: 1.9; color: var(--muted); padding: 15px; white-space: pre-wrap; min-height: 150px; }
+  .receipt .em { color: var(--text); }
+  .pipe { display: flex; align-items: center; gap: 3px; padding: 12px 15px; border-top: 1px solid var(--line); flex-wrap: wrap; }
+  .stage { display: inline-flex; align-items: center; gap: 7px; font-size: .67rem; font-family: var(--mono); color: var(--faint); }
+  .stage .b { width: 8px; height: 8px; border-radius: 50%; background: var(--line-2); transition: background .25s, box-shadow .25s; }
+  .stage.active .b { background: var(--brass); box-shadow: 0 0 11px var(--brass); animation: ping 1s ease-out infinite; }
+  .stage.done .b { background: var(--good); box-shadow: 0 0 7px var(--good); }
+  .stage.done { color: var(--muted); }
+  .sep { width: 12px; height: 1px; background: var(--line-2); }
+  @keyframes ping { 0%{transform:scale(1)} 50%{transform:scale(1.35)} 100%{transform:scale(1)} }
+
+  .result { min-height: 260px; }
+  .empty { display: grid; place-items: center; height: 100%; min-height: 260px; color: var(--faint); font-size: .88rem; text-align: center; padding: 26px; gap: 10px; }
+  .empty svg { width: 28px; height: 28px; opacity: .55; }
+  .rhead { display: flex; align-items: center; gap: 10px; padding: 13px 15px; border-bottom: 1px solid var(--line); }
+  .status { font-size: .65rem; font-weight: 680; letter-spacing: .08em; padding: 6px 11px; border-radius: 999px; display: inline-flex; align-items: center; gap: 7px; text-transform: uppercase; }
+  .status::before { content: ""; width: 6px; height: 6px; border-radius: 50%; }
+  .status.ok { color: var(--good); background: var(--good-bg); border: 1px solid var(--good-line); }
+  .status.ok::before { background: var(--good); box-shadow: 0 0 8px var(--good); }
+  .status.fail { color: var(--bad); background: var(--bad-bg); border: 1px solid var(--bad-line); }
+  .status.fail::before { background: var(--bad); }
+  .status.pop { animation: pop .42s cubic-bezier(.2,1.5,.4,1); }
+  @keyframes pop { 0%{transform:scale(.6);opacity:0} 100%{transform:scale(1);opacity:1} }
+  .rhead .doc { margin-left: auto; font-family: var(--mono); font-size: .65rem; color: var(--faint); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 46%; }
+
+  pre.json { margin: 0; padding: 15px; font-family: var(--mono); font-size: .76rem; line-height: 1.78; overflow-x: auto; color: var(--muted); }
+  .json .key { color: var(--steel-2); }
+  .json .str { color: var(--brass-2); }
+  .json .num { color: var(--good); }
+  .json .bool { color: var(--steel); }
+  .json .ln { display: block; opacity: 0; transform: translateY(3px); animation: lnin .34s ease forwards; }
+  @keyframes lnin { to { opacity: 1; transform: none; } }
+
+  .rfoot { display: flex; align-items: center; gap: 16px; padding: 12px 15px; border-top: 1px solid var(--line); flex-wrap: wrap; font-family: var(--mono); font-size: .7rem; color: var(--faint); }
+  .rfoot .mtr b { color: var(--text); font-variant-numeric: tabular-nums; }
+  .score { margin-left: auto; display: inline-flex; align-items: baseline; gap: 8px; }
+  .score .v { font-size: 1.24rem; font-weight: 700; color: var(--brass); font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+  .score .l { text-transform: uppercase; letter-spacing: .11em; font-size: .58rem; }
+
+  .fields { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 15px 15px; }
+  .fchip { display: inline-flex; align-items: center; gap: 7px; font-family: var(--mono); font-size: .68rem; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--line); color: var(--muted); }
+  .fchip .ic { width: 15px; height: 15px; display: grid; place-items: center; border-radius: 50%; font-size: .62rem; font-weight: 800; }
+  .fchip.ok .ic { color: var(--good); background: var(--good-bg); }
+  .fchip.bad { border-color: var(--bad-line); }
+  .fchip.bad .ic { color: var(--bad); background: var(--bad-bg); }
+  .fchip .diff s { color: var(--bad); text-decoration: none; }
+  .fchip .diff em { color: var(--good); font-style: normal; }
+
+  /* idempotency + failed detail */
+  .writes { padding: 15px; display: flex; flex-direction: column; gap: 10px; }
+  .wrow { display: flex; align-items: center; gap: 12px; padding: 11px 13px; border: 1px solid var(--line); border-radius: 10px; background: color-mix(in srgb, var(--card-2) 55%, transparent); }
+  .wrow .tag { font-family: var(--mono); font-size: .64rem; padding: 4px 9px; border-radius: 999px; text-transform: uppercase; letter-spacing: .05em; }
+  .wrow .tag.created { color: var(--good); background: var(--good-bg); border: 1px solid var(--good-line); }
+  .wrow .tag.dup { color: var(--steel-2); background: color-mix(in srgb, var(--steel) 15%, transparent); border: 1px solid color-mix(in srgb, var(--steel) 35%, transparent); }
+  .wrow .lbl { font-size: .85rem; color: var(--text); }
+  .wrow .lbl small { color: var(--faint); display: block; font-family: var(--mono); font-size: .66rem; margin-top: 2px; }
+  .badout { margin: 0 15px 15px; padding: 12px 14px; border: 1px solid var(--bad-line); border-radius: 10px; background: var(--bad-bg); font-family: var(--mono); font-size: .72rem; color: var(--text); }
+  .badout .why { color: var(--muted); margin-top: 8px; font-size: .68rem; }
+
+  /* bring your own */
+  .byo { margin-top: 8px; }
+  .byo-b { display: grid; grid-template-columns: 1fr 1.14fr; }
+  .byo-in { padding: 18px; border-right: 1px solid var(--line); display: flex; flex-direction: column; gap: 14px; }
+  .drop { border: 1px dashed var(--line-2); border-radius: 12px; padding: 26px 18px; text-align: center; cursor: pointer;
+    background: color-mix(in srgb, var(--card-2) 40%, transparent); transition: border-color .18s ease, background .18s ease, transform .18s ease; }
+  .drop:hover, .drop:focus-visible { border-color: color-mix(in srgb, var(--brass) 50%, var(--line-2)); background: color-mix(in srgb, var(--brass) 6%, transparent); outline: none; }
+  .drop.drag { border-color: var(--brass); background: color-mix(in srgb, var(--brass) 10%, transparent); transform: translateY(-2px); }
+  .drop svg { width: 26px; height: 26px; color: var(--brass); opacity: .9; margin-bottom: 10px; }
+  .drop .dt { font-size: .9rem; color: var(--text); }
+  .drop .dt .lnk { color: var(--brass-2); text-decoration: underline; text-underline-offset: 2px; }
+  .drop .dh { font-family: var(--mono); font-size: .68rem; color: var(--faint); margin-top: 6px; }
+  .pastetog { align-self: flex-start; background: none; border: 0; color: var(--steel-2); font-family: var(--sans); font-size: .8rem; cursor: pointer; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
+  .pastetog:hover { color: var(--steel-2); filter: brightness(1.15); }
+  .paste { display: flex; flex-direction: column; gap: 10px; }
+  .paste textarea { width: 100%; min-height: 128px; resize: vertical; background: var(--bg-2); border: 1px solid var(--line); border-radius: 10px; color: var(--text); font-family: var(--mono); font-size: .74rem; line-height: 1.7; padding: 11px 12px; }
+  .paste textarea:focus-visible { outline: 2px solid var(--steel); outline-offset: 1px; border-color: var(--steel); }
+  .paste .btn { align-self: flex-start; }
+  .byo-hint { margin: 2px 0 0; font-size: .78rem; color: var(--muted); line-height: 1.55; }
+  .byo-hint code { font-family: var(--mono); font-size: .92em; color: var(--brass-2); background: color-mix(in srgb, var(--brass) 9%, transparent); padding: 1px 5px; border-radius: 4px; }
+  .byo-out { min-height: 250px; }
+  .nomodel { padding: 16px; }
+  .nomodel .head { display: flex; align-items: center; gap: 9px; margin-bottom: 12px; }
+  .nomodel .tag { font-family: var(--mono); font-size: .64rem; text-transform: uppercase; letter-spacing: .06em; color: var(--steel-2); background: color-mix(in srgb, var(--steel) 15%, transparent); border: 1px solid color-mix(in srgb, var(--steel) 34%, transparent); padding: 5px 10px; border-radius: 999px; }
+  .nomodel p { margin: 0 0 12px; font-size: .86rem; color: var(--muted); line-height: 1.6; }
+  .nomodel p code { font-family: var(--mono); font-size: .92em; color: var(--brass-2); background: color-mix(in srgb, var(--brass) 9%, transparent); padding: 1px 5px; border-radius: 4px; }
+  .nomodel .cap { font-family: var(--mono); font-size: .62rem; color: var(--faint); margin: 0 0 6px; text-transform: uppercase; letter-spacing: .08em; }
+  .nomodel .txt { font-family: var(--mono); font-size: .72rem; color: var(--muted); background: var(--bg-2); border: 1px solid var(--line); border-radius: 10px; padding: 12px; max-height: 156px; overflow: auto; white-space: pre-wrap; line-height: 1.6; }
+  .rchip { display: inline-flex; align-items: center; gap: 7px; font-family: var(--mono); font-size: .66rem; padding: 5px 10px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+  .rchip.ok { color: var(--good); border-color: var(--good-line); background: var(--good-bg); }
+
+  /* eval */
+  .evalcard { margin-top: 15px; }
+  .evalcard .panel-b { display: grid; grid-template-columns: 190px 1fr; gap: 24px; padding: 22px; align-items: center; }
+  .bignum { text-align: center; }
+  .bignum .v { font-size: 3rem; font-weight: 740; letter-spacing: -.03em; line-height: 1; color: var(--brass); font-variant-numeric: tabular-nums; }
+  .bignum .l { font-family: var(--mono); font-size: .68rem; color: var(--faint); margin-top: 9px; letter-spacing: .04em; }
+  .gate { display: inline-flex; align-items: center; gap: 7px; margin-top: 13px; font-family: var(--mono); font-size: .66rem; padding: 5px 11px; border-radius: 999px; color: var(--good); background: var(--good-bg); border: 1px solid var(--good-line); }
+  .bars { display: flex; flex-direction: column; gap: 9px; }
+  .bar { display: grid; grid-template-columns: 84px 1fr 44px; align-items: center; gap: 12px; font-family: var(--mono); font-size: .71rem; }
+  .bar .n { color: var(--muted); }
+  .bar .track { height: 7px; border-radius: 5px; background: var(--bg-2); overflow: hidden; border: 1px solid var(--line); }
+  .bar .fill { height: 100%; width: 0; border-radius: 5px; background: linear-gradient(90deg, var(--brass), var(--brass-2)); transition: width .9s cubic-bezier(.2,.8,.2,1); }
+  .bar .p { text-align: right; color: var(--text); font-variant-numeric: tabular-nums; }
+
+  .strip { display: flex; gap: 11px; overflow-x: auto; padding: 4px 2px 12px; scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; }
+  .strip::-webkit-scrollbar { height: 6px; }
+  .strip::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 4px; }
+  .rcard { flex: 0 0 auto; width: 168px; text-align: left; cursor: pointer; color: var(--text); font-family: var(--sans);
+    background: linear-gradient(180deg, var(--card), var(--bg-2)); border: 1px solid var(--line); border-radius: 11px; padding: 12px 13px;
+    transition: transform .16s ease, border-color .16s ease; }
+  .rcard:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--brass) 40%, var(--line)); }
+  .rcard:focus-visible { outline: 2px solid var(--steel); outline-offset: 2px; }
+  .rcard.sel { border-color: var(--brass); box-shadow: 0 0 0 1px var(--brass); }
+  .rcard .m { font-weight: 620; font-size: .88rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rcard .meta { display: flex; align-items: baseline; justify-content: space-between; margin-top: 8px; }
+  .rcard .amt { font-family: var(--mono); font-weight: 620; color: var(--brass); font-variant-numeric: tabular-nums; font-size: .82rem; }
+  .rcard .it { font-family: var(--mono); font-size: .66rem; color: var(--faint); }
+
+  .btn { font-family: var(--sans); font-weight: 620; font-size: .84rem; padding: 10px 17px; border-radius: 10px; border: 0; cursor: pointer; transition: transform .16s ease, box-shadow .16s ease; }
+  .btn.brass { background: linear-gradient(135deg, var(--brass), var(--brass-2)); color: #1B160B; box-shadow: 0 8px 20px rgba(198,169,104,.2); }
+  .btn.brass:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(198,169,104,.3); }
+  .btn.ghost { background: color-mix(in srgb, var(--steel) 12%, transparent); color: var(--steel-2); border: 1px solid color-mix(in srgb, var(--steel) 36%, transparent); }
+  .btn.ghost:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(112,137,176,.2); }
+  .btn:focus-visible { outline: 2px solid var(--steel); outline-offset: 2px; }
+  .btn[disabled] { opacity: .55; cursor: default; transform: none; box-shadow: none; }
+
+  footer { margin-top: 46px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--faint); font-size: .78rem; font-family: var(--mono); display: flex; flex-wrap: wrap; gap: 6px 20px; }
+  footer b { color: var(--muted); font-weight: 500; }
+
+  .rise { opacity: 0; transform: translateY(12px); animation: rise .7s cubic-bezier(.2,.8,.2,1) forwards; }
+  .d1 { animation-delay: .04s } .d2 { animation-delay: .1s } .d3 { animation-delay: .18s } .d4 { animation-delay: .26s }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+
+  @media (max-width: 780px) {
+    .grid { grid-template-columns: 1fr; }
+    .help { grid-template-columns: 1fr; }
+    .steps { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); padding-top: 18px; }
+    .evalcard .panel-b { grid-template-columns: 1fr; }
+    .bignum { display: flex; align-items: center; justify-content: center; gap: 18px; }
+    .byo-b { grid-template-columns: 1fr; }
+    .byo-in { border-right: 0; border-bottom: 1px solid var(--line); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; scroll-behavior: auto; }
+    .rise, .json .ln { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+  <div class="aura" id="aura"></div>
+  <div class="grain"></div>
+
+  <div class="shell">
+    <header class="rise d1">
+      <div class="brand"><span class="mark"><i></i></span> Docket</div>
+      <div class="hbadges">
+        <span class="pill"><span class="dot"></span> offline demo</span>
+        <span class="pill">runs on your machine</span>
+      </div>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow rise d1">From receipt to clean data</p>
+      <h1 class="rise d2">Turn any receipt into <span class="g">clean, checked data</span>.</h1>
+      <p class="sub rise d3">Docket reads a receipt, pulls out the details, and checks every field before you see it. Try a scenario below to watch it work.</p>
+    </section>
+
+    <p class="section-title rise d3">What is this</p>
+    <div class="help rise d4">
+      <div>
+        <p>Docket is a small pipeline that reads a receipt and returns its details as clean data. The store, the date, each item, and the total.</p>
+        <p>It never trusts the reader blindly. <b>Every result is checked against a strict format and scored against a known correct answer.</b> Anything wrong is caught and held back, not passed on.</p>
+        <p>This page runs the real code on your machine. It uses saved sample results, so it needs no internet and no account.</p>
+      </div>
+      <div class="steps">
+        <div class="step"><span class="num">1</span><span>Read the receipt</span></div>
+        <div class="step"><span class="num">2</span><span>Pull out the fields</span></div>
+        <div class="step"><span class="num">3</span><span>Check the format</span></div>
+        <div class="step"><span class="num">4</span><span>Score the result</span></div>
+      </div>
+    </div>
+
+    <p class="section-title">See what it handles</p>
+    <div class="scn" id="scn"></div>
+
+    <div class="grid">
+      <div class="panel">
+        <div class="panel-h"><span class="t">Receipt</span><span class="r" id="inMeta">pick a scenario</span></div>
+        <div class="receipt" id="receipt">Run a scenario above and its receipt text loads here.</div>
+        <div class="pipe" id="pipe"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-h"><span class="t">Result</span><span class="r" id="resMeta"></span></div>
+        <div class="note" id="note"></div>
+        <div class="result" id="result">
+          <div class="empty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16M4 12h10M4 17h7"/></svg>
+            <span>Run a scenario to see the clean data, the check result, and the field scores.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="section-title">Or try any of the samples</p>
+    <div class="strip" id="strip"></div>
+
+    <p class="section-title">Bring your own receipt</p>
+    <div class="panel byo">
+      <div class="panel-h"><span class="t">Analyze a receipt</span><span class="r" id="byoState">checking...</span></div>
+      <div class="byo-b">
+        <div class="byo-in">
+          <div class="drop" id="drop" tabindex="0" role="button" aria-label="Upload a PDF receipt">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 15V4m0 0L8 8m4-4l4 4"/><path d="M4 15v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>
+            <div class="dt">Drop a PDF here, or <span class="lnk">choose a file</span></div>
+            <div class="dh">PDF, read on your machine. Up to 12 MB.</div>
+            <input type="file" id="file" accept="application/pdf,.pdf" hidden />
+          </div>
+          <button class="pastetog" id="pasteTog" type="button">or paste receipt text instead</button>
+          <div class="paste" id="pasteWrap" hidden>
+            <textarea id="pasteText" placeholder="Paste the lines of a receipt here, then analyze."></textarea>
+            <button class="btn brass" id="analyzePaste" type="button">Analyze text</button>
+          </div>
+          <p class="byo-hint" id="byoHint"></p>
+        </div>
+        <div class="byo-out" id="byoOut">
+          <div class="empty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 8h10M7 12h6M7 16h8"/></svg>
+            <span>Upload a PDF or paste text. The clean JSON shows up here.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="section-title">Accuracy on 30 sample receipts</p>
+    <div class="panel evalcard">
+      <div class="panel-h"><span class="t">Score</span><span class="r">checked automatically on every change</span></div>
+      <div class="panel-b">
+        <div class="bignum">
+          <div>
+            <div class="v" id="evalOverall">-</div>
+            <div class="l">overall accuracy</div>
+          </div>
+          <div class="gate" id="evalGate" style="visibility:hidden">clears the 0.90 bar</div>
+        </div>
+        <div>
+          <div class="bars" id="bars"></div>
+          <div style="margin-top:16px"><button class="btn ghost" id="runEval">Score all 30 receipts</button></div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <span><b>Runs on your machine.</b> Uses saved sample results, so no internet or account is needed.</span>
+      <span>Built on the same code the pipeline uses.</span>
+      <span>Colors from UI/UX Pro Max, Banking palette.</span>
+    </footer>
+  </div>
+
+<script>
+  const $ = (s) => document.querySelector(s);
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const STAGES = ['read', 'get text', 'pull fields', 'check', 'save'];
+  const FIELDS = ['merchant','date','currency','total','subtotal','tax','paymentMethod','lineItems'];
+  const LABELS = { paymentMethod: 'payment', lineItems: 'items' };
+  const lab = (f) => LABELS[f] || f;
+
+  const SCENARIOS = [
+    { key: 'clean', id: 'r02', color: 'var(--good)', title: 'A clean receipt', desc: 'Everything reads correctly and clears every check.',
+      shows: 'The normal case. The store, date, items, and total all match. Every field is green.' },
+    { key: 'caught', id: 'r03', color: 'var(--bad)', title: 'A misread, caught', desc: 'The reader gets the total wrong. The score flags it.',
+      shows: 'Docket does not trust the reader. The wrong total is caught and shown in red, not passed on.' },
+    { key: 'rejected', color: 'var(--bad)', title: 'A bad result, refused', desc: 'The output does not fit the required format.',
+      shows: 'When data does not fit the format, it is marked failed and held back. It is never saved as if it were fine.' },
+    { key: 'idempotent', color: 'var(--steel)', title: 'The same receipt twice', desc: 'Send it again and nothing is duplicated.',
+      shows: 'The second copy has the same id and is skipped. You never get a double entry.' },
+  ];
+
+  /* cursor hue-shift aura, champagne to moonlight */
+  (function aura() {
+    const el = $('#aura');
+    const brass = [198,169,104], steel = [112,137,176];
+    let tx = innerWidth*0.5, ty = innerHeight*0.28, cx = tx, cy = ty, th = 0.2, ch = 0.2;
+    addEventListener('pointermove', (e) => { tx = e.clientX; ty = e.clientY; th = Math.min(1, Math.max(0, e.clientX / innerWidth)); }, { passive: true });
+    const mix = (a, b, t) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
+    function frame() {
+      cx += (tx - cx) * 0.08; cy += (ty - cy) * 0.08; ch += (th - ch) * 0.05;
+      const c = mix(brass, steel, ch);
+      el.style.setProperty('--gx', (cx / innerWidth * 100).toFixed(2) + '%');
+      el.style.setProperty('--gy', (cy / innerHeight * 100).toFixed(2) + '%');
+      el.style.setProperty('--glow', `rgba(${c[0]},${c[1]},${c[2]},0.14)`);
+      requestAnimationFrame(frame);
+    }
+    if (!reduce) requestAnimationFrame(frame);
+  })();
+
+  const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;' }[c]));
+  const money = (n, cur) => n.toFixed(2) + (cur && cur !== 'USD' ? ' ' + cur : '');
+  const fmt = (v) => v === undefined ? 'empty' : typeof v === 'number' ? v.toFixed(2) : String(v);
+
+  function highlight(obj) {
+    const raw = esc(JSON.stringify(obj, null, 2));
+    return raw.split('\n').map((line) => {
+      const h = line.replace(/("(?:[^"\\]|\\.)*"\s*:)|("(?:[^"\\]|\\.)*")|(-?\d+(?:\.\d+)?)|(true|false|null)/g,
+        (m, key, str, num, bool) => key ? `<span class="key">${key}</span>` : str ? `<span class="str">${str}</span>` : num ? `<span class="num">${num}</span>` : `<span class="bool">${bool}</span>`);
+      return `<span class="ln">${h}</span>`;
+    }).join('');
+  }
+
+  /* pipeline stage animation */
+  function renderPipe(state) {
+    const pipe = $('#pipe'); pipe.innerHTML = '';
+    STAGES.forEach((s, i) => {
+      const el = document.createElement('span');
+      el.className = 'stage' + (state[i] ? ' ' + state[i] : '');
+      el.innerHTML = `<span class="b"></span>${s}`;
+      pipe.appendChild(el);
+      if (i < STAGES.length - 1) { const sep = document.createElement('span'); sep.className = 'sep'; pipe.appendChild(sep); }
+    });
+  }
+  function animateStages() {
+    return new Promise((resolve) => {
+      const state = STAGES.map(() => ''); renderPipe(state);
+      if (reduce) { state.forEach((_, i) => (state[i] = 'done')); renderPipe(state); return resolve(); }
+      let i = 0;
+      (function step() {
+        if (i > 0) state[i - 1] = 'done';
+        if (i < STAGES.length) { state[i] = 'active'; renderPipe(state); i++; setTimeout(step, 160); }
+        else { renderPipe(state); resolve(); }
+      })();
+    });
+  }
+
+  /* scenarios */
+  function renderScenarios() {
+    const box = $('#scn'); box.innerHTML = '';
+    SCENARIOS.forEach((s) => {
+      const b = document.createElement('button');
+      b.className = 'scard'; b.dataset.key = s.key;
+      b.innerHTML = `<div class="st"><span class="glyph" style="background:${s.color}"></span><h3>${s.title}</h3></div>
+        <p>${s.desc}</p><span class="go">run this &rarr;</span>`;
+      b.addEventListener('click', () => runScenario(s, b));
+      box.appendChild(b);
+    });
+  }
+
+  let busy = false;
+  async function runScenario(s, btn) {
+    if (busy) return; busy = true;
+    document.querySelectorAll('.scard, .rcard').forEach((c) => c.classList.remove('sel'));
+    if (btn) btn.classList.add('sel');
+    setNote(s.shows);
+    $('#result').innerHTML = '<div class="empty"><span>running...</span></div>';
+
+    const req = s.key === 'rejected' || s.key === 'idempotent'
+      ? fetch('/api/scenario', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ kind: s.key }) }).then((x) => x.json())
+      : fetch('/api/extract', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: s.id }) }).then((x) => x.json());
+
+    const [data] = await Promise.all([req, animateStages()]);
+    loadReceiptText(data);
+    renderResult(data);
+    busy = false;
+  }
+
+  async function runSample(id, btn) {
+    if (busy) return; busy = true;
+    document.querySelectorAll('.scard, .rcard').forEach((c) => c.classList.remove('sel'));
+    if (btn) btn.classList.add('sel');
+    setNote('');
+    $('#result').innerHTML = '<div class="empty"><span>running...</span></div>';
+    const [data] = await Promise.all([
+      fetch('/api/extract', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id }) }).then((x) => x.json()),
+      animateStages(),
+    ]);
+    loadReceiptText(data);
+    renderResult(data);
+    busy = false;
+  }
+
+  function setNote(text) {
+    const n = $('#note');
+    if (!text) { n.className = 'note'; n.innerHTML = ''; return; }
+    n.className = 'note show'; n.innerHTML = `<b>What this shows.</b> ${text}`;
+  }
+
+  function loadReceiptText(d) {
+    $('#inMeta').textContent = d.kind ? d.kind : 'sample';
+    if (d.text) $('#receipt').innerHTML = esc(d.text).replace(/^(.+)$/m, '<span class="em">$1</span>');
+  }
+
+  function renderResult(d) {
+    $('#resMeta').textContent = d.provider ? `saved result, ${d.provider}` : 'saved result';
+    const el = $('#result');
+
+    if (d.kind === 'idempotent') {
+      el.innerHTML = `
+        <div class="rhead"><span class="status ok pop">SAVED ONCE</span><span class="doc">id ${d.docId.slice(0,20)}...</span></div>
+        <div class="writes">
+          <div class="wrow"><span class="tag created">created</span><span class="lbl">First upload of ${esc(d.merchant)}<small>new id, written to the store</small></span></div>
+          <div class="wrow"><span class="tag dup">skipped</span><span class="lbl">Same receipt sent again<small>same id, recognized and not written</small></span></div>
+        </div>
+        <pre class="json">${highlight(d.receipt)}</pre>`;
+      staggerJson(el);
+      return;
+    }
+
+    if (d.status === 'FAILED') {
+      el.innerHTML = `
+        <div class="rhead"><span class="status fail pop">failed the check</span></div>
+        <div class="badout">${esc(d.badOutput || '')}
+          <div class="why">This is missing required fields, so it did not fit the format. It is held back, not saved.</div>
+        </div>`;
+      return;
+    }
+
+    // EXTRACTED
+    const fieldsHtml = FIELDS.filter((f) => (d.receipt && f in d.receipt) || d.label[f] !== undefined).map((f) => fieldChip(f, d)).join('');
+    el.innerHTML = `
+      <div class="rhead"><span class="status ok pop">passed</span><span class="doc">id ${d.docId.slice(0,20)}...</span></div>
+      <pre class="json">${highlight(d.receipt)}</pre>
+      <div class="rfoot">
+        <span class="mtr">time <b>${d.latencyMs}ms</b></span>
+        <span class="mtr">tokens <b>${d.inputTokens + d.outputTokens}</b></span>
+        <span class="score"><span class="v" data-to="${d.score.toFixed(2)}">0.00</span><span class="l">accuracy</span></span>
+      </div>
+      <div class="fields">${fieldsHtml}</div>`;
+    staggerJson(el);
+    countUp(el.querySelector('.score .v'));
+  }
+
+  function staggerJson(el) { el.querySelectorAll('.json .ln').forEach((ln, i) => (ln.style.animationDelay = (i * 42) + 'ms')); }
+
+  function fieldChip(f, d) {
+    const sc = d.fields[f];
+    if (f === 'lineItems') { const good = sc >= 0.999; return chip(good, lab(f), good ? '' : `score ${sc.toFixed(2)}`); }
+    const good = sc === 1;
+    const diff = good ? '' : `<span class="diff"><s>${esc(fmt(d.receipt[f]))}</s> to <em>${esc(fmt(d.label[f]))}</em></span>`;
+    return chip(good, lab(f), diff);
+  }
+  const chip = (good, name, extra) => `<span class="fchip ${good ? 'ok' : 'bad'}"><span class="ic">${good ? '✓' : '✕'}</span>${name}${extra ? ' ' + extra : ''}</span>`;
+
+  function countUp(node) {
+    if (!node) return;
+    const to = parseFloat(node.dataset.to);
+    if (reduce) { node.textContent = to.toFixed(2); return; }
+    const start = performance.now(), dur = 640;
+    (function tick(t) {
+      const k = Math.min(1, (t - start) / dur);
+      node.textContent = (to * (1 - Math.pow(1 - k, 3))).toFixed(2);
+      if (k < 1) requestAnimationFrame(tick);
+    })(start);
+  }
+
+  /* samples strip */
+  async function loadCatalog() {
+    const data = await (await fetch('/api/catalog')).json();
+    const strip = $('#strip'); strip.innerHTML = '';
+    data.receipts.forEach((r) => {
+      const b = document.createElement('button');
+      b.className = 'rcard'; b.dataset.id = r.id;
+      b.innerHTML = `<div class="m">${esc(r.merchant)}</div><div class="meta"><span class="amt">${money(r.total, r.currency)}</span><span class="it">${r.items} item${r.items > 1 ? 's' : ''}</span></div>`;
+      b.addEventListener('click', () => runSample(r.id, b));
+      strip.appendChild(b);
+    });
+    setUploadState(data);
+  }
+
+  /* bring your own receipt */
+  function setUploadState(cat) {
+    const st = $('#byoState'), hint = $('#byoHint');
+    if (cat.uploadReady) {
+      st.textContent = 'model connected: ' + cat.uploadProvider;
+      st.style.color = 'var(--good)';
+      hint.innerHTML = 'Your receipt runs through the same reader and format check the samples use. The clean JSON is what comes out the other side.';
+    } else {
+      st.textContent = 'offline, samples only';
+      st.style.color = 'var(--faint)';
+      hint.innerHTML = 'Reading the PDF works offline. Pulling fields from a new receipt needs a model, so set <code>ANTHROPIC_API_KEY</code> and restart the demo, then this runs live. The samples above work offline right now.';
+    }
+  }
+
+  const drop = $('#drop'), fileInput = $('#file');
+  drop.addEventListener('click', () => fileInput.click());
+  drop.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); } });
+  ['dragenter', 'dragover'].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add('drag'); }));
+  drop.addEventListener('dragleave', (e) => { if (!drop.contains(e.relatedTarget)) drop.classList.remove('drag'); });
+  drop.addEventListener('drop', (e) => { e.preventDefault(); drop.classList.remove('drag'); const f = e.dataTransfer.files[0]; if (f) analyzeFile(f); });
+  fileInput.addEventListener('change', () => { const f = fileInput.files[0]; if (f) analyzeFile(f); fileInput.value = ''; });
+
+  $('#pasteTog').addEventListener('click', () => {
+    const w = $('#pasteWrap'), open = !w.hidden;
+    w.hidden = open;
+    $('#pasteTog').textContent = open ? 'or paste receipt text instead' : 'hide the paste box';
+    if (!open) $('#pasteText').focus();
+  });
+  $('#analyzePaste').addEventListener('click', () => {
+    const t = $('#pasteText').value.trim();
+    if (!t) return $('#pasteText').focus();
+    postAnalyze({ body: JSON.stringify({ text: t }), headers: { 'content-type': 'application/json' } }, 'text');
+  });
+
+  async function analyzeFile(file) {
+    const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+    if (!isPdf) return byoMessage('That is not a PDF. Upload a PDF receipt, or paste the text instead.');
+    if (file.size > 12 * 1024 * 1024) return byoMessage('That file is over 12 MB. Try a smaller PDF.');
+    const buf = await file.arrayBuffer();
+    postAnalyze({ body: buf, headers: { 'content-type': 'application/pdf', 'x-filename': encodeURIComponent(file.name) } }, 'pdf', file.name);
+  }
+
+  let byoBusy = false;
+  async function postAnalyze(init, source, name) {
+    if (byoBusy) return; byoBusy = true;
+    $('#byoOut').innerHTML = `<div class="empty"><span>${source === 'pdf' ? 'reading ' + esc(name || 'your PDF') : 'reading your text'}...</span></div>`;
+    try {
+      const d = await (await fetch('/api/analyze', { method: 'POST', ...init })).json();
+      renderByo(d);
+    } catch (err) {
+      byoMessage('Something went wrong reading that. ' + (err && err.message ? err.message : ''));
+    }
+    byoBusy = false;
+  }
+
+  const byoMessage = (msg) => ($('#byoOut').innerHTML = `<div class="empty"><span>${esc(msg)}</span></div>`);
+
+  function renderByo(d) {
+    const el = $('#byoOut');
+    if (d.error && !d.status) return byoMessage(d.error);
+
+    if (d.status === 'UNREADABLE') {
+      el.innerHTML = `<div class="nomodel"><div class="head"><span class="tag">no text</span></div>
+        <p>This PDF has no text to pull. It is likely scanned or image only, and reading images is out of scope for this demo.</p>
+        <p style="color:var(--faint);font-family:var(--mono);font-size:.72rem">${esc(d.error || '')}</p></div>`;
+      return;
+    }
+
+    if (d.status === 'NO_MODEL') {
+      el.innerHTML = `<div class="nomodel">
+        <div class="head"><span class="tag">read, not extracted</span></div>
+        <p>The PDF was read on your machine. Pulling the fields from a new receipt needs a model connected, so set <code>ANTHROPIC_API_KEY</code> and restart the demo. The same pipeline then runs live.</p>
+        <p class="cap">text pulled from your file</p>
+        <div class="txt">${esc(d.text || '')}</div></div>`;
+      return;
+    }
+
+    if (d.status === 'FAILED') {
+      el.innerHTML = `<div class="rhead"><span class="status fail pop">failed the check</span><span class="doc">id ${esc(d.docId.slice(0, 20))}...</span></div>
+        <div class="badout">${esc(d.failureReason || 'did not fit the format')}
+          <div class="why">The reader returned data that did not fit the required format, so it is held back, not saved.</div>
+        </div>`;
+      return;
+    }
+
+    // EXTRACTED
+    const t = d.totals;
+    const chip = t ? `<span class="rchip ${t.reconciles ? 'ok' : ''}">${t.reconciles ? 'totals add up' : 'totals off by ' + Math.abs(t.delta).toFixed(2)}</span>` : '';
+    el.innerHTML = `
+      <div class="rhead"><span class="status ok pop">passed</span><span class="doc">id ${esc(d.docId.slice(0, 20))}...</span></div>
+      <pre class="json">${highlight(d.receipt)}</pre>
+      <div class="rfoot">
+        <span class="mtr">time <b>${d.latencyMs}ms</b></span>
+        <span class="mtr">tokens <b>${d.inputTokens + d.outputTokens}</b></span>
+        <span class="mtr">${esc(d.provider)}</span>
+        ${chip ? '<span class="score">' + chip + '</span>' : ''}
+      </div>`;
+    staggerJson(el);
+  }
+
+  /* full eval */
+  function renderBars(perField) {
+    const bars = $('#bars'); bars.innerHTML = '';
+    FIELDS.forEach((f) => {
+      const v = perField[f] ?? 0;
+      const row = document.createElement('div');
+      row.className = 'bar';
+      row.innerHTML = `<span class="n">${lab(f)}</span><span class="track"><span class="fill"></span></span><span class="p">${v.toFixed(2)}</span>`;
+      bars.appendChild(row);
+      requestAnimationFrame(() => (row.querySelector('.fill').style.width = (v * 100) + '%'));
+    });
+  }
+  $('#runEval').addEventListener('click', async (e) => {
+    const btn = e.currentTarget; btn.disabled = true; btn.textContent = 'scoring 30...';
+    const d = await (await fetch('/api/eval')).json();
+    renderBars(d.perField);
+    const node = $('#evalOverall'); node.dataset.to = d.overall.toFixed(2); node.textContent = '0.00'; countUp(node);
+    const gate = $('#evalGate'); gate.style.visibility = 'visible';
+    gate.textContent = (d.overall >= d.threshold ? 'clears the ' : 'below the ') + d.threshold.toFixed(2) + ' bar';
+    gate.style.color = d.overall >= d.threshold ? 'var(--good)' : 'var(--bad)';
+    btn.disabled = false; btn.textContent = 'Score all 30 again';
+  });
+
+  renderBars(Object.fromEntries(FIELDS.map((f) => [f, 0])));
+  renderScenarios();
+  loadCatalog();
+</script>
+</body>
+</html>
