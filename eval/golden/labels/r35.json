@@ -1,0 +1,21 @@
+{
+  "merchant": "Corner Grocery",
+  "date": "2025-03-02",
+  "currency": "USD",
+  "lineItems": [
+    {
+      "description": "Apples lb",
+      "quantity": 3,
+      "unitPrice": 1.89,
+      "amount": 5.67
+    },
+    {
+      "description": "Trail mix",
+      "quantity": 1,
+      "unitPrice": 4.2,
+      "amount": 4.2
+    }
+  ],
+  "total": 9.87,
+  "paymentMethod": "debit"
+}

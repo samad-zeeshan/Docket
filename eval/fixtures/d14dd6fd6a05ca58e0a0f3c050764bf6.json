@@ -1,0 +1,6 @@
+{
+  "text": "{\"merchant\":\"Sunrise Diner\",\"date\":\"2025-03-22\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Sandwich\",\"quantity\":1,\"unitPrice\":7.5,\"amount\":7.5},{\"description\":\"Latte\",\"quantity\":1,\"unitPrice\":4.5,\"amount\":4.5}],\"subtotal\":12,\"tax\":0,\"total\":15.36,\"paymentMethod\":\"credit\"}",
+  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "inputTokens": 95,
+  "outputTokens": 69
+}

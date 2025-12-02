@@ -1,0 +1,23 @@
+{
+  "merchant": "Cafe Central",
+  "date": "2025-02-10",
+  "currency": "EUR",
+  "lineItems": [
+    {
+      "description": "Espresso",
+      "quantity": 1,
+      "unitPrice": 3.2,
+      "amount": 3.2
+    },
+    {
+      "description": "Croissant",
+      "quantity": 1,
+      "unitPrice": 2.8,
+      "amount": 2.8
+    }
+  ],
+  "subtotal": 6,
+  "tax": 0.6,
+  "total": 6.6,
+  "paymentMethod": "credit"
+}

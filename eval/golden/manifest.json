@@ -2,151 +2,253 @@
   {
     "id": "r00",
     "text": "text/r00.txt",
-    "label": "labels/r00.json"
+    "label": "labels/r00.json",
+    "category": "standard"
   },
   {
     "id": "r01",
     "text": "text/r01.txt",
-    "label": "labels/r01.json"
+    "label": "labels/r01.json",
+    "category": "standard"
   },
   {
     "id": "r02",
     "text": "text/r02.txt",
-    "label": "labels/r02.json"
+    "label": "labels/r02.json",
+    "category": "standard"
   },
   {
     "id": "r03",
     "text": "text/r03.txt",
-    "label": "labels/r03.json"
+    "label": "labels/r03.json",
+    "category": "standard"
   },
   {
     "id": "r04",
     "text": "text/r04.txt",
-    "label": "labels/r04.json"
+    "label": "labels/r04.json",
+    "category": "standard"
   },
   {
     "id": "r05",
     "text": "text/r05.txt",
-    "label": "labels/r05.json"
+    "label": "labels/r05.json",
+    "category": "standard"
   },
   {
     "id": "r06",
     "text": "text/r06.txt",
-    "label": "labels/r06.json"
+    "label": "labels/r06.json",
+    "category": "standard"
   },
   {
     "id": "r07",
     "text": "text/r07.txt",
-    "label": "labels/r07.json"
+    "label": "labels/r07.json",
+    "category": "standard"
   },
   {
     "id": "r08",
     "text": "text/r08.txt",
-    "label": "labels/r08.json"
+    "label": "labels/r08.json",
+    "category": "standard"
   },
   {
     "id": "r09",
     "text": "text/r09.txt",
-    "label": "labels/r09.json"
+    "label": "labels/r09.json",
+    "category": "standard"
   },
   {
     "id": "r10",
     "text": "text/r10.txt",
-    "label": "labels/r10.json"
+    "label": "labels/r10.json",
+    "category": "standard"
   },
   {
     "id": "r11",
     "text": "text/r11.txt",
-    "label": "labels/r11.json"
+    "label": "labels/r11.json",
+    "category": "standard"
   },
   {
     "id": "r12",
     "text": "text/r12.txt",
-    "label": "labels/r12.json"
+    "label": "labels/r12.json",
+    "category": "standard"
   },
   {
     "id": "r13",
     "text": "text/r13.txt",
-    "label": "labels/r13.json"
+    "label": "labels/r13.json",
+    "category": "standard"
   },
   {
     "id": "r14",
     "text": "text/r14.txt",
-    "label": "labels/r14.json"
+    "label": "labels/r14.json",
+    "category": "standard"
   },
   {
     "id": "r15",
     "text": "text/r15.txt",
-    "label": "labels/r15.json"
+    "label": "labels/r15.json",
+    "category": "standard"
   },
   {
     "id": "r16",
     "text": "text/r16.txt",
-    "label": "labels/r16.json"
+    "label": "labels/r16.json",
+    "category": "standard"
   },
   {
     "id": "r17",
     "text": "text/r17.txt",
-    "label": "labels/r17.json"
+    "label": "labels/r17.json",
+    "category": "standard"
   },
   {
     "id": "r18",
     "text": "text/r18.txt",
-    "label": "labels/r18.json"
+    "label": "labels/r18.json",
+    "category": "standard"
   },
   {
     "id": "r19",
     "text": "text/r19.txt",
-    "label": "labels/r19.json"
+    "label": "labels/r19.json",
+    "category": "standard"
   },
   {
     "id": "r20",
     "text": "text/r20.txt",
-    "label": "labels/r20.json"
+    "label": "labels/r20.json",
+    "category": "standard"
   },
   {
     "id": "r21",
     "text": "text/r21.txt",
-    "label": "labels/r21.json"
+    "label": "labels/r21.json",
+    "category": "standard"
   },
   {
     "id": "r22",
     "text": "text/r22.txt",
-    "label": "labels/r22.json"
+    "label": "labels/r22.json",
+    "category": "standard"
   },
   {
     "id": "r23",
     "text": "text/r23.txt",
-    "label": "labels/r23.json"
+    "label": "labels/r23.json",
+    "category": "standard"
   },
   {
     "id": "r24",
     "text": "text/r24.txt",
-    "label": "labels/r24.json"
+    "label": "labels/r24.json",
+    "category": "standard"
   },
   {
     "id": "r25",
     "text": "text/r25.txt",
-    "label": "labels/r25.json"
+    "label": "labels/r25.json",
+    "category": "standard"
   },
   {
     "id": "r26",
     "text": "text/r26.txt",
-    "label": "labels/r26.json"
+    "label": "labels/r26.json",
+    "category": "standard"
   },
   {
     "id": "r27",
     "text": "text/r27.txt",
-    "label": "labels/r27.json"
+    "label": "labels/r27.json",
+    "category": "standard"
   },
   {
     "id": "r28",
     "text": "text/r28.txt",
-    "label": "labels/r28.json"
+    "label": "labels/r28.json",
+    "category": "standard"
   },
   {
     "id": "r29",
     "text": "text/r29.txt",
-    "label": "labels/r29.json"
+    "label": "labels/r29.json",
+    "category": "standard"
+  },
+  {
+    "id": "r30",
+    "text": "text/r30.txt",
+    "label": "labels/r30.json",
+    "category": "multi-currency"
+  },
+  {
+    "id": "r31",
+    "text": "text/r31.txt",
+    "label": "labels/r31.json",
+    "category": "multi-currency"
+  },
+  {
+    "id": "r32",
+    "text": "text/r32.txt",
+    "label": "labels/r32.json",
+    "category": "discount"
+  },
+  {
+    "id": "r33",
+    "text": "text/r33.txt",
+    "label": "labels/r33.json",
+    "category": "discount"
+  },
+  {
+    "id": "r34",
+    "text": "text/r34.txt",
+    "label": "labels/r34.json",
+    "category": "no-subtotal"
+  },
+  {
+    "id": "r35",
+    "text": "text/r35.txt",
+    "label": "labels/r35.json",
+    "category": "no-subtotal"
+  },
+  {
+    "id": "r36",
+    "text": "text/r36.txt",
+    "label": "labels/r36.json",
+    "category": "foreign-vat"
+  },
+  {
+    "id": "r37",
+    "text": "text/r37.txt",
+    "label": "labels/r37.json",
+    "category": "foreign-vat"
+  },
+  {
+    "id": "r38",
+    "text": "text/r38.txt",
+    "label": "labels/r38.json",
+    "category": "odd-date"
+  },
+  {
+    "id": "r39",
+    "text": "text/r39.txt",
+    "label": "labels/r39.json",
+    "category": "odd-date"
+  },
+  {
+    "id": "r40",
+    "text": "text/r40.txt",
+    "label": "labels/r40.json",
+    "category": "tip"
+  },
+  {
+    "id": "r41",
+    "text": "text/r41.txt",
+    "label": "labels/r41.json",
+    "category": "tip"
   }
 ]

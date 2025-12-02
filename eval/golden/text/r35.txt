@@ -1,0 +1,9 @@
+Corner Grocery
+Date: 2025-03-02
+Currency: USD
+
+Apples lb  x3   5.67
+Trail mix  x1   4.20
+
+Total: 9.87
+Paid: debit

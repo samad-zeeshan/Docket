@@ -1,0 +1,6 @@
+{
+  "text": "{\"merchant\":\"London Books Ltd\",\"date\":\"2025-03-06\",\"currency\":\"GBP\",\"lineItems\":[{\"description\":\"Paperback\",\"quantity\":1,\"unitPrice\":12.99,\"amount\":13.49},{\"description\":\"Notebook\",\"quantity\":1,\"unitPrice\":5,\"amount\":5}],\"subtotal\":17.99,\"tax\":3.6,\"total\":21.59,\"paymentMethod\":\"credit\"}",
+  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "inputTokens": 96,
+  "outputTokens": 72
+}

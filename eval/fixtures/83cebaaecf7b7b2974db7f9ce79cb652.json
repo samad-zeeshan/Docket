@@ -1,0 +1,6 @@
+{
+  "text": "{\"merchant\":\"Store\",\"date\":\"2025-03-06\",\"currency\":\"GBP\",\"lineItems\":[{\"description\":\"Paperback\",\"quantity\":1,\"unitPrice\":12.99,\"amount\":12.99}],\"subtotal\":25.91,\"tax\":3.6,\"total\":25.91,\"paymentMethod\":\"credit\"}",
+  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "inputTokens": 51,
+  "outputTokens": 53
+}

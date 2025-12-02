@@ -1,0 +1,22 @@
+{
+  "merchant": "City Bikes",
+  "date": "2025-02-22",
+  "currency": "USD",
+  "lineItems": [
+    {
+      "description": "Bike tube",
+      "quantity": 2,
+      "unitPrice": 9,
+      "amount": 18
+    },
+    {
+      "description": "Coupon SAVE5",
+      "quantity": 1,
+      "amount": -5
+    }
+  ],
+  "subtotal": 13,
+  "tax": 1.04,
+  "total": 14.04,
+  "paymentMethod": "credit"
+}

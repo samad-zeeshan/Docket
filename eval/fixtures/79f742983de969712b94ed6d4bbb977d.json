@@ -1,0 +1,6 @@
+{
+  "text": "{\"merchant\":\"Metro Pharmacy\",\"date\":\"2025-03-14\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Shampoo\",\"quantity\":1,\"unitPrice\":6.25,\"amount\":6.25}],\"subtotal\":6.25,\"tax\":0.5,\"total\":6.75,\"paymentMethod\":\"debit\"}",
+  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "inputTokens": 88,
+  "outputTokens": 53
+}

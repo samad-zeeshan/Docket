@@ -1,0 +1,21 @@
+{
+  "merchant": "Sunrise Diner",
+  "date": "2025-02-26",
+  "currency": "USD",
+  "lineItems": [
+    {
+      "description": "Sandwich",
+      "quantity": 1,
+      "unitPrice": 7.5,
+      "amount": 7.5
+    },
+    {
+      "description": "Orange juice",
+      "quantity": 1,
+      "unitPrice": 3.6,
+      "amount": 3.6
+    }
+  ],
+  "total": 11.1,
+  "paymentMethod": "cash"
+}

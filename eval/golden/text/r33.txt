@@ -1,0 +1,11 @@
+City Bikes
+Date: 2025-02-22
+Currency: USD
+
+Bike tube  x2   18.00
+Coupon SAVE5  x1   -5.00
+
+Subtotal: 13.00
+Tax: 1.04
+Total: 14.04
+Paid: credit

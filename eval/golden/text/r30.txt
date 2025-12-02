@@ -1,0 +1,11 @@
+Cafe Central
+Date: 2025-02-10
+Currency: EUR
+
+Espresso  x1   3.20
+Croissant  x1   2.80
+
+Subtotal: 6.00
+Tax: 0.60
+Total: 6.60
+Paid: credit

@@ -1,0 +1,10 @@
+Metro Pharmacy
+Date: Mar 14, 2025
+Currency: USD
+
+Shampoo  x1   6.25
+
+Subtotal: 6.25
+Tax: 0.50
+Total: 6.75
+Paid: debit

@@ -1,0 +1,12 @@
+Green Leaf Market
+Date: 2025-02-18
+Currency: USD
+
+Milk 1gal  x1   3.99
+Eggs dozen  x1   4.49
+Member discount  x1   -1.50
+
+Subtotal: 6.98
+Tax: 0.56
+Total: 7.54
+Paid: credit

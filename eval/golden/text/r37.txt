@@ -1,0 +1,11 @@
+Berlin Elektronik
+Date: 2025-03-10
+Currency: EUR
+
+AA Batteries  x1   8.99
+Pen pack  x2   5.50
+
+Subtotal: 14.49
+VAT (19%): 2.75
+Total: 17.24
+Paid: credit

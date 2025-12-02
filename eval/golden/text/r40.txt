@@ -1,0 +1,12 @@
+Sunrise Diner
+Date: 2025-03-22
+Currency: USD
+
+Sandwich  x1   7.50
+Latte  x1   4.50
+
+Subtotal: 12.00
+Tax: 0.96
+Tip: 2.40
+Total: 15.36
+Paid: credit

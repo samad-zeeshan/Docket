@@ -1,0 +1,6 @@
+{
+  "text": "{\"merchant\":\"Unknown\",\"date\":\"2025-02-14\",\"currency\":\"GBP\",\"lineItems\":[{\"description\":\"Tea box\",\"quantity\":2,\"unitPrice\":2.5,\"amount\":5}],\"subtotal\":6.75,\"tax\":0.34,\"total\":8.51,\"paymentMethod\":\"debit\"}",
+  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "inputTokens": 48,
+  "outputTokens": 51
+}

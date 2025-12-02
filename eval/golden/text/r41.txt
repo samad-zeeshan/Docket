@@ -1,0 +1,12 @@
+Blue Bottle Coffee
+Date: 2025-03-26
+Currency: USD
+
+Sandwich  x2   15.00
+Orange juice  x1   3.60
+
+Subtotal: 18.60
+Tax: 1.49
+Tip: 3.72
+Total: 23.81
+Paid: credit

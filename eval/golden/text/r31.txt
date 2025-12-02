@@ -1,0 +1,11 @@
+Thistle Grocers
+Date: 2025-02-14
+Currency: GBP
+
+Tea box  x2   5.00
+Biscuits  x1   1.75
+
+Subtotal: 6.75
+Tax: 0.34
+Total: 7.09
+Paid: debit

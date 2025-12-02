@@ -1,0 +1,6 @@
+{
+  "text": "{\"merchant\":\"Cafe Central\",\"date\":\"2025-02-10\",\"currency\":\"EUR\",\"lineItems\":[{\"description\":\"Espresso\",\"quantity\":1,\"unitPrice\":3.2,\"amount\":3.7},{\"description\":\"Croissant\",\"quantity\":1,\"unitPrice\":2.8,\"amount\":2.8}],\"subtotal\":6,\"tax\":0,\"total\":6.6,\"paymentMethod\":\"credit\"}",
+  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "inputTokens": 93,
+  "outputTokens": 69
+}

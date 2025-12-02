@@ -1,0 +1,6 @@
+{
+  "text": "{\"merchant\":\"Harbor Seafood\",\"date\":\"2025-03-18\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Sandwich\",\"quantity\":1,\"unitPrice\":7.5,\"amount\":7.5},{\"description\":\"Sparkling water\",\"quantity\":2,\"unitPrice\":1.5,\"amount\":3}],\"subtotal\":10.5,\"tax\":0.84,\"total\":11.34,\"paymentMethod\":\"credit\"}",
+  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "inputTokens": 210,
+  "outputTokens": 72
+}

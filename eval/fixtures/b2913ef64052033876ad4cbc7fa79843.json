@@ -1,0 +1,6 @@
+{
+  "text": "{\"merchant\":\"Unknown\",\"date\":\"2025-03-02\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Apples lb\",\"quantity\":3,\"unitPrice\":1.89,\"amount\":5.67}],\"total\":11.84,\"paymentMethod\":\"debit\"}",
+  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "inputTokens": 42,
+  "outputTokens": 46
+}

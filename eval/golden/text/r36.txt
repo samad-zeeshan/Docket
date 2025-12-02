@@ -1,0 +1,11 @@
+London Books Ltd
+Date: 2025-03-06
+Currency: GBP
+
+Paperback  x1   12.99
+Notebook  x1   5.00
+
+Subtotal: 17.99
+VAT (20%): 3.60
+Total: 21.59
+Paid: credit

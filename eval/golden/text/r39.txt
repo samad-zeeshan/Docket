@@ -1,0 +1,11 @@
+Harbor Seafood
+Date: 18/03/2025
+Currency: USD
+
+Sandwich  x1   7.50
+Sparkling water  x2   3.00
+
+Subtotal: 10.50
+Tax: 0.84
+Total: 11.34
+Paid: credit
