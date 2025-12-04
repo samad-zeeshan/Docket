@@ -14,17 +14,36 @@ import { deriveDocId } from '../lib/docid';
 import { parseS3Event } from '../lib/events';
 import { getObjectBytes } from '../lib/s3';
 import { extractText } from '../lib/pdf';
-import { extractReceipt, ExtractionError, type ExtractionOutcome, type OutcomeMeta } from '../lib/extract';
+import {
+  extractReceipt,
+  extractReceiptFromImage,
+  ExtractionError,
+  type ExtractionOutcome,
+  type OutcomeMeta,
+} from '../lib/extract';
+import { redactReceipt } from '../lib/redact';
 import { createProvider } from '../lib/providers';
 import { DynamoDocumentStore, documentClient, type DocumentStore } from '../lib/store';
-import type { ModelProvider } from '../lib/providers/types';
+import type { ImageInput, ModelProvider } from '../lib/providers/types';
 import { log } from '../lib/log';
 import { metrics, tracer } from '../lib/powertools';
+
+// What a stored object yields once loaded: born-digital text from a PDF, or the
+// image bytes from a photo. processRecord routes on this instead of on the key.
+export type ExtractInput = { kind: 'pdf'; text: string } | { kind: 'image'; images: ImageInput[] };
+
+// Object key extension to the media type Bedrock expects for the image.
+const IMAGE_MEDIA_TYPES: Record<string, string> = {
+  jpg: 'image/jpeg',
+  jpeg: 'image/jpeg',
+  png: 'image/png',
+  webp: 'image/webp',
+};
 
 export interface IngestDeps {
   store: DocumentStore;
   provider: ModelProvider;
-  getText(bucket: string, key: string): Promise<string>;
+  load(bucket: string, key: string): Promise<ExtractInput>;
 }
 
 export interface RecordResult {
@@ -45,15 +64,21 @@ function getDeps(): IngestDeps {
     cached = {
       store: new DynamoDocumentStore(requireEnv('TABLE_NAME'), ddb),
       provider: createProvider(),
-      getText: async (bucket, key) => {
+      load: async (bucket, key) => {
         const bytes = await getObjectBytes(s3, bucket, key);
-        try {
-          return await extractText(bytes);
-        } catch (err) {
-          // A PDF we cannot read is bad data, not an outage. Mark it terminal so
-          // it lands as FAILED instead of cycling into the DLQ.
-          throw new ExtractionError(`pdf parse failed: ${messageOf(err)}`);
+        const ext = key.toLowerCase().split('.').pop() ?? '';
+        if (ext === 'pdf') {
+          try {
+            return { kind: 'pdf', text: await extractText(bytes) };
+          } catch (err) {
+            // A PDF we cannot read is bad data, not an outage. Mark it terminal so
+            // it lands as FAILED instead of cycling into the DLQ.
+            throw new ExtractionError(`pdf parse failed: ${messageOf(err)}`);
+          }
         }
+        const mediaType = IMAGE_MEDIA_TYPES[ext];
+        if (mediaType) return { kind: 'image', images: [{ mediaType, dataBase64: bytes.toString('base64') }] };
+        throw new ExtractionError(`unsupported file type .${ext}`);
       },
     };
   }
@@ -104,10 +129,19 @@ export async function processRecord(deps: IngestDeps, record: SQSRecord): Promis
   }
 
   try {
-    const text = await deps.getText(s3obj.bucket, s3obj.key);
-    const outcome = await extractReceipt(deps.provider, text);
+    const input = await deps.load(s3obj.bucket, s3obj.key);
+    const outcome =
+      input.kind === 'image'
+        ? await extractReceiptFromImage(deps.provider, input.images)
+        : await extractReceipt(deps.provider, input.text);
     if (outcome.status === 'EXTRACTED') {
-      await deps.store.markExtracted(docId, outcome.receipt, metaOf(outcome));
+      // Scrub any PII the model echoed into a free-text field before it is stored.
+      const { receipt, redactions } = redactReceipt(outcome.receipt);
+      if (redactions.length > 0) {
+        metrics.addMetric('PiiRedacted', MetricUnit.Count, redactions.length);
+        log.info('redacted pii before store', { docId, kinds: [...new Set(redactions.map((r) => r.kind))] });
+      }
+      await deps.store.markExtracted(docId, receipt, metaOf(outcome));
       log.info('extracted', { docId, latencyMs: outcome.latencyMs, outputTokens: outcome.outputTokens });
       return { docId, status: 'EXTRACTED', meta: metaOf(outcome) };
     }

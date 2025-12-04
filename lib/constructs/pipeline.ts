@@ -131,15 +131,18 @@ export class IngestPipeline extends Construct {
       }),
     );
 
-    // Only .pdf object-created events reach the queue. A .txt upload matches
-    // nothing here and never fires the pipeline.
-    new events.Rule(this, 'PdfCreatedRule', {
+    // Only receipt uploads reach the queue: born-digital PDFs and receipt photos.
+    // Anything else, a .txt or a stray upload, matches nothing and never fires the
+    // pipeline. The handler routes on the same extensions.
+    new events.Rule(this, 'ReceiptCreatedRule', {
       eventPattern: {
         source: ['aws.s3'],
         detailType: ['Object Created'],
         detail: {
           bucket: { name: [this.bucket.bucketName] },
-          object: { key: [{ suffix: '.pdf' }] },
+          object: {
+            key: [{ suffix: '.pdf' }, { suffix: '.jpg' }, { suffix: '.jpeg' }, { suffix: '.png' }, { suffix: '.webp' }],
+          },
         },
       },
       targets: [new targets.SqsQueue(this.queue)],

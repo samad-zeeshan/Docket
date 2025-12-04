@@ -8,6 +8,10 @@ export interface Prompt {
   system: string;
   buildUser(text: string): string;
   buildRepair(text: string, previous: string, error: string): string;
+  // Optional overrides for the image path. When absent, the extractor uses a
+  // sensible default, so a prompt only defines these if it wants to tune them.
+  buildUserImage?(): string;
+  buildRepairImage?(previous: string, error: string): string;
 }
 
 const SHAPE = `{

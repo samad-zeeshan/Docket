@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { extractReceipt } from '../src/lib/extract';
+import { extractReceipt, extractReceiptFromImage } from '../src/lib/extract';
 import { ScriptedProvider, validReceiptJson } from './helpers';
 
 const brokenJson = '{ not json';
@@ -37,5 +37,22 @@ describe('extractReceipt', () => {
     expect(outcome.status).toBe('FAILED');
     expect(provider.calls.length).toBe(2);
     if (outcome.status === 'FAILED') expect(outcome.failureReason).toBeTruthy();
+  });
+});
+
+describe('extractReceiptFromImage', () => {
+  it('sends the image on the request and extracts through the same gate', async () => {
+    const provider = new ScriptedProvider([validReceiptJson]);
+    const outcome = await extractReceiptFromImage(provider, [{ mediaType: 'image/png', dataBase64: 'AAAA' }]);
+    expect(outcome.status).toBe('EXTRACTED');
+    expect(provider.calls[0]!.images?.[0]).toEqual({ mediaType: 'image/png', dataBase64: 'AAAA' });
+  });
+
+  it('repairs once on the image path too, carrying the image into the retry', async () => {
+    const provider = new ScriptedProvider([wrongShape, validReceiptJson]);
+    const outcome = await extractReceiptFromImage(provider, [{ mediaType: 'image/jpeg', dataBase64: 'BBBB' }]);
+    expect(outcome.status).toBe('EXTRACTED');
+    expect(provider.calls.length).toBe(2);
+    expect(provider.calls[1]!.images?.[0]?.dataBase64).toBe('BBBB');
   });
 });

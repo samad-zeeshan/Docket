@@ -6,6 +6,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm';
 import type { ModelProvider, ModelRequest, ModelResult } from './types';
+import { userContent } from './content';
 
 let cachedKey: string | undefined;
 
@@ -35,7 +36,9 @@ export class AnthropicProvider implements ModelProvider {
       model: this.modelId,
       max_tokens: request.maxTokens ?? 1024,
       system: request.system,
-      messages: [{ role: 'user', content: request.user }],
+      // Our content shape matches the SDK's block union structurally; the cast is
+      // only because media_type here is a string, not the SDK's literal union.
+      messages: [{ role: 'user', content: userContent(request) as unknown as Anthropic.Messages.MessageParam['content'] }],
     });
 
     const block = message.content[0];

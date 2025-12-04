@@ -3,6 +3,7 @@
  */
 import { BedrockRuntimeClient, InvokeModelCommand } from '@aws-sdk/client-bedrock-runtime';
 import type { ModelProvider, ModelRequest, ModelResult } from './types';
+import { userContent } from './content';
 
 // Bedrock pins the Anthropic wire version separately from the model id.
 const ANTHROPIC_VERSION = 'bedrock-2023-05-31';
@@ -25,7 +26,7 @@ export class BedrockProvider implements ModelProvider {
       anthropic_version: ANTHROPIC_VERSION,
       max_tokens: request.maxTokens ?? 1024,
       system: request.system,
-      messages: [{ role: 'user', content: request.user }],
+      messages: [{ role: 'user', content: userContent(request) }],
     };
 
     const out = await this.client.send(
