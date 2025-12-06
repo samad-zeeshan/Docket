@@ -2,160 +2,53 @@
  * Local demo server. Serves the demo page and runs the real extraction and
  * scoring over the golden set. Offline on the recorded provider by default, so
  * `npm run demo` needs no AWS account. Set DOCKET_PROVIDER=bedrock for live.
+ *
+ * The offline sample, scenario, and eval logic lives in `engine.ts`, shared with
+ * the static-site build. This file adds the HTTP layer and the upload path.
  */
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import * as path from 'node:path';
 import { createProvider } from '../src/lib/providers';
-import { extractReceipt } from '../src/lib/extract';
+import { extractReceipt, extractReceiptFromImage } from '../src/lib/extract';
 import { extractText } from '../src/lib/pdf';
 import { deriveDocId } from '../src/lib/docid';
-import { scoreReceipt, zeroScore, aggregate, type ReceiptScore } from '../eval/score';
-import { checkTotals, type Receipt } from '../src/lib/schema';
-import type { ModelProvider, ModelResult } from '../src/lib/providers/types';
+import { checkTotals } from '../src/lib/schema';
+import { providerName, provider, catalog, extractOne, scenario, evalAll } from './engine';
 
-const ROOT = path.join(__dirname, '..');
-const GOLDEN = path.join(ROOT, 'eval', 'golden');
 const requestedPort = Number(process.env.PORT ?? 5173);
 
-const providerName = process.env.DOCKET_PROVIDER ?? 'recorded';
-const provider = createProvider({
-  ...process.env,
-  DOCKET_PROVIDER: providerName,
-  DOCKET_FIXTURES: process.env.DOCKET_FIXTURES ?? path.join(ROOT, 'eval', 'fixtures'),
-});
-
-// Uploads need a live model. An arbitrary receipt is not in the recorded set,
-// so the recorded provider would miss on it. Use whatever is configured; if the
-// demo is offline but an Anthropic key is present, use it just for uploads.
+// Uploads need a live model. An arbitrary receipt is not in the recorded set, so
+// the recorded provider would miss on it. Use whatever is configured; if the demo
+// is offline but an Anthropic key is present, use it just for uploads.
 const uploadLive = providerName !== 'recorded' || Boolean(process.env.ANTHROPIC_API_KEY);
 const uploadProvider =
   uploadLive && providerName === 'recorded'
     ? createProvider({ ...process.env, DOCKET_PROVIDER: 'anthropic', DOCKET_RECORD: '' })
     : provider;
-const uploadProviderName = uploadLive
-  ? providerName === 'recorded'
-    ? 'anthropic'
-    : providerName
-  : providerName;
-
-interface ManifestEntry {
-  id: string;
-  text: string;
-  label: string;
-}
-
-const manifest = JSON.parse(readFileSync(path.join(GOLDEN, 'manifest.json'), 'utf8')) as ManifestEntry[];
-
-function labelOf(id: string): Receipt {
-  return JSON.parse(readFileSync(path.join(GOLDEN, 'labels', `${id}.json`), 'utf8')) as Receipt;
-}
-
-function textOf(entry: ManifestEntry): string {
-  return readFileSync(path.join(GOLDEN, entry.text), 'utf8');
-}
-
-// The receipt strip. Only what the UI needs to render a chip.
-function catalog() {
-  return manifest.map((m) => {
-    const label = labelOf(m.id);
-    return {
-      id: m.id,
-      merchant: label.merchant,
-      date: label.date,
-      currency: label.currency,
-      total: label.total,
-      items: label.lineItems.length,
-    };
-  });
-}
-
-async function extractOne(id: string) {
-  const entry = manifest.find((m) => m.id === id);
-  if (!entry) throw new Error(`unknown id ${id}`);
-  const text = textOf(entry);
-  const label = labelOf(id);
-  const outcome = await extractReceipt(provider, text);
-  // A demo docId, derived the same way the pipeline does, just off a stable key.
-  const docId = deriveDocId('docket-demo', `${id}.pdf`, id);
-
-  const scored = outcome.status === 'EXTRACTED' ? scoreReceipt(outcome.receipt, label) : zeroScore();
-  return {
-    id,
-    provider: providerName,
-    promptVersion: outcome.promptVersion,
-    docId,
-    status: outcome.status,
-    text,
-    label,
-    receipt: outcome.status === 'EXTRACTED' ? outcome.receipt : null,
-    failureReason: outcome.status === 'FAILED' ? outcome.failureReason : null,
-    latencyMs: outcome.latencyMs,
-    inputTokens: outcome.inputTokens,
-    outputTokens: outcome.outputTokens,
-    fields: scored.fields,
-    score: scored.score,
-  };
-}
-
-// Stands in for a model that returns data missing required fields, so the
-// scenario can show the schema gate refusing bad output.
-class RejectingProvider implements ModelProvider {
-  readonly name = 'demo-stub';
-  async complete(): Promise<ModelResult> {
-    return { text: '{ "merchant": "Corner Grocery", "items": 3 }', modelId: 'demo-stub', inputTokens: 44, outputTokens: 12 };
-  }
-}
-
-async function scenario(kind: string) {
-  if (kind === 'rejected') {
-    const entry = manifest.find((m) => m.id === 'r02')!;
-    const text = textOf(entry);
-    const outcome = await extractReceipt(new RejectingProvider(), text);
-    return {
-      kind,
-      status: outcome.status,
-      failureReason: outcome.status === 'FAILED' ? outcome.failureReason : null,
-      badOutput: '{ "merchant": "Corner Grocery", "items": 3 }',
-      text,
-    };
-  }
-  if (kind === 'idempotent') {
-    const base = await extractOne('r02');
-    // The same two-write check the pipeline does with a conditional put: the
-    // second write for a docId that already exists is a no-op.
-    const seen = new Set<string>();
-    const first = seen.has(base.docId) ? 'duplicate' : (seen.add(base.docId), 'created');
-    const second = seen.has(base.docId) ? 'duplicate' : (seen.add(base.docId), 'created');
-    return { kind, docId: base.docId, merchant: base.label.merchant, receipt: base.receipt, text: base.text, first, second };
-  }
-  throw new Error(`unknown scenario ${kind}`);
-}
-
-async function evalAll() {
-  const scores: ReceiptScore[] = [];
-  let failures = 0;
-  for (const m of manifest) {
-    const label = labelOf(m.id);
-    const outcome = await extractReceipt(provider, textOf(m));
-    if (outcome.status === 'EXTRACTED') scores.push(scoreReceipt(outcome.receipt, label));
-    else {
-      scores.push(zeroScore());
-      failures += 1;
-    }
-  }
-  const agg = aggregate(scores);
-  return { provider: providerName, n: agg.n, overall: agg.overall, perField: agg.perField, failures, threshold: 0.9 };
-}
+const uploadProviderName = uploadLive ? (providerName === 'recorded' ? 'anthropic' : providerName) : providerName;
 
 interface AnalyzeMeta {
-  source: 'pdf' | 'text';
+  source: 'pdf' | 'text' | 'image';
   filename: string;
   docId: string;
   text: string;
   provider: string;
   live: boolean;
+}
+
+const IMAGE_CONTENT_TYPES = new Set(['image/png', 'image/jpeg', 'image/webp']);
+
+// A receipt photo. There is no on-machine text to pull, so offline this can only
+// say a model is needed. Live, it runs the same schema-gated extractor as text.
+async function analyzeImage(bytes: Buffer, mediaType: string, filename: string) {
+  const docId = deriveDocId('docket-demo', filename, createHash('sha256').update(bytes).digest('hex'));
+  if (!uploadLive) {
+    return { source: 'image' as const, filename, docId, provider: providerName, live: false, status: 'NO_MODEL' as const };
+  }
+  const outcome = await extractReceiptFromImage(uploadProvider, [{ mediaType, dataBase64: bytes.toString('base64') }]);
+  return shapeOutcome(outcome, { source: 'image', filename, docId, text: '', provider: uploadProviderName, live: true });
 }
 
 // One uploaded or pasted receipt through the same extractor the pipeline uses.
@@ -213,8 +106,8 @@ function readBody(req: IncomingMessage): Promise<string> {
 
 const MAX_UPLOAD = 12 * 1024 * 1024;
 
-// Binary body for an uploaded PDF, collected as a Buffer with a size cap so a
-// large file cannot exhaust memory.
+// Binary body for an uploaded PDF or image, collected as a Buffer with a size cap
+// so a large file cannot exhaust memory.
 function readBodyBuffer(req: IncomingMessage): Promise<Buffer> {
   return new Promise((resolve, reject) => {
     const chunks: Buffer[] = [];
@@ -279,6 +172,12 @@ const server = createServer(async (req, res) => {
         }
         const hash = createHash('sha256').update(buf).digest('hex');
         return json(res, 200, await analyze(text, 'pdf', filename, hash));
+      }
+      if (ctype && IMAGE_CONTENT_TYPES.has(ctype)) {
+        const buf = await readBodyBuffer(req);
+        if (buf.length === 0) return json(res, 400, { error: 'empty upload' });
+        const filename = decodeURIComponent(String(req.headers['x-filename'] ?? 'receipt.png'));
+        return json(res, 200, await analyzeImage(buf, ctype, filename));
       }
       const { text } = JSON.parse((await readBody(req)) || '{}') as { text?: string };
       const clean = (text ?? '').trim();

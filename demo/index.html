@@ -171,6 +171,9 @@
   .nomodel .txt { font-family: var(--mono); font-size: .72rem; color: var(--muted); background: var(--bg-2); border: 1px solid var(--line); border-radius: 10px; padding: 12px; max-height: 156px; overflow: auto; white-space: pre-wrap; line-height: 1.6; }
   .rchip { display: inline-flex; align-items: center; gap: 7px; font-family: var(--mono); font-size: .66rem; padding: 5px 10px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
   .rchip.ok { color: var(--good); border-color: var(--good-line); background: var(--good-bg); }
+  .cats { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .cats .rchip b { color: var(--text); font-variant-numeric: tabular-nums; margin-left: 2px; }
+  .cats .rchip .cn { color: var(--faint); }
 
   /* eval */
   .evalcard { margin-top: 15px; }
@@ -238,8 +241,8 @@
     <header class="rise d1">
       <div class="brand"><span class="mark"><i></i></span> Docket</div>
       <div class="hbadges">
-        <span class="pill"><span class="dot"></span> offline demo</span>
-        <span class="pill">runs on your machine</span>
+        <span class="pill" id="pillMode"><span class="dot"></span> offline demo</span>
+        <span class="pill" id="pillHost">runs on your machine</span>
       </div>
     </header>
 
@@ -294,11 +297,11 @@
       <div class="panel-h"><span class="t">Analyze a receipt</span><span class="r" id="byoState">checking...</span></div>
       <div class="byo-b">
         <div class="byo-in">
-          <div class="drop" id="drop" tabindex="0" role="button" aria-label="Upload a PDF receipt">
+          <div class="drop" id="drop" tabindex="0" role="button" aria-label="Upload a PDF or photo of a receipt">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 15V4m0 0L8 8m4-4l4 4"/><path d="M4 15v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>
-            <div class="dt">Drop a PDF here, or <span class="lnk">choose a file</span></div>
-            <div class="dh">PDF, read on your machine. Up to 12 MB.</div>
-            <input type="file" id="file" accept="application/pdf,.pdf" hidden />
+            <div class="dt">Drop a PDF or photo here, or <span class="lnk">choose a file</span></div>
+            <div class="dh">PDF read on your machine, or a photo read by the model. Up to 12 MB.</div>
+            <input type="file" id="file" accept="application/pdf,image/png,image/jpeg,image/webp,.pdf,.png,.jpg,.jpeg,.webp" hidden />
           </div>
           <button class="pastetog" id="pasteTog" type="button">or paste receipt text instead</button>
           <div class="paste" id="pasteWrap" hidden>
@@ -316,7 +319,7 @@
       </div>
     </div>
 
-    <p class="section-title">Accuracy on 30 sample receipts</p>
+    <p class="section-title" id="evalTitle">Accuracy on the sample set</p>
     <div class="panel evalcard">
       <div class="panel-h"><span class="t">Score</span><span class="r">checked automatically on every change</span></div>
       <div class="panel-b">
@@ -329,7 +332,8 @@
         </div>
         <div>
           <div class="bars" id="bars"></div>
-          <div style="margin-top:16px"><button class="btn ghost" id="runEval">Score all 30 receipts</button></div>
+          <div class="cats" id="evalCats"></div>
+          <div style="margin-top:16px"><button class="btn ghost" id="runEval">Score the whole set</button></div>
         </div>
       </div>
     </div>
@@ -344,6 +348,27 @@
 <script>
   const $ = (s) => document.querySelector(s);
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // In the static build, data.json is inlined as window.__DOCKET__ and the page
+  // reads from it. Served locally, there is no such object and these fall through
+  // to the server. One index.html, both modes.
+  const STATIC = window.__DOCKET__ || null;
+  async function apiGet(path) {
+    if (STATIC) {
+      if (path === '/api/catalog') return STATIC.catalog;
+      if (path === '/api/eval') return STATIC.eval;
+      throw new Error('no static data for ' + path);
+    }
+    return (await fetch(path)).json();
+  }
+  async function apiPost(path, body) {
+    if (STATIC) {
+      if (path === '/api/extract') return STATIC.samples[body.id];
+      if (path === '/api/scenario') return STATIC.scenarios[body.kind];
+      throw new Error('no static data for ' + path);
+    }
+    return (await fetch(path, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) })).json();
+  }
   const STAGES = ['read', 'get text', 'pull fields', 'check', 'save'];
   const FIELDS = ['merchant','date','currency','total','subtotal','tax','paymentMethod','lineItems'];
   const LABELS = { paymentMethod: 'payment', lineItems: 'items' };
@@ -437,8 +462,8 @@
     $('#result').innerHTML = '<div class="empty"><span>running...</span></div>';
 
     const req = s.key === 'rejected' || s.key === 'idempotent'
-      ? fetch('/api/scenario', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ kind: s.key }) }).then((x) => x.json())
-      : fetch('/api/extract', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: s.id }) }).then((x) => x.json());
+      ? apiPost('/api/scenario', { kind: s.key })
+      : apiPost('/api/extract', { id: s.id });
 
     const [data] = await Promise.all([req, animateStages()]);
     loadReceiptText(data);
@@ -452,10 +477,7 @@
     if (btn) btn.classList.add('sel');
     setNote('');
     $('#result').innerHTML = '<div class="empty"><span>running...</span></div>';
-    const [data] = await Promise.all([
-      fetch('/api/extract', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id }) }).then((x) => x.json()),
-      animateStages(),
-    ]);
+    const [data] = await Promise.all([apiPost('/api/extract', { id }), animateStages()]);
     loadReceiptText(data);
     renderResult(data);
     busy = false;
@@ -537,7 +559,7 @@
 
   /* samples strip */
   async function loadCatalog() {
-    const data = await (await fetch('/api/catalog')).json();
+    const data = await apiGet('/api/catalog');
     const strip = $('#strip'); strip.innerHTML = '';
     data.receipts.forEach((r) => {
       const b = document.createElement('button');
@@ -552,14 +574,20 @@
   /* bring your own receipt */
   function setUploadState(cat) {
     const st = $('#byoState'), hint = $('#byoHint');
+    if (STATIC) {
+      st.textContent = 'local only';
+      st.style.color = 'var(--faint)';
+      hint.innerHTML = 'This hosted page runs the baked-in samples. To analyze your own PDF, photo, or text, run the demo locally with <code>npm run demo</code>.';
+      return;
+    }
     if (cat.uploadReady) {
       st.textContent = 'model connected: ' + cat.uploadProvider;
       st.style.color = 'var(--good)';
-      hint.innerHTML = 'Your receipt runs through the same reader and format check the samples use. The clean JSON is what comes out the other side.';
+      hint.innerHTML = 'A PDF or a photo runs through the same reader and format check the samples use. The clean JSON is what comes out the other side.';
     } else {
       st.textContent = 'offline, samples only';
       st.style.color = 'var(--faint)';
-      hint.innerHTML = 'Reading the PDF works offline. Pulling fields from a new receipt needs a model, so set <code>ANTHROPIC_API_KEY</code> and restart the demo, then this runs live. The samples above work offline right now.';
+      hint.innerHTML = 'Reading a PDF works offline. Pulling fields from a new receipt, or reading a photo, needs a model, so set <code>ANTHROPIC_API_KEY</code> and restart the demo. The samples above work offline right now.';
     }
   }
 
@@ -583,18 +611,24 @@
     postAnalyze({ body: JSON.stringify({ text: t }), headers: { 'content-type': 'application/json' } }, 'text');
   });
 
+  const IMG_TYPES = { png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', webp: 'image/webp' };
   async function analyzeFile(file) {
     const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
-    if (!isPdf) return byoMessage('That is not a PDF. Upload a PDF receipt, or paste the text instead.');
-    if (file.size > 12 * 1024 * 1024) return byoMessage('That file is over 12 MB. Try a smaller PDF.');
+    const ext = (file.name.split('.').pop() || '').toLowerCase();
+    const imgType = /^image\/(png|jpeg|webp)$/.test(file.type) ? file.type : IMG_TYPES[ext];
+    if (!isPdf && !imgType) return byoMessage('Upload a PDF or a photo (png, jpg, webp), or paste the text instead.');
+    if (file.size > 12 * 1024 * 1024) return byoMessage('That file is over 12 MB. Try a smaller file.');
     const buf = await file.arrayBuffer();
-    postAnalyze({ body: buf, headers: { 'content-type': 'application/pdf', 'x-filename': encodeURIComponent(file.name) } }, 'pdf', file.name);
+    const ct = isPdf ? 'application/pdf' : imgType;
+    postAnalyze({ body: buf, headers: { 'content-type': ct, 'x-filename': encodeURIComponent(file.name) } }, isPdf ? 'pdf' : 'image', file.name);
   }
 
   let byoBusy = false;
   async function postAnalyze(init, source, name) {
+    if (STATIC) return byoMessage('Uploading your own receipt needs the local server. Run npm run demo to try a PDF, photo, or pasted text.');
     if (byoBusy) return; byoBusy = true;
-    $('#byoOut').innerHTML = `<div class="empty"><span>${source === 'pdf' ? 'reading ' + esc(name || 'your PDF') : 'reading your text'}...</span></div>`;
+    const verb = source === 'pdf' ? 'reading ' + esc(name || 'your PDF') : source === 'image' ? 'reading ' + esc(name || 'your photo') : 'reading your text';
+    $('#byoOut').innerHTML = `<div class="empty"><span>${verb}...</span></div>`;
     try {
       const d = await (await fetch('/api/analyze', { method: 'POST', ...init })).json();
       renderByo(d);
@@ -618,11 +652,15 @@
     }
 
     if (d.status === 'NO_MODEL') {
+      const isImg = d.source === 'image';
+      const body = isImg
+        ? `<p>The photo was received, but a photo has no text to read on your machine, so this one needs a model. Set <code>ANTHROPIC_API_KEY</code> and restart the demo, then the same pipeline reads it live.</p>`
+        : `<p>The PDF was read on your machine. Pulling the fields from a new receipt needs a model connected, so set <code>ANTHROPIC_API_KEY</code> and restart the demo. The same pipeline then runs live.</p>
+           <p class="cap">text pulled from your file</p>
+           <div class="txt">${esc(d.text || '')}</div>`;
       el.innerHTML = `<div class="nomodel">
-        <div class="head"><span class="tag">read, not extracted</span></div>
-        <p>The PDF was read on your machine. Pulling the fields from a new receipt needs a model connected, so set <code>ANTHROPIC_API_KEY</code> and restart the demo. The same pipeline then runs live.</p>
-        <p class="cap">text pulled from your file</p>
-        <div class="txt">${esc(d.text || '')}</div></div>`;
+        <div class="head"><span class="tag">${isImg ? 'photo received' : 'read, not extracted'}</span></div>
+        ${body}</div>`;
       return;
     }
 
@@ -661,20 +699,36 @@
       requestAnimationFrame(() => (row.querySelector('.fill').style.width = (v * 100) + '%'));
     });
   }
+  function renderCats(perCategory) {
+    const box = $('#evalCats'); box.innerHTML = '';
+    (perCategory || []).forEach((c) => {
+      const chip = document.createElement('span');
+      chip.className = 'rchip' + (c.accuracy >= 0.9 ? ' ok' : '');
+      chip.innerHTML = `${esc(c.category)}<b>${c.accuracy.toFixed(2)}</b><span class="cn">n${c.n}</span>`;
+      box.appendChild(chip);
+    });
+  }
   $('#runEval').addEventListener('click', async (e) => {
-    const btn = e.currentTarget; btn.disabled = true; btn.textContent = 'scoring 30...';
-    const d = await (await fetch('/api/eval')).json();
+    const btn = e.currentTarget; btn.disabled = true; btn.textContent = 'scoring the set...';
+    const d = await apiGet('/api/eval');
     renderBars(d.perField);
+    renderCats(d.perCategory);
+    $('#evalTitle').textContent = `Accuracy on ${d.n} sample receipts`;
     const node = $('#evalOverall'); node.dataset.to = d.overall.toFixed(2); node.textContent = '0.00'; countUp(node);
     const gate = $('#evalGate'); gate.style.visibility = 'visible';
     gate.textContent = (d.overall >= d.threshold ? 'clears the ' : 'below the ') + d.threshold.toFixed(2) + ' bar';
     gate.style.color = d.overall >= d.threshold ? 'var(--good)' : 'var(--bad)';
-    btn.disabled = false; btn.textContent = 'Score all 30 again';
+    btn.disabled = false; btn.textContent = 'Score the set again';
   });
 
   renderBars(Object.fromEntries(FIELDS.map((f) => [f, 0])));
   renderScenarios();
   loadCatalog();
+  if (STATIC) {
+    const m = $('#pillMode'); if (m) m.innerHTML = '<span class="dot"></span> live demo';
+    const h = $('#pillHost'); if (h) h.textContent = 'sample data, no backend';
+    $('#runEval').click(); // the baked eval is instant, so show the score on load
+  }
 </script>
 </body>
 </html>

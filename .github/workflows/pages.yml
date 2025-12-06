@@ -1,0 +1,46 @@
+# Build the static demo and publish it to GitHub Pages on every merge to main.
+# The build uses the recorded provider, so it needs no secrets and no AWS account.
+name: pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# What the deploy step needs to publish to Pages.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One live deployment at a time; let an in-flight deploy finish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      # Bakes the catalog, every sample extraction, the scenarios, and the eval
+      # into demo/static, all on the recorded provider.
+      - run: npm run demo:static
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: demo/static
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4
