@@ -1,0 +1,15 @@
+# LocalStack for the integration test in test/integration. It stands up S3 and
+# DynamoDB on localhost:4566 so the pipeline can be exercised end to end without a
+# real AWS account. Bring it up, run the test, tear it down:
+#
+#   docker compose -f docker-compose.localstack.yml up -d
+#   npm run test:integration
+#   docker compose -f docker-compose.localstack.yml down
+services:
+  localstack:
+    image: localstack/localstack:3
+    ports:
+      - '4566:4566'
+    environment:
+      - SERVICES=s3,dynamodb
+      - DEBUG=0
