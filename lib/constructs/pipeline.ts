@@ -35,6 +35,17 @@ export class IngestPipeline extends Construct {
   constructor(scope: Construct, id: string) {
     super(scope, id);
 
+    // Server access logs for the ingest bucket. Kept in a separate bucket because
+    // a bucket cannot log to itself, and expired on the same 30 day clock.
+    const accessLogsBucket = new s3.Bucket(this, 'AccessLogsBucket', {
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      encryption: s3.BucketEncryption.S3_MANAGED,
+      enforceSSL: true,
+      removalPolicy: RemovalPolicy.DESTROY,
+      autoDeleteObjects: true,
+      lifecycleRules: [{ expiration: Duration.days(30) }],
+    });
+
     this.bucket = new s3.Bucket(this, 'IngestBucket', {
       // EventBridge notifications, not bucket notifications. One bus for every
       // downstream rule and content based key filtering come with it.
@@ -42,6 +53,8 @@ export class IngestPipeline extends Construct {
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       encryption: s3.BucketEncryption.S3_MANAGED,
       enforceSSL: true,
+      serverAccessLogsBucket: accessLogsBucket,
+      serverAccessLogsPrefix: 'ingest/',
       // Demo stack, so it is fine to empty and delete the bucket on teardown.
       removalPolicy: RemovalPolicy.DESTROY,
       autoDeleteObjects: true,

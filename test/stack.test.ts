@@ -1,0 +1,195 @@
+/**
+ * Assertions on the synthesized CloudFormation. The unit suite proves the handler
+ * logic; this proves the design decisions that live in the infrastructure, so a
+ * rename or a loosened policy fails the build instead of shipping quietly.
+ */
+import { describe, it, expect, beforeAll } from 'vitest';
+import { App, Stack } from 'aws-cdk-lib';
+import { Template, Match } from 'aws-cdk-lib/assertions';
+import { DocketStack } from '../lib/docket-stack';
+import { DocketCicdStack } from '../lib/cicd-stack';
+
+const env = { account: '123456789012', region: 'us-east-1' };
+
+let docket: Template;
+let cicd: Template;
+let docketStack: Stack;
+
+// Synthesizing bundles both Lambdas with esbuild, so do it once for the file.
+beforeAll(() => {
+  const app = new App();
+  docketStack = new DocketStack(app, 'Docket', { env });
+  const cicdStack = new DocketCicdStack(app, 'DocketCicd', { env, githubOwner: 'o', githubRepo: 'r' });
+  docket = Template.fromStack(docketStack);
+  cicd = Template.fromStack(cicdStack);
+}, 120_000);
+
+describe('ingest queue and DLQ', () => {
+  it('sends a message to the DLQ after 3 receives', () => {
+    docket.hasResourceProperties('AWS::SQS::Queue', {
+      RedrivePolicy: Match.objectLike({ maxReceiveCount: 3 }),
+    });
+  });
+
+  it('keeps DLQ messages for 14 days, long enough to investigate', () => {
+    docket.hasResourceProperties('AWS::SQS::Queue', { MessageRetentionPeriod: 1_209_600 });
+  });
+
+  it('gives the queue a visibility timeout that clears the 60s Lambda timeout', () => {
+    docket.hasResourceProperties('AWS::SQS::Queue', { VisibilityTimeout: 360 });
+  });
+});
+
+describe('buckets', () => {
+  it('blocks all public access on every bucket', () => {
+    const buckets = Object.values(docket.findResources('AWS::S3::Bucket'));
+    expect(buckets.length).toBeGreaterThan(0);
+    for (const b of buckets) {
+      expect(b.Properties.PublicAccessBlockConfiguration).toEqual({
+        BlockPublicAcls: true,
+        BlockPublicPolicy: true,
+        IgnorePublicAcls: true,
+        RestrictPublicBuckets: true,
+      });
+    }
+  });
+
+  it('denies any request that is not over TLS', () => {
+    docket.hasResourceProperties('AWS::S3::BucketPolicy', {
+      PolicyDocument: Match.objectLike({
+        Statement: Match.arrayWith([
+          Match.objectLike({
+            Effect: 'Deny',
+            Condition: { Bool: { 'aws:SecureTransport': 'false' } },
+          }),
+        ]),
+      }),
+    });
+  });
+
+  it('encrypts at rest and sends server access logs to a separate bucket', () => {
+    docket.hasResourceProperties('AWS::S3::Bucket', {
+      LoggingConfiguration: Match.objectLike({ LogFilePrefix: 'ingest/' }),
+    });
+    const buckets = Object.values(docket.findResources('AWS::S3::Bucket'));
+    for (const b of buckets) expect(b.Properties.BucketEncryption).toBeDefined();
+  });
+});
+
+describe('ingest lambda permissions', () => {
+  it('scopes bedrock to the anthropic model family, not every model', () => {
+    docket.hasResourceProperties('AWS::IAM::Policy', {
+      PolicyDocument: Match.objectLike({
+        Statement: Match.arrayWith([
+          Match.objectLike({
+            Action: 'bedrock:InvokeModel',
+            Resource: 'arn:aws:bedrock:us-east-1::foundation-model/anthropic.*',
+          }),
+        ]),
+      }),
+    });
+  });
+
+  it('never grants bedrock:* anywhere in the template', () => {
+    expect(JSON.stringify(docket.toJSON())).not.toContain('bedrock:*');
+  });
+
+  it('reads the anthropic key from exactly one SSM parameter', () => {
+    docket.hasResourceProperties('AWS::IAM::Policy', {
+      PolicyDocument: Match.objectLike({
+        Statement: Match.arrayWith([Match.objectLike({ Action: 'ssm:GetParameter' })]),
+      }),
+    });
+  });
+
+  it('traces with X-Ray', () => {
+    docket.hasResourceProperties('AWS::Lambda::Function', { TracingConfig: { Mode: 'Active' } });
+  });
+});
+
+describe('documents table', () => {
+  it('has point in time recovery on', () => {
+    docket.hasResourceProperties('AWS::DynamoDB::Table', {
+      PointInTimeRecoverySpecification: { PointInTimeRecoveryEnabled: true },
+    });
+  });
+
+  it('is on demand, so an idle table costs nothing', () => {
+    docket.hasResourceProperties('AWS::DynamoDB::Table', { BillingMode: 'PAY_PER_REQUEST' });
+  });
+
+  it('exposes the status-index GSI the list route queries', () => {
+    docket.hasResourceProperties('AWS::DynamoDB::Table', {
+      GlobalSecondaryIndexes: Match.arrayWith([
+        Match.objectLike({
+          IndexName: 'status-index',
+          KeySchema: [
+            { AttributeName: 'status', KeyType: 'HASH' },
+            { AttributeName: 'receivedAt', KeyType: 'RANGE' },
+          ],
+        }),
+      ]),
+    });
+  });
+});
+
+describe('event rule', () => {
+  // This is the regression guard: renaming or re-scoping the rule, or dropping a
+  // supported extension, breaks here rather than silently ignoring uploads.
+  it('routes only receipt uploads, pdf and the three image types', () => {
+    docket.hasResourceProperties('AWS::Events::Rule', {
+      EventPattern: Match.objectLike({
+        source: ['aws.s3'],
+        'detail-type': ['Object Created'],
+        detail: Match.objectLike({
+          object: {
+            key: [{ suffix: '.pdf' }, { suffix: '.jpg' }, { suffix: '.jpeg' }, { suffix: '.png' }, { suffix: '.webp' }],
+          },
+        }),
+      }),
+    });
+  });
+
+  it('has exactly one rule, targeting the ingest queue', () => {
+    docket.resourceCountIs('AWS::Events::Rule', 1);
+    const rule = Object.values(docket.findResources('AWS::Events::Rule'))[0]!;
+    expect(rule.Properties.Targets).toHaveLength(1);
+  });
+});
+
+describe('query api', () => {
+  it('requires IAM auth on every route, so an unsigned request is rejected', () => {
+    const routes = Object.values(docket.findResources('AWS::ApiGatewayV2::Route'));
+    expect(routes.length).toBe(2);
+    for (const r of routes) expect(r.Properties.AuthorizationType).toBe('AWS_IAM');
+  });
+
+  it('writes access logs on the default stage', () => {
+    docket.hasResourceProperties('AWS::ApiGatewayV2::Stage', {
+      AccessLogSettings: Match.objectLike({ DestinationArn: Match.anyValue() }),
+    });
+  });
+});
+
+describe('cicd stack', () => {
+  it('creates no IAM user, so there is no long lived key to leak', () => {
+    cicd.resourceCountIs('AWS::IAM::User', 0);
+    expect(JSON.stringify(cicd.toJSON())).not.toContain('AWS::IAM::AccessKey');
+  });
+
+  it('lets only this repo assume the deploy role, through OIDC', () => {
+    cicd.hasResourceProperties('AWS::IAM::Role', {
+      RoleName: 'docket-github-deploy',
+      AssumeRolePolicyDocument: Match.objectLike({
+        Statement: Match.arrayWith([
+          Match.objectLike({
+            Action: 'sts:AssumeRoleWithWebIdentity',
+            Condition: Match.objectLike({
+              StringLike: { 'token.actions.githubusercontent.com:sub': 'repo:o/r:*' },
+            }),
+          }),
+        ]),
+      }),
+    });
+  });
+});

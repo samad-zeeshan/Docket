@@ -3,13 +3,14 @@
  * list-by-status route. IAM auth so there is no long-lived key to store or leak,
  * and an unsigned request gets a 403.
  */
-import { Duration, CfnOutput, Stack } from 'aws-cdk-lib';
+import { Duration, CfnOutput, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import { HttpApi, HttpMethod } from 'aws-cdk-lib/aws-apigatewayv2';
+import { HttpApi, HttpMethod, CfnStage } from 'aws-cdk-lib/aws-apigatewayv2';
 import { HttpLambdaIntegration } from 'aws-cdk-lib/aws-apigatewayv2-integrations';
 import { HttpIamAuthorizer } from 'aws-cdk-lib/aws-apigatewayv2-authorizers';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { Runtime, Architecture, Tracing } from 'aws-cdk-lib/aws-lambda';
+import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import type * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as path from 'node:path';
 
@@ -49,6 +50,28 @@ export class QueryApi extends Construct {
     });
     this.httpApi.addRoutes({ path: '/documents/{docId}', methods: [HttpMethod.GET], integration });
     this.httpApi.addRoutes({ path: '/documents', methods: [HttpMethod.GET], integration });
+
+    // Access logs on the default stage. The L2 HttpApi does not expose these, so
+    // set them on the underlying stage. One JSON line per request, which is what
+    // makes "who called this and what did it return" answerable after the fact.
+    const accessLogs = new LogGroup(this, 'ApiAccessLogs', {
+      retention: RetentionDays.ONE_MONTH,
+      removalPolicy: RemovalPolicy.DESTROY,
+    });
+    const stage = this.httpApi.defaultStage?.node.defaultChild as CfnStage;
+    stage.accessLogSettings = {
+      destinationArn: accessLogs.logGroupArn,
+      format: JSON.stringify({
+        requestId: '$context.requestId',
+        sourceIp: '$context.identity.sourceIp',
+        requestTime: '$context.requestTime',
+        httpMethod: '$context.httpMethod',
+        routeKey: '$context.routeKey',
+        status: '$context.status',
+        responseLength: '$context.responseLength',
+        integrationError: '$context.integrationErrorMessage',
+      }),
+    };
 
     new CfnOutput(this, 'ApiUrl', { value: this.httpApi.apiEndpoint });
     new CfnOutput(this, 'Region', { value: Stack.of(this).region });

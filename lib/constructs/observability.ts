@@ -26,7 +26,8 @@ export class Observability extends Construct {
     super(scope, id);
     const { ingest, api } = props;
 
-    const topic = new sns.Topic(this, 'AlarmTopic', { displayName: 'docket-alarms' });
+    // enforceSSL adds a topic policy denying any publish that is not over TLS.
+    const topic = new sns.Topic(this, 'AlarmTopic', { displayName: 'docket-alarms', enforceSSL: true });
     if (props.alarmEmail) topic.addSubscription(new subs.EmailSubscription(props.alarmEmail));
     const notify = new SnsAction(topic);
 
