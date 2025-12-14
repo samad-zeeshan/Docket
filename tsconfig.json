@@ -23,6 +23,6 @@
     "typeRoots": ["./node_modules/@types"],
     "outDir": "dist"
   },
-  "include": ["bin/**/*.ts", "lib/**/*.ts", "src/**/*.ts", "eval/**/*.ts", "test/**/*.ts", "demo/**/*.ts"],
+  "include": ["bin/**/*.ts", "lib/**/*.ts", "src/**/*.ts", "eval/**/*.ts", "test/**/*.ts", "demo/**/*.ts", "ops/**/*.ts"],
   "exclude": ["node_modules", "cdk.out", "dist"]
 }
