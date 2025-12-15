@@ -33,5 +33,15 @@ eval/results/*.json
 .vscode/
 *.log
 
+# local assistant and agent scratch. Tooling config and build notes that are
+# personal to a machine, not part of the project.
+.claude/
+.agents/
+.codex/
+Docket_DIRECTIVE.md
+docket_PLAN.md
+comment_instruction.md
+NOTES.md
+
 # cdk context cache can leak account ids
 cdk.context.json
