@@ -4,7 +4,7 @@
  * rename or a loosened policy fails the build instead of shipping quietly.
  */
 import { describe, it, expect, beforeAll } from 'vitest';
-import { App, Stack } from 'aws-cdk-lib';
+import { App } from 'aws-cdk-lib';
 import { Template, Match } from 'aws-cdk-lib/assertions';
 import { DocketStack } from '../lib/docket-stack';
 import { DocketCicdStack } from '../lib/cicd-stack';
@@ -13,16 +13,17 @@ const env = { account: '123456789012', region: 'us-east-1' };
 
 let docket: Template;
 let cicd: Template;
-let docketStack: Stack;
 
 // Synthesizing bundles both Lambdas with esbuild, so do it once for the file.
 beforeAll(() => {
   const app = new App();
-  docketStack = new DocketStack(app, 'Docket', { env });
+  const docketStack = new DocketStack(app, 'Docket', { env });
   const cicdStack = new DocketCicdStack(app, 'DocketCicd', { env, githubOwner: 'o', githubRepo: 'r' });
   docket = Template.fromStack(docketStack);
   cicd = Template.fromStack(cicdStack);
 }, 120_000);
+
+const logicalIds = (type: string): string[] => Object.keys(docket.findResources(type));
 
 describe('ingest queue and DLQ', () => {
   it('sends a message to the DLQ after 3 receives', () => {
@@ -168,6 +169,28 @@ describe('query api', () => {
     docket.hasResourceProperties('AWS::ApiGatewayV2::Stage', {
       AccessLogSettings: Match.objectLike({ DestinationArn: Match.anyValue() }),
     });
+  });
+});
+
+describe('logical ids', () => {
+  // CloudFormation identifies a resource by its logical id, which CDK derives from
+  // the construct path. Renaming a construct therefore reads as "delete this
+  // resource and create a different one". For the table that is data loss, for the
+  // bucket it is every stored receipt. Pinning the ids makes a rename a decision
+  // someone has to make on purpose, rather than a diff nobody reads.
+  it('pins the documents table', () => {
+    expect(logicalIds('AWS::DynamoDB::Table')).toEqual([expect.stringMatching(/^IngestDocumentsTable/)]);
+  });
+
+  it('pins the ingest and access log buckets', () => {
+    const ids = logicalIds('AWS::S3::Bucket').sort();
+    expect(ids).toHaveLength(2);
+    expect(ids.some((id) => /^IngestAccessLogsBucket/.test(id))).toBe(true);
+    expect(ids.some((id) => /^IngestIngestBucket/.test(id))).toBe(true);
+  });
+
+  it('pins the event rule, so renaming it is a deliberate replacement', () => {
+    expect(logicalIds('AWS::Events::Rule')).toEqual([expect.stringMatching(/^IngestReceiptCreatedRule/)]);
   });
 });
 
