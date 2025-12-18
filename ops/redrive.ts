@@ -8,7 +8,7 @@
  *
  * Redriving is safe to run without thinking, because document ids are content
  * addressed and the first write is a conditional put, so a redelivered event that
- * already succeeded is skipped. See docs/adr/0001-content-addressed-doc-ids.md.
+ * already succeeded is skipped. See docs/decisions.md.
  *
  *   npm run redrive -- --dlq <url> --dry-run     # look, move nothing
  *   npm run redrive -- --dlq <url>               # move them back
