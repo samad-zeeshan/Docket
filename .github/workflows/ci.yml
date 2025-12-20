@@ -29,8 +29,13 @@ jobs:
   deploy:
     # Only on a merge to main, and only after build (lint, test, eval, synth)
     # passes. The eval gate is therefore ahead of every deploy.
+    #
+    # Also opt in: set the repository variable AWS_DEPLOY to true once the CICD
+    # stack exists and AWS_ACCOUNT_ID is set. Until then this job is skipped
+    # rather than failing every push. Secrets cannot be read in a job level if,
+    # so this gates on a variable.
     needs: build
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && vars.AWS_DEPLOY == 'true'
     runs-on: ubuntu-latest
     permissions:
       id-token: write
