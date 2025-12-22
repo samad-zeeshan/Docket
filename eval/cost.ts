@@ -15,14 +15,15 @@ export interface ModelPrice {
   outPerM: number;
 }
 
-// Anthropic Claude 3.5 Sonnet on Bedrock, us-east-1 on-demand, as of late 2025.
-// A single source of truth so a price change is a one-line edit.
+// Claude Haiku 4.5 on Bedrock, us-east-1 on-demand. A single source of truth so
+// a price change is a one-line edit. The two ids are the same model: the first is
+// the Bedrock inference profile, the second is the direct API name.
 export const PRICES: Record<string, ModelPrice> = {
-  'anthropic.claude-3-5-sonnet-20241022-v2:0': { inPerM: 3, outPerM: 15 },
-  'claude-3-5-sonnet-20241022': { inPerM: 3, outPerM: 15 },
+  'us.anthropic.claude-haiku-4-5-20251001-v1:0': { inPerM: 1, outPerM: 5 },
+  'claude-haiku-4-5': { inPerM: 1, outPerM: 5 },
 };
 
-export const DEFAULT_PRICE: ModelPrice = { inPerM: 3, outPerM: 15 };
+export const DEFAULT_PRICE: ModelPrice = { inPerM: 1, outPerM: 5 };
 
 export function priceFor(modelId: string): ModelPrice {
   return PRICES[modelId] ?? DEFAULT_PRICE;

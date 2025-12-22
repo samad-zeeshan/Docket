@@ -1,6 +1,6 @@
 {
   "text": "{\"merchant\":\"Thistle Grocers\",\"date\":\"2025-02-14\",\"currency\":\"GBP\",\"lineItems\":[{\"description\":\"Tea box\",\"quantity\":2,\"unitPrice\":2.5,\"amount\":5},{\"description\":\"Biscuits\",\"quantity\":1,\"unitPrice\":1.75,\"amount\":1.75}],\"subtotal\":6.75,\"tax\":0.34,\"total\":7.09,\"paymentMethod\":\"debit\"}",
-  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
   "inputTokens": 207,
   "outputTokens": 71
 }

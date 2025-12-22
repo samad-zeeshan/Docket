@@ -10,8 +10,10 @@ import { RecordedProvider, RecordingProvider } from './recorded';
 export * from './types';
 export { BedrockProvider, AnthropicProvider, RecordedProvider, RecordingProvider };
 
-const DEFAULT_BEDROCK_MODEL = 'anthropic.claude-3-5-sonnet-20241022-v2:0';
-const DEFAULT_ANTHROPIC_MODEL = 'claude-3-5-sonnet-20241022';
+// Bedrock takes the cross region inference profile id, the direct API takes the
+// plain model name. Same model, two spellings.
+const DEFAULT_BEDROCK_MODEL = 'us.anthropic.claude-haiku-4-5-20251001-v1:0';
+const DEFAULT_ANTHROPIC_MODEL = 'claude-haiku-4-5';
 
 export function createProvider(env: NodeJS.ProcessEnv = process.env): ModelProvider {
   const fixtures = env.DOCKET_FIXTURES ?? 'eval/fixtures';

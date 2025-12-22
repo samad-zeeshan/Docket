@@ -1,6 +1,6 @@
 {
   "text": "{\"merchant\":\"City Bikes\",\"date\":\"2025-02-22\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Bike tube\",\"quantity\":2,\"unitPrice\":9,\"amount\":18}],\"subtotal\":13,\"tax\":1.04,\"total\":14.04,\"paymentMethod\":\"credit\"}",
-  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
   "inputTokens": 95,
   "outputTokens": 52
 }

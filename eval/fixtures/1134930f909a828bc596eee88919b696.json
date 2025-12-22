@@ -1,6 +1,6 @@
 {
   "text": "{\"merchant\":\"Corner Grocery\",\"date\":\"2025-03-02\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Apples lb\",\"quantity\":3,\"unitPrice\":1.89,\"amount\":5.67},{\"description\":\"Trail mix\",\"quantity\":1,\"unitPrice\":4.2,\"amount\":4.2}],\"total\":10.87,\"paymentMethod\":\"debit\"}",
-  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
   "inputTokens": 202,
   "outputTokens": 65
 }

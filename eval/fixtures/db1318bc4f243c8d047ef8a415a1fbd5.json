@@ -1,6 +1,6 @@
 {
   "text": "{\"merchant\":\"Pacific Fuel\",\"date\":\"2025-01-13\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Eggs dozen\",\"quantity\":2,\"unitPrice\":4.49,\"amount\":8.98}],\"subtotal\":8.98,\"tax\":0.72,\"total\":9.7,\"paymentMethod\":\"gift_card\"}",
-  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
   "inputTokens": 89,
   "outputTokens": 55
 }

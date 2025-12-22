@@ -1,6 +1,6 @@
 {
   "text": "{\"merchant\":\"Unknown\",\"date\":\"2025-02-16\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"AA Batteries\",\"quantity\":3,\"unitPrice\":8.99,\"amount\":26.97},{\"description\":\"Notebook\",\"quantity\":1,\"unitPrice\":5,\"amount\":5}],\"subtotal\":60.88,\"tax\":3.76,\"total\":60.88,\"paymentMethod\":\"credit\"}",
-  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
   "inputTokens": 55,
   "outputTokens": 70
 }

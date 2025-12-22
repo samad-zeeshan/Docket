@@ -90,7 +90,7 @@ All three run over the same 42 receipts.
 | paymentMethod | 1.000 | 1.000 | 1.000 |
 | lineItems | 0.979 | 0.881 | 0.754 |
 | **overall** | **0.968** | **0.931** | **0.678** |
-| cost per receipt | $0.001803 | $0.001458 | $0.001036 |
+| cost per receipt | $0.000601 | $0.000486 | $0.000345 |
 
 **We ship v1.**
 

@@ -1,6 +1,6 @@
 {
   "text": "{\"merchant\":\"City Bikes\",\"date\":\"2025-01-29\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"AA Batteries\",\"quantity\":3,\"unitPrice\":8.99,\"amount\":27.47},{\"description\":\"Apples lb\",\"quantity\":1,\"unitPrice\":1.89,\"amount\":1.89},{\"description\":\"Sparkling water\",\"quantity\":1,\"unitPrice\":1.5,\"amount\":1.5},{\"description\":\"Trail mix\",\"quantity\":3,\"unitPrice\":4.2,\"amount\":12.6}],\"subtotal\":42.96,\"tax\":3.44,\"total\":46.4,\"paymentMethod\":\"credit\"}",
-  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
   "inputTokens": 107,
   "outputTokens": 109
 }

@@ -1,6 +1,6 @@
 {
   "text": "{\"merchant\":\"Unknown\",\"date\":\"2025-02-12\",\"currency\":\"GBP\",\"lineItems\":[{\"description\":\"Eggs dozen\",\"quantity\":1,\"unitPrice\":4.49,\"amount\":4.49},{\"description\":\"Bagel\",\"quantity\":3,\"unitPrice\":3.25,\"amount\":9.75}],\"subtotal\":20.49,\"tax\":1.64,\"total\":26.56}",
-  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
   "inputTokens": 50,
   "outputTokens": 64
 }

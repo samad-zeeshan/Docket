@@ -1,6 +1,6 @@
 {
   "text": "{\"merchant\":\"Store\",\"date\":\"2025-02-22\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Paperback\",\"quantity\":1,\"unitPrice\":12.99,\"amount\":12.99}],\"subtotal\":16.84,\"tax\":1.04,\"total\":16.84}",
-  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
   "inputTokens": 41,
   "outputTokens": 47
 }

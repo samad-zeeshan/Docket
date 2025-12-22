@@ -1,6 +1,6 @@
 {
   "text": "{\"merchant\":\"Store\",\"date\":\"2025-02-14\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Sparkling water\",\"quantity\":3,\"unitPrice\":1.5,\"amount\":4.5}],\"subtotal\":43.47,\"tax\":3.48,\"total\":56.34}",
-  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
   "inputTokens": 48,
   "outputTokens": 47
 }

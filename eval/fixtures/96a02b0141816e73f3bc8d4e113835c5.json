@@ -1,6 +1,6 @@
 {
   "text": "{\"merchant\":\"Sunrise Diner\",\"date\":\"2025-02-26\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Sandwich\",\"quantity\":1,\"unitPrice\":7.5,\"amount\":7.5},{\"description\":\"Orange juice\",\"quantity\":1,\"unitPrice\":3.6,\"amount\":3.6}],\"total\":11.1,\"paymentMethod\":\"cash\"}",
-  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
   "inputTokens": 88,
   "outputTokens": 64
 }

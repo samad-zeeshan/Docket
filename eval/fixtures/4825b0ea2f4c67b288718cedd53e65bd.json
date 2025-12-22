@@ -1,6 +1,6 @@
 {
   "text": "{\"merchant\":\"Green Leaf Market\",\"date\":\"2025-01-27\",\"currency\":\"EUR\",\"lineItems\":[{\"description\":\"Bike tube\",\"quantity\":3,\"unitPrice\":9,\"amount\":27}],\"subtotal\":29.75,\"tax\":2.38,\"total\":33.13,\"paymentMethod\":\"debit\"}",
-  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
   "inputTokens": 209,
   "outputTokens": 54
 }

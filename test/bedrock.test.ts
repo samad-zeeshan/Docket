@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { BedrockProvider } from '../src/lib/providers/bedrock';
+import { BedrockProvider, firstText } from '../src/lib/providers/bedrock';
 import type { BedrockRuntimeClient } from '@aws-sdk/client-bedrock-runtime';
 
 // Minimal fake that records the request body and returns a canned Bedrock reply.
@@ -33,5 +33,23 @@ describe('BedrockProvider', () => {
     const content = JSON.parse(cap.body!).messages[0].content;
     expect(content[0]).toEqual({ type: 'image', source: { type: 'base64', media_type: 'image/png', data: 'ZZ' } });
     expect(content[1]).toEqual({ type: 'text', text: 'read it' });
+  });
+});
+
+describe('firstText', () => {
+  // A model with thinking on answers with a thinking block first. Reading index
+  // zero would hand the schema gate an empty string and fail every extraction.
+  it('skips a leading thinking block', () => {
+    expect(firstText([{ type: 'thinking', thinking: 'hmm' }, { type: 'text', text: '{"ok":1}' }])).toBe('{"ok":1}');
+  });
+
+  it('reads a plain single text block', () => {
+    expect(firstText([{ type: 'text', text: 'hello' }])).toBe('hello');
+  });
+
+  it('returns empty when there is no text block at all', () => {
+    expect(firstText([{ type: 'thinking', thinking: 'hmm' }])).toBe('');
+    expect(firstText(undefined)).toBe('');
+    expect(firstText([])).toBe('');
   });
 });

@@ -1,6 +1,6 @@
 {
   "text": "{\"merchant\":\"The Book Nook\",\"date\":\"2025-02-20\",\"currency\":\"EUR\",\"lineItems\":[{\"description\":\"Bagel\",\"quantity\":3,\"unitPrice\":3.25,\"amount\":9.75},{\"description\":\"Trail mix\",\"quantity\":2,\"unitPrice\":4.2,\"amount\":8.4},{\"description\":\"Trail mix\",\"quantity\":2,\"unitPrice\":4.2,\"amount\":8.4},{\"description\":\"Trail mix\",\"quantity\":1,\"unitPrice\":4.2,\"amount\":4.2}],\"subtotal\":30.75,\"tax\":2.46,\"total\":33.21,\"paymentMethod\":\"cash\"}",
-  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
   "inputTokens": 217,
   "outputTokens": 106
 }

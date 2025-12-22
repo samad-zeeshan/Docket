@@ -78,21 +78,29 @@ describe('buckets', () => {
 });
 
 describe('ingest lambda permissions', () => {
-  it('scopes bedrock to the anthropic model family, not every model', () => {
+  it('names one bedrock model exactly, with no wildcard', () => {
     docket.hasResourceProperties('AWS::IAM::Policy', {
       PolicyDocument: Match.objectLike({
         Statement: Match.arrayWith([
           Match.objectLike({
             Action: 'bedrock:InvokeModel',
-            Resource: 'arn:aws:bedrock:us-east-1::foundation-model/anthropic.*',
+            Resource: [
+              // The profile the function calls, plus every region it may route to.
+              'arn:aws:bedrock:us-east-1:123456789012:inference-profile/us.anthropic.claude-haiku-4-5-20251001-v1:0',
+              'arn:aws:bedrock:us-east-1::foundation-model/anthropic.claude-haiku-4-5-20251001-v1:0',
+              'arn:aws:bedrock:us-east-2::foundation-model/anthropic.claude-haiku-4-5-20251001-v1:0',
+              'arn:aws:bedrock:us-west-2::foundation-model/anthropic.claude-haiku-4-5-20251001-v1:0',
+            ],
           }),
         ]),
       }),
     });
   });
 
-  it('never grants bedrock:* anywhere in the template', () => {
-    expect(JSON.stringify(docket.toJSON())).not.toContain('bedrock:*');
+  it('never grants bedrock:* or a model wildcard anywhere in the template', () => {
+    const template = JSON.stringify(docket.toJSON());
+    expect(template).not.toContain('bedrock:*');
+    expect(template).not.toContain('foundation-model/anthropic.*');
   });
 
   it('reads the anthropic key from exactly one SSM parameter', () => {

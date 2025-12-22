@@ -1,6 +1,6 @@
 {
   "text": "{\"merchant\":\"The Book Nook\",\"date\":\"2025-01-05\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"AA Batteries\",\"quantity\":3,\"unitPrice\":8.99,\"amount\":27.47},{\"description\":\"Bagel\",\"quantity\":2,\"unitPrice\":3.25,\"amount\":6.5}],\"subtotal\":37.07,\"tax\":0,\"total\":40.04,\"paymentMethod\":\"debit\"}",
-  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
   "inputTokens": 100,
   "outputTokens": 71
 }

@@ -41,7 +41,8 @@ export class AnthropicProvider implements ModelProvider {
       messages: [{ role: 'user', content: userContent(request) as unknown as Anthropic.Messages.MessageParam['content'] }],
     });
 
-    const block = message.content[0];
+    // Same reason as the Bedrock provider: the first block is not always text.
+    const block = message.content.find((b) => b.type === 'text');
     return {
       text: block && block.type === 'text' ? block.text : '',
       modelId: this.modelId,

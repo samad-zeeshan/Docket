@@ -50,8 +50,15 @@ to investigate a problem and move the messages back before they age out. See
 
 ## The model
 
-Extraction runs on Anthropic Claude through Amazon Bedrock, inside the same AWS
-account and region. Nothing leaves the account boundary for a normal extraction.
+Extraction runs on Claude Haiku through Amazon Bedrock, inside the same AWS
+account. Nothing leaves the account boundary for a normal extraction.
+
+It does leave the region. Current Claude models on Bedrock are invoked through a
+cross region inference profile, which routes each call to whichever US region has
+capacity. For this model that is `us-east-1`, `us-east-2`, or `us-west-2`, so
+receipt text can be processed in any of the three. All three are United States
+regions, which makes this a data residency question rather than a sovereignty
+one, but it is worth knowing before pointing this at real receipts.
 
 The direct Anthropic API exists as a fallback. Its key is read from an SSM
 SecureString parameter at runtime, never from a long lived environment secret and

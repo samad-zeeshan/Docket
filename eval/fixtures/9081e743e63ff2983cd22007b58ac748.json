@@ -1,6 +1,6 @@
 {
   "text": "{\"merchant\":\"Green Leaf Market\",\"date\":\"2025-02-18\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Milk 1gal\",\"quantity\":1,\"unitPrice\":3.99,\"amount\":3.99},{\"description\":\"Eggs dozen\",\"quantity\":1,\"unitPrice\":4.49,\"amount\":4.49},{\"description\":\"Member discount\",\"quantity\":1,\"amount\":-1.5}],\"subtotal\":6.98,\"tax\":0.56,\"total\":7.54,\"paymentMethod\":\"credit\"}",
-  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
   "inputTokens": 216,
   "outputTokens": 89
 }

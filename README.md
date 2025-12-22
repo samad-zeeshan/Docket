@@ -141,8 +141,10 @@ npx cdk deploy DocketCicd                    # GitHub OIDC provider and deploy r
 npx cdk deploy Docket --context docket:alarmEmail=you@example.com
 ```
 
-You need Bedrock model access for Anthropic Claude in `us-east-1`, which is
-requested once from the Bedrock console.
+The pipeline runs Claude Haiku on Bedrock. Serverless models enable themselves the
+first time you invoke one, so there is nothing to switch on, but a first time
+Anthropic user may be asked to submit use case details before the first call
+succeeds. Do that before deploying, not during.
 
 CI deploys on merge to `main` using a role assumed through GitHub OIDC. There are
 no long lived AWS keys anywhere in this repo.

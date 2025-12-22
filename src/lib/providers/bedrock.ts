@@ -40,10 +40,21 @@ export class BedrockProvider implements ModelProvider {
 
     const payload = JSON.parse(new TextDecoder().decode(out.body));
     return {
-      text: payload.content?.[0]?.text ?? '',
+      text: firstText(payload.content),
       modelId: this.modelId,
       inputTokens: payload.usage?.input_tokens ?? 0,
       outputTokens: payload.usage?.output_tokens ?? 0,
     };
   }
+}
+
+// A reply does not always lead with its text. A model with thinking turned on
+// puts a thinking block first, and reading index 0 would then hand the schema
+// gate an empty string. Take the first text block instead.
+export function firstText(content: unknown): string {
+  if (!Array.isArray(content)) return '';
+  for (const block of content as { type?: string; text?: string }[]) {
+    if (block?.type === 'text' && typeof block.text === 'string') return block.text;
+  }
+  return '';
 }

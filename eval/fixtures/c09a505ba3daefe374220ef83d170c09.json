@@ -1,6 +1,6 @@
 {
   "text": "{\"merchant\":\"Store\",\"date\":\"2025-03-22\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Sandwich\",\"quantity\":1,\"unitPrice\":7.5,\"amount\":7.5}],\"subtotal\":12,\"tax\":0.96,\"total\":18.43,\"paymentMethod\":\"credit\"}",
-  "modelId": "anthropic.claude-3-5-sonnet-20241022-v2:0",
+  "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
   "inputTokens": 50,
   "outputTokens": 51
 }

@@ -16,7 +16,7 @@ import type { Receipt } from '../../src/lib/schema';
 
 const GOLDEN = path.join(__dirname, '..', 'golden');
 const FIXTURES = path.join(__dirname, '..', 'fixtures');
-const MODEL_ID = 'anthropic.claude-3-5-sonnet-20241022-v2:0';
+const MODEL_ID = 'us.anthropic.claude-haiku-4-5-20251001-v1:0';
 
 function round2(n: number): number {
   return Math.round(n * 100) / 100;

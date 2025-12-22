@@ -74,12 +74,8 @@ export function applyNagSuppressions(docket: Stack, cicd: Stack): void {
       reason: 'grantReadWriteData must cover the table and its GSIs. An index ARN is a child of the table ARN, so the wildcard is the index set, not an extra table.',
       appliesTo: ['Resource::<IngestDocumentsTable9B06F738.Arn>/index/*'],
     },
-    {
-      id: 'AwsSolutions-IAM5',
-      reason:
-        'The wildcard IS the scoping. bedrock:InvokeModel is restricted to the anthropic model family in one region, rather than the bedrock:* on every model that the default grant would give.',
-      appliesTo: ['Resource::arn:aws:bedrock:us-east-1::foundation-model/anthropic.*'],
-    },
+    // The bedrock grant names one model and one inference profile exactly, so it
+    // carries no wildcard and needs no suppression.
   ]);
 
   NagSuppressions.addResourceSuppressionsByPath(docket, '/Docket/Api/QueryFn/ServiceRole/DefaultPolicy/Resource', [
@@ -93,12 +89,21 @@ export function applyNagSuppressions(docket: Stack, cicd: Stack): void {
 
   // The deploy role assumes the CDK bootstrap roles, whose names carry a
   // generated qualifier, so they cannot be named exactly at synth time.
+  //
+  // Both spellings of the account are listed on purpose. With no AWS credentials
+  // present, as in CI, the account stays a CloudFormation pseudo parameter and
+  // cdk-nag reports it as <AWS::AccountId>. With credentials, it resolves to the
+  // real id. Covering both keeps synth behaving the same on a laptop and in CI.
+  // A string that matches nothing is ignored, so the unused one costs us nothing.
   NagSuppressions.addResourceSuppressionsByPath(cicd, '/DocketCicd/DeployRole/DefaultPolicy/Resource', [
     {
       id: 'AwsSolutions-IAM5',
       reason:
         'The GitHub deploy role must assume the CDK bootstrap roles (cdk-<qualifier>-deploy-role, -file-publishing-role, and so on). Their names include a bootstrap qualifier that is not known at synth time, so the prefix is the tightest possible scope.',
-      appliesTo: ['Resource::arn:aws:iam::<AWS::AccountId>:role/cdk-*'],
+      appliesTo: [
+        'Resource::arn:aws:iam::<AWS::AccountId>:role/cdk-*',
+        `Resource::arn:aws:iam::${cicd.account}:role/cdk-*`,
+      ],
     },
   ]);
 }

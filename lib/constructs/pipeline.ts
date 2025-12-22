@@ -19,7 +19,19 @@ const HANDLERS = path.join(__dirname, '..', '..', 'src', 'handlers');
 
 // Default Bedrock model. Overridable per environment, but pinned here so a deploy
 // is reproducible instead of tracking whatever "latest" points at.
-const MODEL_ID = 'anthropic.claude-3-5-sonnet-20241022-v2:0';
+//
+// This is a cross region inference profile, not a bare foundation model id.
+// Current Claude models on Bedrock cannot be invoked on demand by their bare id;
+// the profile routes each call to whichever US region has capacity. Haiku is the
+// cheapest model that reads a receipt well, and it accepts images, which the
+// photo path needs.
+const MODEL_ID = 'us.anthropic.claude-haiku-4-5-20251001-v1:0';
+
+// The foundation model the profile fronts, and the regions it may route to.
+// Invoking through a profile is authorized against both the profile and the
+// underlying model in every region it can land in.
+const MODEL_FAMILY = 'anthropic.claude-haiku-4-5-20251001-v1:0';
+const PROFILE_REGIONS = ['us-east-1', 'us-east-2', 'us-west-2'];
 
 // The fallback provider reads its key from this SecureString. CDK never sees the
 // value, the operator sets it out of band with `aws ssm put-parameter`.
@@ -118,12 +130,16 @@ export class IngestPipeline extends Construct {
     this.table.grantReadWriteData(this.ingestFn);
     this.bucket.grantRead(this.ingestFn);
 
-    // Primary path: invoke Anthropic models on Bedrock. Scoped to the anthropic
-    // family, not bedrock:* on every model in the account.
+    // Primary path: invoke Claude on Bedrock. Named exactly, with no wildcard.
+    // The function may call this one model through its inference profile and
+    // nothing else, which is as tight as this grant gets.
     this.ingestFn.addToRolePolicy(
       new iam.PolicyStatement({
         actions: ['bedrock:InvokeModel'],
-        resources: [`arn:aws:bedrock:${Stack.of(this).region}::foundation-model/anthropic.*`],
+        resources: [
+          `arn:aws:bedrock:${Stack.of(this).region}:${Stack.of(this).account}:inference-profile/${MODEL_ID}`,
+          ...PROFILE_REGIONS.map((region) => `arn:aws:bedrock:${region}::foundation-model/${MODEL_FAMILY}`),
+        ],
       }),
     );
 
