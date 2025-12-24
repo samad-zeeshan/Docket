@@ -202,6 +202,23 @@ describe('logical ids', () => {
   });
 });
 
+describe('stack outputs', () => {
+  // RUNBOOK.md resolves every one of these by name. A CfnOutput declared inside a
+  // construct otherwise picks up the construct path and a hash, which turns
+  // BucketName into IngestBucketName4EFEBE9C and quietly breaks every runbook
+  // command. Pin the names here so nobody has to find that out during an alarm.
+  it.each(['BucketName', 'QueueUrl', 'DlqUrl', 'TableName', 'ApiUrl', 'Region'])(
+    'exposes %s under exactly that key',
+    (key) => {
+      docket.hasOutput(key, { Value: Match.anyValue() });
+    },
+  );
+
+  it('exposes the deploy role arn from the cicd stack', () => {
+    cicd.hasOutput('DeployRoleArn', { Value: Match.anyValue() });
+  });
+});
+
 describe('cicd stack', () => {
   it('creates no IAM user, so there is no long lived key to leak', () => {
     cicd.resourceCountIs('AWS::IAM::User', 0);

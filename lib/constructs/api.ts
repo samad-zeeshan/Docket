@@ -3,8 +3,9 @@
  * list-by-status route. IAM auth so there is no long-lived key to store or leak,
  * and an unsigned request gets a 403.
  */
-import { Duration, CfnOutput, RemovalPolicy, Stack } from 'aws-cdk-lib';
+import { Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
+import { stackOutput } from '../stack-output';
 import { HttpApi, HttpMethod, CfnStage } from 'aws-cdk-lib/aws-apigatewayv2';
 import { HttpLambdaIntegration } from 'aws-cdk-lib/aws-apigatewayv2-integrations';
 import { HttpIamAuthorizer } from 'aws-cdk-lib/aws-apigatewayv2-authorizers';
@@ -73,7 +74,7 @@ export class QueryApi extends Construct {
       }),
     };
 
-    new CfnOutput(this, 'ApiUrl', { value: this.httpApi.apiEndpoint });
-    new CfnOutput(this, 'Region', { value: Stack.of(this).region });
+    stackOutput(this, 'ApiUrl', this.httpApi.apiEndpoint);
+    stackOutput(this, 'Region', Stack.of(this).region);
   }
 }

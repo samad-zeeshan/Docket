@@ -15,8 +15,14 @@ const app = new cdk.App();
 // access is requested in us-east-1, so every stack lands there.
 const env: cdk.Environment = { account: process.env.CDK_DEFAULT_ACCOUNT, region: 'us-east-1' };
 
-// Alarm target comes from cdk.json context so no email is hardcoded in source.
-const alarmEmail = app.node.tryGetContext('docket:alarmEmail') as string | undefined;
+// Alarm target is passed in at deploy time, never committed. A real address in a
+// public repo is an address that gets scraped, and a placeholder in cdk.json is
+// worse: it silently subscribes nobody and looks like it worked.
+//
+//   npx cdk deploy Docket --context docket:alarmEmail=you@example.com
+//
+// With no address the topic and the alarms still exist, they just email nobody.
+const alarmEmail = (app.node.tryGetContext('docket:alarmEmail') as string | undefined) || undefined;
 
 // Must match the repository exactly, including case. The OIDC subject claim
 // carries the real name, and the IAM StringLike condition is case sensitive, so

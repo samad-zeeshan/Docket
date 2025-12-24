@@ -2,8 +2,9 @@
  * The ingest pipeline: an S3 bucket that fans object-created events through
  * EventBridge into an SQS queue, drained by the ingest Lambda into DynamoDB.
  */
-import { Duration, RemovalPolicy, Stack, CfnOutput } from 'aws-cdk-lib';
+import { Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
+import { stackOutput } from '../stack-output';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
@@ -177,10 +178,11 @@ export class IngestPipeline extends Construct {
       targets: [new targets.SqsQueue(this.queue)],
     });
 
-    // Physical names for the runbook and the demo path.
-    new CfnOutput(this, 'BucketName', { value: this.bucket.bucketName });
-    new CfnOutput(this, 'QueueUrl', { value: this.queue.queueUrl });
-    new CfnOutput(this, 'DlqUrl', { value: this.deadLetterQueue.queueUrl });
-    new CfnOutput(this, 'TableName', { value: this.table.tableName });
+    // Physical names for the runbook and the demo path. The keys are pinned, so
+    // `--query "Stacks[0].Outputs[?OutputKey=='BucketName']"` finds them.
+    stackOutput(this, 'BucketName', this.bucket.bucketName);
+    stackOutput(this, 'QueueUrl', this.queue.queueUrl);
+    stackOutput(this, 'DlqUrl', this.deadLetterQueue.queueUrl);
+    stackOutput(this, 'TableName', this.table.tableName);
   }
 }

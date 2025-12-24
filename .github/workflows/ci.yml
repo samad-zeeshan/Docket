@@ -56,10 +56,13 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/docket-github-deploy
           aws-region: us-east-1
+      # The alarm address is a repository variable, not source. If ALARM_EMAIL is
+      # unset the context is empty, and the stack deploys with alarms that page
+      # nobody rather than paging a placeholder.
       - name: cdk diff to the job summary
         run: |
           echo '## cdk diff' >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
-          npx cdk diff Docket 2>&1 | tee -a "$GITHUB_STEP_SUMMARY"
+          npx cdk diff Docket --context docket:alarmEmail=${{ vars.ALARM_EMAIL }} 2>&1 | tee -a "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
-      - run: npx cdk deploy Docket --require-approval never
+      - run: npx cdk deploy Docket --require-approval never --context docket:alarmEmail=${{ vars.ALARM_EMAIL }}
