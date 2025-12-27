@@ -51,6 +51,10 @@ export interface PeekedMessage {
 
 // Look without consuming. VisibilityTimeout 0 hands the messages straight back,
 // so a dry run does not hide anything from the real move that follows.
+//
+// That same zero timeout means SQS can return one message several times while it
+// fills the batch: each copy becomes visible again the instant it is handed over.
+// Dedupe on message id, or a queue holding one message reports five.
 export async function peek(sqs: SQSClient, dlqUrl: string, limit = 5): Promise<PeekedMessage[]> {
   const out = await sqs.send(
     new ReceiveMessageCommand({
@@ -60,7 +64,16 @@ export async function peek(sqs: SQSClient, dlqUrl: string, limit = 5): Promise<P
       WaitTimeSeconds: 1,
     }),
   );
-  return (out.Messages ?? []).map((m) => ({ messageId: m.MessageId ?? '(no id)', body: m.Body ?? '' }));
+
+  const seen = new Set<string>();
+  const messages: PeekedMessage[] = [];
+  for (const m of out.Messages ?? []) {
+    const messageId = m.MessageId ?? '(no id)';
+    if (seen.has(messageId)) continue;
+    seen.add(messageId);
+    messages.push({ messageId, body: m.Body ?? '' });
+  }
+  return messages;
 }
 
 // With no DestinationArn, SQS moves each message back to the queue it originally
@@ -89,17 +102,32 @@ export interface WaitOptions {
 
 const TERMINAL = new Set(['COMPLETED', 'FAILED', 'CANCELLED']);
 
+async function readTask(sqs: SQSClient, dlqArn: string): Promise<RedriveResult> {
+  const out = await sqs.send(new ListMessageMoveTasksCommand({ SourceArn: dlqArn, MaxResults: 1 }));
+  const task = out.Results?.[0];
+  return {
+    status: task?.Status ?? 'UNKNOWN',
+    moved: Number(task?.ApproximateNumberOfMessagesMoved ?? 0),
+    ...(task?.FailureReason ? { failureReason: task.FailureReason } : {}),
+  };
+}
+
 export async function waitForRedrive(sqs: SQSClient, dlqArn: string, options: WaitOptions = {}): Promise<RedriveResult> {
   const attempts = options.attempts ?? 60;
   const sleep = options.sleep ?? ((ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms)));
 
   for (let i = 0; i < attempts; i++) {
-    const out = await sqs.send(new ListMessageMoveTasksCommand({ SourceArn: dlqArn, MaxResults: 1 }));
-    const task = out.Results?.[0];
-    const status = task?.Status ?? 'UNKNOWN';
-    const moved = Number(task?.ApproximateNumberOfMessagesMoved ?? 0);
-    if (TERMINAL.has(status)) {
-      return { status, moved, ...(task?.FailureReason ? { failureReason: task.FailureReason } : {}) };
+    const task = await readTask(sqs, dlqArn);
+    if (TERMINAL.has(task.status)) {
+      // The moved count is approximate, and it can still read zero the instant a
+      // task flips to COMPLETED. Read once more rather than tell an operator that
+      // a redrive which actually worked moved nothing.
+      if (task.status === 'COMPLETED' && task.moved === 0) {
+        await sleep(2000);
+        const settled = await readTask(sqs, dlqArn);
+        if (settled.status === 'COMPLETED') return settled;
+      }
+      return task;
     }
     await sleep(2000);
   }

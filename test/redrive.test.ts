@@ -56,6 +56,15 @@ describe('peek', () => {
     expect(out).toEqual([{ messageId: 'm1', body: 'hello' }]);
     expect(sqs.named('ReceiveMessageCommand')!.input.VisibilityTimeout).toBe(0);
   });
+
+  // A zero visibility timeout makes each message visible again the moment SQS
+  // hands it over, so one message can fill the whole batch. A queue with a single
+  // message must not be reported as five.
+  it('dedupes a message SQS hands back more than once', async () => {
+    const dupe = { MessageId: 'm1', Body: 'hello' };
+    const sqs = new FakeSqs({ ReceiveMessageCommand: { Messages: [dupe, dupe, dupe, dupe, dupe] } });
+    expect(await peek(sqs.as(), 'url')).toEqual([{ messageId: 'm1', body: 'hello' }]);
+  });
 });
 
 describe('startRedrive', () => {
@@ -90,6 +99,19 @@ describe('waitForRedrive', () => {
           : { Results: [{ Status: 'COMPLETED', ApproximateNumberOfMessagesMoved: 3 }] },
     });
     expect(await waitForRedrive(sqs.as(), 'arn:dlq', { sleep: noSleep })).toEqual({ status: 'COMPLETED', moved: 3 });
+  });
+
+  // Observed against real SQS: the task reported COMPLETED with a moved count of
+  // zero, one instant after moving a message. Reporting that verbatim tells an
+  // operator the redrive did nothing.
+  it('re-reads a completed task whose approximate moved count is still zero', async () => {
+    const sqs = new FakeSqs({
+      ListMessageMoveTasksCommand: (n: number) =>
+        n === 0
+          ? { Results: [{ Status: 'COMPLETED', ApproximateNumberOfMessagesMoved: 0 }] }
+          : { Results: [{ Status: 'COMPLETED', ApproximateNumberOfMessagesMoved: 1 }] },
+    });
+    expect(await waitForRedrive(sqs.as(), 'arn:dlq', { sleep: noSleep })).toEqual({ status: 'COMPLETED', moved: 1 });
   });
 
   it('surfaces the failure reason instead of reporting success', async () => {
