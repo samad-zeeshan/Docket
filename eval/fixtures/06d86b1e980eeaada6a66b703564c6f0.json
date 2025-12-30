@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"Store\",\"date\":\"2025-02-22\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Paperback\",\"quantity\":1,\"unitPrice\":12.99,\"amount\":12.99}],\"subtotal\":16.84,\"tax\":1.04,\"total\":16.84}",
+  "text": "```json\n{\n  \"store\": \"Corner Grocery\",\n  \"date\": \"2025-02-22\",\n  \"currency\": \"USD\",\n  \"items\": [\n    {\n      \"description\": \"Paperback\",\n      \"quantity\": 1,\n      \"price\": 12.99\n    }\n  ],\n  \"subtotal\": 12.99,\n  \"tax\": 1.04,\n  \"total\": 14.03\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 41,
-  "outputTokens": 47
+  "inputTokens": 69,
+  "outputTokens": 114
 }

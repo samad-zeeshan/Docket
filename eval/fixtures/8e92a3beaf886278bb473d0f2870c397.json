@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"City Bikes Inc\",\"date\":\"2025-01-31\",\"currency\":\"GBP\",\"lineItems\":[{\"description\":\"Shampoo\",\"quantity\":3,\"unitPrice\":6.25,\"amount\":18.75},{\"description\":\"Bagel\",\"quantity\":3,\"unitPrice\":3.25,\"amount\":9.75}],\"subtotal\":28.5,\"tax\":2.28,\"total\":30.78,\"paymentMethod\":\"debit\"}",
+  "text": "```json\n{\n  \"merchant\": \"City Bikes\",\n  \"date\": \"2025-01-31\",\n  \"currency\": \"GBP\",\n  \"lineItems\": [\n    {\n      \"description\": \"Shampoo\",\n      \"quantity\": 3,\n      \"amount\": 18.75\n    },\n    {\n      \"description\": \"Bagel\",\n      \"quantity\": 3,\n      \"amount\": 9.75\n    }\n  ],\n  \"subtotal\": 28.50,\n  \"tax\": 2.28,\n  \"total\": 30.78,\n  \"paymentMethod\": \"debit\"\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 92,
-  "outputTokens": 71
+  "inputTokens": 149,
+  "outputTokens": 163
 }

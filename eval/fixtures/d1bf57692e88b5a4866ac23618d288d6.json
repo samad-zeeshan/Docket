@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"Harbor Seafood\",\"date\":\"2025-02-24\",\"currency\":\"GBP\",\"lineItems\":[{\"description\":\"Notebook\",\"quantity\":3,\"unitPrice\":5,\"amount\":15}],\"subtotal\":15,\"tax\":1.2,\"total\":16.2,\"paymentMethod\":\"cash\"}",
+  "text": "```json\n{\n  \"merchant\": \"Harbor Seafood\",\n  \"date\": \"2025-02-24\",\n  \"currency\": \"GBP\",\n  \"lineItems\": [\n    {\n      \"description\": \"Notebook\",\n      \"quantity\": 3,\n      \"unitPrice\": 5.00,\n      \"amount\": 15.00\n    }\n  ],\n  \"subtotal\": 15.00,\n  \"tax\": 1.20,\n  \"total\": 16.20,\n  \"paymentMethod\": \"cash\"\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 203,
-  "outputTokens": 52
+  "inputTokens": 295,
+  "outputTokens": 139
 }

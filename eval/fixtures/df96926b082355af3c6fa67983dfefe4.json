@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"Green Leaf Market\",\"date\":\"2025-02-14\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Sparkling water\",\"quantity\":3,\"unitPrice\":1.5,\"amount\":4.5},{\"description\":\"Paperback\",\"quantity\":3,\"unitPrice\":12.99,\"amount\":38.97}],\"subtotal\":43.47,\"tax\":0,\"total\":46.95}",
+  "text": "```json\n{\n  \"merchant\": \"Green Leaf Market\",\n  \"date\": \"2025-02-14\",\n  \"currency\": \"USD\",\n  \"lineItems\": [\n    {\n      \"description\": \"Sparkling water\",\n      \"quantity\": 3,\n      \"amount\": 4.50\n    },\n    {\n      \"description\": \"Paperback\",\n      \"quantity\": 3,\n      \"amount\": 38.97\n    }\n  ],\n  \"subtotal\": 43.47,\n  \"tax\": 3.48,\n  \"total\": 46.95\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 94,
-  "outputTokens": 68
+  "inputTokens": 142,
+  "outputTokens": 150
 }

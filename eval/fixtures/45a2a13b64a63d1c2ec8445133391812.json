@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"Sunrise Diner\",\"date\":\"2025-02-26\",\"currency\":\"GBP\",\"lineItems\":[{\"description\":\"Notebook\",\"quantity\":2,\"unitPrice\":5,\"amount\":10},{\"description\":\"AA Batteries\",\"quantity\":1,\"unitPrice\":8.99,\"amount\":8.99},{\"description\":\"Sparkling water\",\"quantity\":2,\"unitPrice\":1.5,\"amount\":3},{\"description\":\"Pen pack\",\"quantity\":2,\"unitPrice\":2.75,\"amount\":5.5}],\"subtotal\":27.49,\"tax\":2.2,\"total\":29.69,\"paymentMethod\":\"gift_card\"}",
+  "text": "```json\n{\n  \"merchant\": \"Sunrise Diner\",\n  \"date\": \"2025-02-26\",\n  \"currency\": \"GBP\",\n  \"lineItems\": [\n    {\n      \"description\": \"Notebook\",\n      \"quantity\": 2,\n      \"amount\": 10.00\n    },\n    {\n      \"description\": \"AA Batteries\",\n      \"quantity\": 1,\n      \"amount\": 8.99\n    },\n    {\n      \"description\": \"Sparkling water\",\n      \"quantity\": 2,\n      \"amount\": 3.00\n    },\n    {\n      \"description\": \"Pen pack\",\n      \"quantity\": 2,\n      \"amount\": 5.50\n    }\n  ],\n  \"subtotal\": 27.49,\n  \"tax\": 2.20,\n  \"total\": 29.69,\n  \"paymentMethod\": \"gift_card\"\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 222,
-  "outputTokens": 108
+  "inputTokens": 332,
+  "outputTokens": 231
 }

@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"Unknown\",\"date\":\"2025-02-20\",\"currency\":\"EUR\",\"lineItems\":[{\"description\":\"Bagel\",\"quantity\":3,\"unitPrice\":3.25,\"amount\":9.75},{\"description\":\"Trail mix\",\"quantity\":2,\"unitPrice\":4.2,\"amount\":8.4}],\"subtotal\":30.75,\"tax\":2.46,\"total\":39.85,\"paymentMethod\":\"cash\"}",
+  "text": "```json\n{\n  \"store\": \"The Book Nook\",\n  \"date\": \"2025-02-20\",\n  \"currency\": \"EUR\",\n  \"items\": [\n    {\n      \"name\": \"Bagel\",\n      \"quantity\": 3,\n      \"price\": 9.75\n    },\n    {\n      \"name\": \"Trail mix\",\n      \"quantity\": 2,\n      \"price\": 8.40\n    },\n    {\n      \"name\": \"Trail mix\",\n      \"quantity\": 2,\n      \"price\": 8.40\n    },\n    {\n      \"name\": \"Trail mix\",\n      \"quantity\": 1,\n      \"price\": 4.20\n    }\n  ],\n  \"subtotal\": 30.75,\n  \"tax\": 2.46,\n  \"total\": 33.21,\n  \"payment_method\": \"cash\"\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 58,
-  "outputTokens": 69
+  "inputTokens": 106,
+  "outputTokens": 223
 }

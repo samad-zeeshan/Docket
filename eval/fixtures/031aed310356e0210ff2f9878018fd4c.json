@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"Store\",\"date\":\"2025-01-13\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Eggs dozen\",\"quantity\":2,\"unitPrice\":4.49,\"amount\":8.98}],\"subtotal\":8.98,\"tax\":0.72,\"total\":11.64,\"paymentMethod\":\"gift_card\"}",
+  "text": "```json\n{\n  \"store\": \"Pacific Fuel\",\n  \"date\": \"2025-01-13\",\n  \"currency\": \"USD\",\n  \"items\": [\n    {\n      \"description\": \"Eggs dozen\",\n      \"quantity\": 2,\n      \"price\": 8.98\n    }\n  ],\n  \"subtotal\": 8.98,\n  \"tax\": 0.72,\n  \"total\": 9.70,\n  \"payment_method\": \"gift_card\"\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 44,
-  "outputTokens": 53
+  "inputTokens": 76,
+  "outputTokens": 127
 }

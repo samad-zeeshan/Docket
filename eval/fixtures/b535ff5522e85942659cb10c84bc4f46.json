@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"Unknown\",\"date\":\"2025-03-10\",\"currency\":\"EUR\",\"lineItems\":[{\"description\":\"AA Batteries\",\"quantity\":1,\"unitPrice\":8.99,\"amount\":8.99}],\"subtotal\":14.49,\"tax\":2.75,\"total\":20.69,\"paymentMethod\":\"credit\"}",
+  "text": "```json\n{\n  \"store\": \"Berlin Elektronik\",\n  \"date\": \"2025-03-10\",\n  \"currency\": \"EUR\",\n  \"items\": [\n    {\n      \"name\": \"AA Batteries\",\n      \"quantity\": 1,\n      \"price\": 8.99\n    },\n    {\n      \"name\": \"Pen pack\",\n      \"quantity\": 2,\n      \"price\": 5.50\n    }\n  ],\n  \"subtotal\": 14.49,\n  \"vat\": {\n    \"rate\": 0.19,\n    \"amount\": 2.75\n  },\n  \"total\": 17.24,\n  \"payment_method\": \"credit\"\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 52,
-  "outputTokens": 54
+  "inputTokens": 90,
+  "outputTokens": 178
 }

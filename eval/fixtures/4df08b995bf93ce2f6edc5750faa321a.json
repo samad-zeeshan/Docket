@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"Sunrise Diner\",\"date\":\"2025-02-12\",\"currency\":\"GBP\",\"lineItems\":[{\"description\":\"Eggs dozen\",\"quantity\":1,\"unitPrice\":4.49,\"amount\":4.49},{\"description\":\"Bagel\",\"quantity\":3,\"unitPrice\":3.25,\"amount\":9.75},{\"description\":\"Shampoo\",\"quantity\":1,\"unitPrice\":6.25,\"amount\":6.25}],\"subtotal\":20.49,\"tax\":1.64,\"total\":23.13}",
+  "text": "```json\n{\n  \"merchant\": \"Sunrise Diner\",\n  \"date\": \"2025-02-12\",\n  \"currency\": \"GBP\",\n  \"lineItems\": [\n    {\n      \"description\": \"Eggs dozen\",\n      \"quantity\": 1,\n      \"amount\": 4.49\n    },\n    {\n      \"description\": \"Bagel\",\n      \"quantity\": 3,\n      \"amount\": 9.75\n    },\n    {\n      \"description\": \"Shampoo\",\n      \"quantity\": 1,\n      \"amount\": 6.25\n    }\n  ],\n  \"subtotal\": 20.49,\n  \"tax\": 1.64,\n  \"total\": 22.13\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 95,
-  "outputTokens": 83
+  "inputTokens": 156,
+  "outputTokens": 186
 }

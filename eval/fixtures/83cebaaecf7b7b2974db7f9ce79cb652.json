@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"Store\",\"date\":\"2025-03-06\",\"currency\":\"GBP\",\"lineItems\":[{\"description\":\"Paperback\",\"quantity\":1,\"unitPrice\":12.99,\"amount\":12.99}],\"subtotal\":25.91,\"tax\":3.6,\"total\":25.91,\"paymentMethod\":\"credit\"}",
+  "text": "```json\n{\n  \"store\": \"London Books Ltd\",\n  \"date\": \"2025-03-06\",\n  \"currency\": \"GBP\",\n  \"items\": [\n    {\n      \"description\": \"Paperback\",\n      \"quantity\": 1,\n      \"price\": 12.99\n    },\n    {\n      \"description\": \"Notebook\",\n      \"quantity\": 1,\n      \"price\": 5.00\n    }\n  ],\n  \"subtotal\": 17.99,\n  \"vat\": {\n    \"rate\": \"20%\",\n    \"amount\": 3.60\n  },\n  \"total\": 21.59,\n  \"payment_method\": \"credit\"\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 51,
-  "outputTokens": 53
+  "inputTokens": 90,
+  "outputTokens": 177
 }

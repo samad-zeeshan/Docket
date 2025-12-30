@@ -1,11 +1,17 @@
 /**
- * Build recorded model responses for the golden set.
+ * Build synthetic stand-in responses for the golden set.
  *
- * These are synthetic stand-ins for a model, not real Bedrock output. Each is
- * the gold label with a documented set of errors injected so the scorer has
- * something to catch and the CI number is not a trivial 1.0. v1 is close, v2 is
- * a touch worse (that is the point of the comparison), broken is bad on purpose.
- * All stay schema-valid, so the recorded run never exercises the repair path.
+ * DO NOT RUN THIS. The committed fixtures are real Bedrock responses, captured
+ * with `npm run eval:record`. This script overwrites them with the gold label
+ * plus injected errors, which silently turns the eval back into a test of the
+ * harness rather than a measurement of the model.
+ *
+ * It is kept because it is how the fixtures were bootstrapped before there was
+ * an AWS account to record against, and because a contributor without Bedrock
+ * access needs some way to get a green `npm run eval`. If you run it, say so,
+ * and do not let the result reach main.
+ *
+ * Guarded by DOCKET_ALLOW_SYNTHETIC=1 so it cannot be run by accident.
  */
 import { readFileSync, writeFileSync, mkdirSync, readdirSync } from 'node:fs';
 import * as path from 'node:path';
@@ -53,6 +59,12 @@ function corrupt(version: string, label: Receipt, idx: number): Receipt {
 }
 
 async function main(): Promise<void> {
+  if (process.env.DOCKET_ALLOW_SYNTHETIC !== '1') {
+    console.error('refusing to overwrite the recorded Bedrock fixtures with synthetic ones.');
+    console.error('re-record them with `npm run eval:record`, or set DOCKET_ALLOW_SYNTHETIC=1 if you know why.');
+    process.exit(2);
+  }
+
   mkdirSync(FIXTURES, { recursive: true });
   const manifest = JSON.parse(readFileSync(path.join(GOLDEN, 'manifest.json'), 'utf8')) as {
     id: string;

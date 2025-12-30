@@ -91,7 +91,7 @@ is the wrong one. They are written up in
 ## Tests
 
 ```bash
-npm test              # 84 tests: handlers, schema, scoring, providers, and the stack
+npm test              # 96 tests: handlers, schema, scoring, providers, and the stack
 npm run eval          # scores 42 receipts, fails under 0.90
 npm run synth         # CloudFormation, with cdk-nag best practice checks
 npm run lint
@@ -127,11 +127,17 @@ are ordinary. Twelve are deliberately hard: other currencies, discount lines tha
 go negative, a missing subtotal, foreign VAT wording, dates in odd formats, and a
 tip that makes the total not add up.
 
-The current score is **0.968**, and CI fails below 0.90.
+Claude Haiku 4.5 scores **0.999** on that set. CI fails below 0.90.
 
-Read [eval/README.md](eval/README.md) before quoting that number. It is produced
-by replaying saved responses that stand in for a model, so it measures the
-harness and the prompt structure, not live model accuracy.
+That number is real. It comes from replaying responses recorded from the live
+model on Bedrock, so CI can check it on every push without a model call. The
+token counts, and therefore the cost figures, are the ones the model reported.
+Latency is the only thing a replay cannot give you, so it is measured live:
+**p50 1.6s, p95 2.0s**, at **$0.0012 per receipt**.
+
+The one field it does not ace is line items, and the one category is foreign VAT.
+See [eval/README.md](eval/README.md), which also explains why the shorter `v2`
+prompt now looks better than the one that ships, and what would settle it.
 
 ## Deploy
 
@@ -161,14 +167,28 @@ anything is written.
 
 ## Status
 
-The code is complete and verified locally. It has never been deployed to a live
-AWS account, so no number here comes from production.
+This has been deployed and run on a live AWS account. A receipt PDF went into S3
+and came out of DynamoDB as checked JSON, in 1.7 seconds, for a fifth of a cent.
+Every number on this page comes from that account.
 
-What is actually verified: TypeScript compiles clean, the linter passes, 84 tests
-pass, `cdk synth` produces valid CloudFormation with zero cdk-nag findings, and
-the LocalStack test exercises the real S3 and DynamoDB behavior. The accuracy
-number and the cost estimate come from saved synthetic responses, not from
-Bedrock.
+Deploying it once was worth more than any test. It found four bugs nothing else
+could:
+
+- the pinned model had been retired and no longer existed
+- the runbook's first command resolved every variable to an empty string, because
+  CDK renames outputs declared inside a construct
+- the redrive tool listed one stuck message five times
+- and, worse, reported that it had moved nothing right after moving something
+
+It also failed on its first document, because Bedrock had not yet approved the
+account. That was the good outcome. The handler threw instead of marking the
+receipt `FAILED`, SQS retried three times, the message landed in the dead letter
+queue, one alarm fired, and the redrive replayed it without creating a duplicate.
+Four claims in [docs/decisions.md](docs/decisions.md), tested by an accident.
+
+Also verified: TypeScript compiles clean, the linter passes, 96 tests pass,
+`cdk synth` produces valid CloudFormation with zero cdk-nag findings, and the
+LocalStack test exercises real S3 and DynamoDB behavior.
 
 ## License
 

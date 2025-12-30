@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"Store\",\"date\":\"2025-02-14\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Sparkling water\",\"quantity\":3,\"unitPrice\":1.5,\"amount\":4.5}],\"subtotal\":43.47,\"tax\":3.48,\"total\":56.34}",
+  "text": "```json\n{\n  \"store\": \"Green Leaf Market\",\n  \"date\": \"2025-02-14\",\n  \"currency\": \"USD\",\n  \"items\": [\n    {\n      \"name\": \"Sparkling water\",\n      \"quantity\": 3,\n      \"price\": 4.50\n    },\n    {\n      \"name\": \"Paperback\",\n      \"quantity\": 3,\n      \"price\": 38.97\n    }\n  ],\n  \"subtotal\": 46.95,\n  \"tax\": 3.48,\n  \"total\": 46.95\n}\n```\n\n**Note:** There appears to be a discrepancy in the receipt. The subtotal shown (43.47) plus tax (3.48) should equal 46.95, which matches the total. However, the sum of the individual items (4.50 + 38.97 = 43.47) matches the subtotal, so the receipt is internally consistent.",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 48,
-  "outputTokens": 47
+  "inputTokens": 82,
+  "outputTokens": 230
 }

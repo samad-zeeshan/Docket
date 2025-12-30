@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"Unknown\",\"date\":\"2025-01-07\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Pen pack\",\"quantity\":3,\"unitPrice\":2.75,\"amount\":8.25},{\"description\":\"Pen pack\",\"quantity\":1,\"unitPrice\":2.75,\"amount\":2.75}],\"subtotal\":46.49,\"tax\":3.72,\"total\":60.25,\"paymentMethod\":\"debit\"}",
+  "text": "```json\n{\n  \"restaurant\": \"Sunrise Diner\",\n  \"date\": \"2025-01-07\",\n  \"currency\": \"USD\",\n  \"items\": [\n    {\n      \"name\": \"Pen pack\",\n      \"quantity\": 3,\n      \"price\": 8.25\n    },\n    {\n      \"name\": \"Pen pack\",\n      \"quantity\": 1,\n      \"price\": 2.75\n    },\n    {\n      \"name\": \"Sandwich\",\n      \"quantity\": 3,\n      \"price\": 22.50\n    },\n    {\n      \"name\": \"Paperback\",\n      \"quantity\": 1,\n      \"price\": 12.99\n    }\n  ],\n  \"subtotal\": 46.49,\n  \"tax\": 3.72,\n  \"total\": 50.21,\n  \"payment_method\": \"debit\"\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 59,
-  "outputTokens": 70
+  "inputTokens": 109,
+  "outputTokens": 226
 }

@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"The Book Nook\",\"date\":\"2025-01-05\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"AA Batteries\",\"quantity\":3,\"unitPrice\":8.99,\"amount\":26.97},{\"description\":\"Bagel\",\"quantity\":2,\"unitPrice\":3.25,\"amount\":6.5}],\"subtotal\":37.07,\"tax\":2.97,\"total\":40.04,\"paymentMethod\":\"debit\"}",
+  "text": "```json\n{\n  \"merchant\": \"The Book Nook\",\n  \"date\": \"2025-01-05\",\n  \"currency\": \"USD\",\n  \"lineItems\": [\n    {\n      \"description\": \"AA Batteries\",\n      \"quantity\": 3,\n      \"amount\": 26.97\n    },\n    {\n      \"description\": \"Bagel\",\n      \"quantity\": 2,\n      \"amount\": 6.50\n    },\n    {\n      \"description\": \"Orange juice\",\n      \"quantity\": 1,\n      \"amount\": 3.60\n    }\n  ],\n  \"subtotal\": 37.07,\n  \"tax\": 2.97,\n  \"total\": 40.04,\n  \"paymentMethod\": \"debit\"\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 214,
-  "outputTokens": 72
+  "inputTokens": 317,
+  "outputTokens": 194
 }

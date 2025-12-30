@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"Blue Bottle Coffee\",\"date\":\"2025-03-26\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Sandwich\",\"quantity\":2,\"unitPrice\":7.5,\"amount\":15},{\"description\":\"Orange juice\",\"quantity\":1,\"unitPrice\":3.6,\"amount\":3.6}],\"subtotal\":18.6,\"tax\":1.49,\"total\":23.81,\"paymentMethod\":\"credit\"}",
+  "text": "```json\n{\n  \"merchant\": \"Blue Bottle Coffee\",\n  \"date\": \"2025-03-26\",\n  \"currency\": \"USD\",\n  \"lineItems\": [\n    {\n      \"description\": \"Sandwich\",\n      \"quantity\": 2,\n      \"amount\": 15.00\n    },\n    {\n      \"description\": \"Orange juice\",\n      \"quantity\": 1,\n      \"amount\": 3.60\n    }\n  ],\n  \"subtotal\": 18.60,\n  \"tax\": 1.49,\n  \"total\": 23.81,\n  \"paymentMethod\": \"credit\"\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 213,
-  "outputTokens": 73
+  "inputTokens": 311,
+  "outputTokens": 158
 }

@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"The Book Nook\",\"date\":\"2025-01-09\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"AA Batteries\",\"quantity\":1,\"unitPrice\":8.99,\"amount\":8.99}],\"subtotal\":8.99,\"tax\":0.72,\"total\":9.71,\"paymentMethod\":\"debit\"}",
+  "text": "```json\n{\n  \"merchant\": \"The Book Nook\",\n  \"date\": \"2025-01-09\",\n  \"currency\": \"USD\",\n  \"lineItems\": [\n    {\n      \"description\": \"AA Batteries\",\n      \"quantity\": 1,\n      \"unitPrice\": 8.99,\n      \"amount\": 8.99\n    }\n  ],\n  \"subtotal\": 8.99,\n  \"tax\": 0.72,\n  \"total\": 9.71,\n  \"paymentMethod\": \"debit\"\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 203,
-  "outputTokens": 55
+  "inputTokens": 296,
+  "outputTokens": 140
 }

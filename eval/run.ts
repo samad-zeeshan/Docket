@@ -144,7 +144,7 @@ async function main(): Promise<void> {
         failures,
         note: live
           ? 'live provider run, token counts and latency are measured'
-          : 'recorded provider, fixtures are synthetic stand-ins so token counts are estimates and latency is replay time',
+          : 'recorded provider, replaying real Bedrock responses captured by npm run eval:record. Token counts are the counts the model reported. Latency is replay time and is not reported.',
         receipts,
       },
       null,
@@ -179,9 +179,9 @@ function printTable(
     console.log(`  ${c.category.padEnd(16)}${c.accuracy.toFixed(3)}   n=${c.n}`);
   }
 
-  // Cost projection. On the recorded provider the token counts are synthetic, so
-  // this is an estimate at realistic prompt sizes, not a measured bill.
-  const tag = extra.cost.measured ? 'measured' : 'estimated from synthetic fixtures';
+  // The fixtures hold the token counts the live model actually reported, so the
+  // cost is real either way. Only the latency below is a replay artifact.
+  const tag = extra.cost.measured ? 'measured' : 'from the recorded live responses';
   console.log(`\n  cost (${tag})`);
   console.log(
     `  ${'per receipt'.padEnd(16)}$${extra.cost.perReceiptUsd.toFixed(6)}   (${extra.cost.avgInputTokens} in / ${extra.cost.avgOutputTokens} out tokens)`,

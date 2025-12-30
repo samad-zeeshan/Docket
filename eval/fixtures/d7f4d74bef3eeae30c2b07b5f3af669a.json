@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"City Bikes\",\"date\":\"2025-02-22\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Bike tube\",\"quantity\":2,\"unitPrice\":9,\"amount\":18}],\"subtotal\":13,\"tax\":1.04,\"total\":14.04,\"paymentMethod\":\"credit\"}",
+  "text": "```json\n{\n  \"merchant\": \"City Bikes\",\n  \"date\": \"2025-02-22\",\n  \"currency\": \"USD\",\n  \"lineItems\": [\n    {\n      \"description\": \"Bike tube\",\n      \"quantity\": 2,\n      \"amount\": 18.00\n    },\n    {\n      \"description\": \"Coupon SAVE5\",\n      \"quantity\": 1,\n      \"amount\": -5.00\n    }\n  ],\n  \"subtotal\": 13.00,\n  \"tax\": 1.04,\n  \"total\": 14.04,\n  \"paymentMethod\": \"credit\"\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 209,
-  "outputTokens": 52
+  "inputTokens": 308,
+  "outputTokens": 162
 }

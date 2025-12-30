@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"Store\",\"date\":\"2025-02-18\",\"currency\":\"GBP\",\"lineItems\":[{\"description\":\"AA Batteries\",\"quantity\":1,\"unitPrice\":8.99,\"amount\":8.99}],\"subtotal\":8.99,\"tax\":0.72,\"total\":11.65,\"paymentMethod\":\"cash\"}",
+  "text": "```json\n{\n  \"merchant\": \"Blue Bottle Coffee\",\n  \"date\": \"2025-02-18\",\n  \"currency\": \"GBP\",\n  \"items\": [\n    {\n      \"description\": \"AA Batteries\",\n      \"quantity\": 1,\n      \"price\": 8.99\n    }\n  ],\n  \"subtotal\": 8.99,\n  \"tax\": 0.72,\n  \"total\": 9.71,\n  \"payment_method\": \"cash\"\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 45,
-  "outputTokens": 53
+  "inputTokens": 77,
+  "outputTokens": 128
 }

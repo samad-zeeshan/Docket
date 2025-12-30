@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"Store\",\"date\":\"2025-02-10\",\"currency\":\"EUR\",\"lineItems\":[{\"description\":\"Espresso\",\"quantity\":1,\"unitPrice\":3.2,\"amount\":3.2}],\"subtotal\":7.92,\"tax\":0.6,\"total\":7.92,\"paymentMethod\":\"credit\"}",
+  "text": "```json\n{\n  \"establishment\": \"Cafe Central\",\n  \"date\": \"2025-02-10\",\n  \"currency\": \"EUR\",\n  \"items\": [\n    {\n      \"name\": \"Espresso\",\n      \"quantity\": 1,\n      \"price\": 3.20\n    },\n    {\n      \"name\": \"Croissant\",\n      \"quantity\": 1,\n      \"price\": 2.80\n    }\n  ],\n  \"subtotal\": 6.00,\n  \"tax\": 0.60,\n  \"total\": 6.60,\n  \"payment_method\": \"credit\"\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 48,
-  "outputTokens": 51
+  "inputTokens": 86,
+  "outputTokens": 159
 }

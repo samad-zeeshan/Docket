@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"Harbor Seafood\",\"date\":\"2025-02-02\",\"currency\":\"GBP\",\"lineItems\":[{\"description\":\"Bike tube\",\"quantity\":2,\"unitPrice\":9,\"amount\":18},{\"description\":\"AA Batteries\",\"quantity\":2,\"unitPrice\":8.99,\"amount\":17.98},{\"description\":\"AA Batteries\",\"quantity\":2,\"unitPrice\":8.99,\"amount\":17.98},{\"description\":\"Bagel\",\"quantity\":2,\"unitPrice\":3.25,\"amount\":6.5}],\"subtotal\":60.46,\"tax\":4.84,\"total\":65.3,\"paymentMethod\":\"credit\"}",
+  "text": "```json\n{\n  \"merchant\": \"Harbor Seafood\",\n  \"date\": \"2025-02-02\",\n  \"currency\": \"GBP\",\n  \"lineItems\": [\n    {\n      \"description\": \"Bike tube\",\n      \"quantity\": 2,\n      \"amount\": 18.00\n    },\n    {\n      \"description\": \"AA Batteries\",\n      \"quantity\": 2,\n      \"amount\": 17.98\n    },\n    {\n      \"description\": \"AA Batteries\",\n      \"quantity\": 2,\n      \"amount\": 17.98\n    },\n    {\n      \"description\": \"Bagel\",\n      \"quantity\": 2,\n      \"amount\": 6.50\n    }\n  ],\n  \"subtotal\": 60.46,\n  \"tax\": 4.84,\n  \"total\": 65.30,\n  \"paymentMethod\": \"credit\"\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 220,
-  "outputTokens": 108
+  "inputTokens": 329,
+  "outputTokens": 228
 }

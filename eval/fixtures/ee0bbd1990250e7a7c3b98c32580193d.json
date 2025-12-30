@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"Store\",\"date\":\"2025-02-26\",\"currency\":\"GBP\",\"lineItems\":[{\"description\":\"Notebook\",\"quantity\":2,\"unitPrice\":5,\"amount\":10},{\"description\":\"AA Batteries\",\"quantity\":1,\"unitPrice\":8.99,\"amount\":8.99}],\"subtotal\":27.49,\"tax\":2.2,\"total\":35.63,\"paymentMethod\":\"gift_card\"}",
+  "text": "```json\n{\n  \"restaurant\": \"Sunrise Diner\",\n  \"date\": \"2025-02-26\",\n  \"currency\": \"GBP\",\n  \"items\": [\n    {\n      \"name\": \"Notebook\",\n      \"quantity\": 2,\n      \"price\": 10.00\n    },\n    {\n      \"name\": \"AA Batteries\",\n      \"quantity\": 1,\n      \"price\": 8.99\n    },\n    {\n      \"name\": \"Sparkling water\",\n      \"quantity\": 2,\n      \"price\": 3.00\n    },\n    {\n      \"name\": \"Pen pack\",\n      \"quantity\": 2,\n      \"price\": 5.50\n    }\n  ],\n  \"subtotal\": 27.49,\n  \"tax\": 2.20,\n  \"total\": 29.69,\n  \"payment_method\": \"gift_card\"\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 62,
-  "outputTokens": 70
+  "inputTokens": 113,
+  "outputTokens": 230
 }

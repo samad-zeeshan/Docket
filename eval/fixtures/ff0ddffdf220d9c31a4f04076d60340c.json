@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"Harbor Seafood\",\"date\":\"2025-03-18\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Sandwich\",\"quantity\":1,\"unitPrice\":7.5,\"amount\":7.5},{\"description\":\"Sparkling water\",\"quantity\":2,\"unitPrice\":1.5,\"amount\":3}],\"subtotal\":10.5,\"tax\":0.84,\"total\":11.34,\"paymentMethod\":\"credit\"}",
+  "text": "```json\n{\n  \"merchant\": \"Harbor Seafood\",\n  \"date\": \"2025-03-18\",\n  \"currency\": \"USD\",\n  \"lineItems\": [\n    {\n      \"description\": \"Sandwich\",\n      \"quantity\": 1,\n      \"unitPrice\": 7.50,\n      \"amount\": 7.50\n    },\n    {\n      \"description\": \"Sparkling water\",\n      \"quantity\": 2,\n      \"unitPrice\": 1.50,\n      \"amount\": 3.00\n    }\n  ],\n  \"subtotal\": 10.50,\n  \"tax\": 0.84,\n  \"total\": 11.34,\n  \"paymentMethod\": \"credit\"\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 210,
-  "outputTokens": 72
+  "inputTokens": 305,
+  "outputTokens": 182
 }

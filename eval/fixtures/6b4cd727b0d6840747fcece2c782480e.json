@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"Unknown\",\"date\":\"2025-01-19\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Orange juice\",\"quantity\":3,\"unitPrice\":3.6,\"amount\":10.8},{\"description\":\"Pen pack\",\"quantity\":2,\"unitPrice\":2.75,\"amount\":5.5}],\"subtotal\":40.3,\"tax\":3.22,\"total\":52.22,\"paymentMethod\":\"cash\"}",
+  "text": "```json\n{\n  \"store\": \"Harbor Seafood\",\n  \"date\": \"2025-01-19\",\n  \"currency\": \"USD\",\n  \"items\": [\n    {\n      \"name\": \"Orange juice\",\n      \"quantity\": 3,\n      \"price\": 10.80\n    },\n    {\n      \"name\": \"Pen pack\",\n      \"quantity\": 2,\n      \"price\": 5.50\n    },\n    {\n      \"name\": \"Notebook\",\n      \"quantity\": 3,\n      \"price\": 15.00\n    },\n    {\n      \"name\": \"Bike tube\",\n      \"quantity\": 1,\n      \"price\": 9.00\n    }\n  ],\n  \"subtotal\": 40.30,\n  \"tax\": 3.22,\n  \"total\": 43.52,\n  \"payment_method\": \"cash\"\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 60,
-  "outputTokens": 70
+  "inputTokens": 106,
+  "outputTokens": 223
 }

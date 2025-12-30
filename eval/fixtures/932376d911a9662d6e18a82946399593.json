@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"Unknown\",\"date\":\"2025-01-11\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Latte\",\"quantity\":3,\"unitPrice\":4.5,\"amount\":13.5},{\"description\":\"Bagel\",\"quantity\":3,\"unitPrice\":3.25,\"amount\":9.75}],\"subtotal\":40.63,\"tax\":2.51,\"total\":40.63}",
+  "text": "```json\n{\n  \"store\": \"City Bikes\",\n  \"date\": \"2025-01-11\",\n  \"currency\": \"USD\",\n  \"items\": [\n    {\n      \"name\": \"Latte\",\n      \"quantity\": 3,\n      \"price\": 13.50\n    },\n    {\n      \"name\": \"Bagel\",\n      \"quantity\": 3,\n      \"price\": 9.75\n    },\n    {\n      \"name\": \"Sparkling water\",\n      \"quantity\": 3,\n      \"price\": 4.50\n    },\n    {\n      \"name\": \"Orange juice\",\n      \"quantity\": 1,\n      \"price\": 3.60\n    }\n  ],\n  \"subtotal\": 31.35,\n  \"tax\": 2.51,\n  \"total\": 33.86\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 56,
-  "outputTokens": 63
+  "inputTokens": 102,
+  "outputTokens": 213
 }

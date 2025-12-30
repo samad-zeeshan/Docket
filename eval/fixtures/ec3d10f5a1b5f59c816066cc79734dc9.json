@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"Store\",\"date\":\"2025-02-26\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Sandwich\",\"quantity\":1,\"unitPrice\":7.5,\"amount\":7.5}],\"total\":13.32,\"paymentMethod\":\"cash\"}",
+  "text": "```json\n{\n  \"restaurant\": \"Sunrise Diner\",\n  \"date\": \"2025-02-26\",\n  \"currency\": \"USD\",\n  \"items\": [\n    {\n      \"name\": \"Sandwich\",\n      \"quantity\": 1,\n      \"price\": 7.50\n    },\n    {\n      \"name\": \"Orange juice\",\n      \"quantity\": 1,\n      \"price\": 3.60\n    }\n  ],\n  \"total\": 11.10,\n  \"payment_method\": \"cash\"\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 42,
-  "outputTokens": 44
+  "inputTokens": 69,
+  "outputTokens": 137
 }

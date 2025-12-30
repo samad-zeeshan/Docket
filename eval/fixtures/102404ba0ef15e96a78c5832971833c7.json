@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"City Bikes\",\"date\":\"2025-01-29\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"AA Batteries\",\"quantity\":3,\"unitPrice\":8.99,\"amount\":26.97},{\"description\":\"Apples lb\",\"quantity\":1,\"unitPrice\":1.89,\"amount\":1.89},{\"description\":\"Sparkling water\",\"quantity\":1,\"unitPrice\":1.5,\"amount\":1.5},{\"description\":\"Trail mix\",\"quantity\":3,\"unitPrice\":4.2,\"amount\":12.6}],\"subtotal\":42.96,\"tax\":3.44,\"total\":46.4,\"paymentMethod\":\"credit\"}",
+  "text": "```json\n{\n  \"merchant\": \"City Bikes\",\n  \"date\": \"2025-01-29\",\n  \"currency\": \"USD\",\n  \"lineItems\": [\n    {\n      \"description\": \"AA Batteries\",\n      \"quantity\": 3,\n      \"amount\": 26.97\n    },\n    {\n      \"description\": \"Apples lb\",\n      \"quantity\": 1,\n      \"amount\": 1.89\n    },\n    {\n      \"description\": \"Sparkling water\",\n      \"quantity\": 1,\n      \"amount\": 1.50\n    },\n    {\n      \"description\": \"Trail mix\",\n      \"quantity\": 3,\n      \"amount\": 12.60\n    }\n  ],\n  \"subtotal\": 42.96,\n  \"tax\": 3.44,\n  \"total\": 46.40,\n  \"paymentMethod\": \"credit\"\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 221,
-  "outputTokens": 109
+  "inputTokens": 327,
+  "outputTokens": 226
 }

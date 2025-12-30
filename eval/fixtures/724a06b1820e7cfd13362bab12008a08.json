@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"Store\",\"date\":\"2025-01-25\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Apples lb\",\"quantity\":3,\"unitPrice\":1.89,\"amount\":5.67},{\"description\":\"Shampoo\",\"quantity\":1,\"unitPrice\":6.25,\"amount\":6.25}],\"subtotal\":28.88,\"tax\":2.31,\"total\":37.43,\"paymentMethod\":\"credit\"}",
+  "text": "```json\n{\n  \"store\": \"Pacific Fuel\",\n  \"date\": \"2025-01-25\",\n  \"currency\": \"USD\",\n  \"items\": [\n    {\n      \"name\": \"Apples lb\",\n      \"quantity\": 3,\n      \"price\": 5.67\n    },\n    {\n      \"name\": \"Shampoo\",\n      \"quantity\": 1,\n      \"price\": 6.25\n    },\n    {\n      \"name\": \"Milk 1gal\",\n      \"quantity\": 2,\n      \"price\": 7.98\n    },\n    {\n      \"name\": \"Eggs dozen\",\n      \"quantity\": 2,\n      \"price\": 8.98\n    }\n  ],\n  \"subtotal\": 28.88,\n  \"tax\": 2.31,\n  \"total\": 31.19,\n  \"payment_method\": \"credit\"\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 59,
-  "outputTokens": 70
+  "inputTokens": 112,
+  "outputTokens": 229
 }

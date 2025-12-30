@@ -5,22 +5,26 @@ is the point of the project. Model output is never trusted, it is measured.
 
 CI runs this on every push and fails the build if accuracy drops below 0.90.
 
-## Read this before quoting a number
+## What the number means
 
-The default run replays saved responses from `fixtures/`. **Those fixtures are
-synthetic stand ins for a model, not real Bedrock output.** Each one is the
-correct answer with a known set of mistakes mixed in, so that the scorer has
-something to catch and the CI number is not a meaningless 1.000. How the mistakes
-are injected is in `gen/make-fixtures.ts`.
+The default run replays saved responses from `fixtures/`. Those are **real Claude
+Haiku 4.5 responses**, captured from Amazon Bedrock with `npm run eval:record`
+and committed. Replaying them is deterministic and free, which is why CI can run
+the eval on every push without a model call or a bill.
 
-So the recorded run measures the harness and the shape of the prompt. It is
-deterministic and free, which is why CI runs it on every push. It is **not** a
-claim about how accurate a real model is. For that, run it against Bedrock.
+So the number is a real measurement of how well the model reads these receipts.
+It is frozen at the moment of recording. It does not track model updates, and it
+does not tell you how the model behaves on a receipt outside this set. To find
+either of those out, re-record.
 
-The eval also reads the receipt text directly rather than a PDF. The library that
+Token counts in the report are the counts the model actually reported, so the
+cost figures are real. Latency is the only thing a replay cannot give you, so it
+is measured on a live run and hidden on a recorded one.
+
+The eval reads the receipt text directly rather than a PDF. The library that
 reads PDFs at runtime is unreliable on generated PDFs, and fixing the text keeps
 the eval measuring extraction quality instead of PDF quirks. The PDF path is
-exercised for real in the demo and in the pipeline.
+exercised for real in the demo and in the deployed pipeline.
 
 ## What is in here
 
@@ -28,17 +32,21 @@ exercised for real in the demo and in the pipeline.
   `labels/*.json` is the correct answer. They are generated to the schema, which
   keeps the set free of licensing problems. `manifest.json` gives each receipt a
   category.
-- `fixtures/` holds the saved model responses, keyed by a hash of the exact
+- `fixtures/` holds the recorded Bedrock responses, keyed by a hash of the exact
   prompt. Change the prompt and you get a miss, not a stale answer.
 - `score.ts` does the scoring.
 - `cost.ts` turns token counts into money and latency samples into percentiles.
 - `run.ts` runs everything, prints a report, writes `results/`, and exits non
   zero under the threshold.
+- `gen/synth.ts` regenerates the receipts. `gen/make-fixtures.ts` builds
+  **synthetic** stand-in responses and will happily destroy the recordings, so it
+  refuses to run without `DOCKET_ALLOW_SYNTHETIC=1`. It exists for the case where
+  a contributor has no Bedrock access and needs a green build.
 
 ## The receipts
 
-Thirty are ordinary receipts in dollars. The other twelve are deliberately awkward,
-two per category, and they are the ones that break naive extractors.
+Thirty are ordinary receipts in dollars. The other twelve are deliberately
+awkward, two per category, and they are the ones that break naive extractors.
 
 | Category | What is hard about it |
 |---|---|
@@ -49,11 +57,8 @@ two per category, and they are the ones that break naive extractors.
 | `odd-date` | `Mar 14, 2025` and `18/03/2025`, both to be normalized |
 | `tip` | A tip, so the total does not equal subtotal plus tax |
 
-On the recorded run these prove that the schema and the scorer handle the hard
-shapes: negative amounts, missing optional fields, currencies that are not USD,
-and totals that do not add up. On a live run they measure how well the model
-copes with hard input. The per category line in the report shows you where
-accuracy is soft.
+The per category line in the report is where you see accuracy go soft. On the
+current recording only `foreign-vat` does, and only on `v1`.
 
 ## How scoring works
 
@@ -77,46 +82,55 @@ Three prompts are kept. `v1` is what ships. `v2` is a shorter candidate. `broken
 is deliberately bad, and exists to prove the gate really does fail when accuracy
 drops.
 
-All three run over the same 42 receipts.
+All three ran over the same 42 receipts against Claude Haiku 4.5 on Bedrock.
 
 | Field | v1 | v2 | broken |
 |---|---:|---:|---:|
-| merchant | 0.881 | 0.881 | 0.000 |
-| date | 1.000 | 1.000 | 1.000 |
-| currency | 1.000 | 1.000 | 1.000 |
-| total | 0.881 | 0.881 | 0.000 |
-| subtotal | 1.000 | 1.000 | 0.667 |
-| tax | 1.000 | 0.810 | 1.000 |
-| paymentMethod | 1.000 | 1.000 | 1.000 |
-| lineItems | 0.979 | 0.881 | 0.754 |
-| **overall** | **0.968** | **0.931** | **0.678** |
-| cost per receipt | $0.000601 | $0.000486 | $0.000345 |
+| merchant | 1.000 | 1.000 | 0.000 |
+| date | 1.000 | 1.000 | 0.000 |
+| currency | 1.000 | 1.000 | 0.000 |
+| total | 1.000 | 1.000 | 0.000 |
+| subtotal | 1.000 | 1.000 | 0.000 |
+| tax | 1.000 | 1.000 | 0.000 |
+| paymentMethod | 1.000 | 1.000 | 0.000 |
+| lineItems | 0.988 | 1.000 | 0.000 |
+| **overall** | **0.999** | **1.000** | **0.000** |
+| schema failures | 0 | 0 | 42 |
+| cost per receipt | $0.001222 | $0.001025 | $0.001946 |
+| tokens in / out | 311 / 182 | 152 / 175 | 183 / 352 |
+| p50 latency | 1639 ms | 1662 ms | 3468 ms |
 
-**We ship v1.**
+**`broken` is the easy one.** It scores zero because all 42 documents fail the
+schema check, not because it gets fields slightly wrong. It also costs the most,
+because every one of those 42 burns a repair pass before being refused. A bad
+prompt is not just less accurate, it is more expensive. That is the gate earning
+its keep.
 
-`v2` drops the explicit formatting rules and leans on the model to work them out.
-That saves 115 input tokens per receipt, about 19 percent off the bill. It costs
-3.7 points of accuracy, and the loss is not spread evenly. It lands on tax, which
-falls from 1.000 to 0.810, and on line items, which fall from 0.979 to 0.881.
+**`v1` against `v2` is the interesting one, and it is not settled.**
 
-Those are the two fields a bookkeeper actually cares about. The tokens `v1`
-spends spelling out the rules buy back more than they cost.
+Earlier, against synthetic fixtures, `v2` scored 0.931 to `v1`'s 0.968 and the
+call was easy: keep `v1`. Against the real model that reverses. `v2` ties or beats
+`v1` on every field and costs 16 percent less, because it spends 152 input tokens
+where `v1` spends 311 spelling out formatting rules the model did not need.
 
-Both prompts clear the 0.90 gate. So this was a quality decision the eval
-informed, not a pass or fail it forced. That is the difference between having an
-eval and using one.
+We still ship `v1`, for now, and we are explicit about why that is a weak
+position. The accuracy gap is a single line item on a single receipt across one
+run of 42. That is well inside the noise of one sample, and nothing here measures
+variance. The cost gap is not noise.
 
-`broken` scores 0.678 and fails, which is the point of keeping it.
+What would settle it: several recorded runs per prompt, and a larger set. Until
+then the honest statement is that `v2` is at least as accurate and clearly
+cheaper, and that the earlier comparison was measuring the harness rather than
+the model. Which is exactly what the old caveat on this page warned it was doing.
 
 ## Cost and latency
 
-The report shows an estimated cost per receipt, a projected monthly cost at 1,000
-receipts a day, and p50 and p95 latency.
+The report shows cost per receipt and a projected monthly cost at 1,000 receipts
+a day, plus p50 and p95 latency.
 
-On the recorded provider the token counts are synthetic and the latency is just
-replay time. So cost is labeled an estimate and latency is not shown at all. On a
-live run both are real measurements. Prices live in `cost.ts` as on demand
-Bedrock rates, in one place, so updating them is a one line change.
+Token counts come from the model, so cost is real on a recorded run as well as a
+live one. Latency cannot survive a replay, so it is only reported on a live run.
+Prices live in `cost.ts` as on demand Bedrock rates, in one place.
 
 ## Commands
 
@@ -124,6 +138,11 @@ Bedrock rates, in one place, so updating them is a one line change.
 npm run eval                          # recorded, prompt v1, gate at 0.90
 npx tsx eval/run.ts --prompt v2       # compare a candidate prompt
 npx tsx eval/run.ts --prompt broken   # a bad prompt, fails on purpose
-npm run eval:gen                      # regenerate the receipts and fixtures
+npm run eval:gen                      # regenerate the receipts, not the fixtures
 DOCKET_PROVIDER=bedrock npx tsx eval/run.ts   # live model, needs Bedrock access
+
+# re-record the fixtures against the live model. Costs about eight cents.
+DOCKET_PROVIDER=bedrock DOCKET_RECORD=1 npx tsx eval/run.ts
+DOCKET_PROVIDER=bedrock DOCKET_RECORD=1 npx tsx eval/run.ts --prompt v2
+DOCKET_PROVIDER=bedrock DOCKET_RECORD=1 npx tsx eval/run.ts --prompt broken
 ```

@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"Metro Pharmacy\",\"date\":\"2025-03-14\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Shampoo\",\"quantity\":1,\"unitPrice\":6.25,\"amount\":6.25}],\"subtotal\":6.25,\"tax\":0.5,\"total\":6.75,\"paymentMethod\":\"debit\"}",
+  "text": "```json\n{\n  \"merchant\": \"Metro Pharmacy\",\n  \"date\": \"2025-03-14\",\n  \"currency\": \"USD\",\n  \"lineItems\": [\n    {\n      \"description\": \"Shampoo\",\n      \"quantity\": 1,\n      \"unitPrice\": 6.25,\n      \"amount\": 6.25\n    }\n  ],\n  \"subtotal\": 6.25,\n  \"tax\": 0.50,\n  \"total\": 6.75,\n  \"paymentMethod\": \"debit\"\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 203,
-  "outputTokens": 53
+  "inputTokens": 295,
+  "outputTokens": 139
 }

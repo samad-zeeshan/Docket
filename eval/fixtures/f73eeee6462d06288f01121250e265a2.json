@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"Harbor Seafood\",\"date\":\"2025-01-21\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Eggs dozen\",\"quantity\":2,\"unitPrice\":4.49,\"amount\":8.98},{\"description\":\"Latte\",\"quantity\":2,\"unitPrice\":4.5,\"amount\":9}],\"subtotal\":17.98,\"tax\":1.44,\"total\":19.42,\"paymentMethod\":\"debit\"}",
+  "text": "```json\n{\n  \"merchant\": \"Harbor Seafood\",\n  \"date\": \"2025-01-21\",\n  \"currency\": \"USD\",\n  \"lineItems\": [\n    {\n      \"description\": \"Eggs dozen\",\n      \"quantity\": 2,\n      \"amount\": 8.98\n    },\n    {\n      \"description\": \"Latte\",\n      \"quantity\": 2,\n      \"amount\": 9.00\n    }\n  ],\n  \"subtotal\": 17.98,\n  \"tax\": 1.44,\n  \"total\": 19.42,\n  \"paymentMethod\": \"debit\"\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 208,
-  "outputTokens": 71
+  "inputTokens": 306,
+  "outputTokens": 161
 }

@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"Sunrise Diner\",\"date\":\"2025-01-17\",\"currency\":\"GBP\",\"lineItems\":[{\"description\":\"AA Batteries\",\"quantity\":3,\"unitPrice\":8.99,\"amount\":26.97}],\"subtotal\":26.97,\"tax\":2.16,\"total\":29.13,\"paymentMethod\":\"cash\"}",
+  "text": "```json\n{\n  \"merchant\": \"Sunrise Diner\",\n  \"date\": \"2025-01-17\",\n  \"currency\": \"GBP\",\n  \"lineItems\": [\n    {\n      \"description\": \"AA Batteries\",\n      \"quantity\": 3,\n      \"amount\": 26.97\n    }\n  ],\n  \"subtotal\": 26.97,\n  \"tax\": 2.16,\n  \"total\": 29.13,\n  \"paymentMethod\": \"cash\"\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 204,
-  "outputTokens": 55
+  "inputTokens": 297,
+  "outputTokens": 130
 }

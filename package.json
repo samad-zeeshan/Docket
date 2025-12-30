@@ -25,7 +25,7 @@
     "demo": "tsx demo/server.ts",
     "demo:static": "tsx demo/build-static.ts",
     "eval": "tsx eval/run.ts",
-    "eval:gen": "tsx eval/gen/synth.ts && tsx eval/gen/make-fixtures.ts",
+    "eval:gen": "tsx eval/gen/synth.ts",
     "eval:record": "DOCKET_PROVIDER=bedrock DOCKET_RECORD=1 tsx eval/run.ts"
   },
   "devDependencies": {

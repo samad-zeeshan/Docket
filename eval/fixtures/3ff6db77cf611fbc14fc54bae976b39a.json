@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"Unknown\",\"date\":\"2025-01-27\",\"currency\":\"EUR\",\"lineItems\":[{\"description\":\"Bike tube\",\"quantity\":3,\"unitPrice\":9,\"amount\":27}],\"subtotal\":29.75,\"tax\":2.38,\"total\":38.56,\"paymentMethod\":\"debit\"}",
+  "text": "```json\n{\n  \"store\": \"Green Leaf Market\",\n  \"date\": \"2025-01-27\",\n  \"currency\": \"EUR\",\n  \"items\": [\n    {\n      \"name\": \"Bike tube\",\n      \"quantity\": 3,\n      \"price\": 27.00\n    },\n    {\n      \"name\": \"Pen pack\",\n      \"quantity\": 1,\n      \"price\": 2.75\n    }\n  ],\n  \"subtotal\": 29.75,\n  \"tax\": 2.38,\n  \"total\": 32.13,\n  \"payment_method\": \"debit\"\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 50,
-  "outputTokens": 52
+  "inputTokens": 87,
+  "outputTokens": 160
 }

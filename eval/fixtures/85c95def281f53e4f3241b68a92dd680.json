@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"Unknown\",\"date\":\"2025-02-08\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Bike tube\",\"quantity\":1,\"unitPrice\":9,\"amount\":9}],\"subtotal\":17.4,\"tax\":1.39,\"total\":22.55,\"paymentMethod\":\"gift_card\"}",
+  "text": "```json\n{\n  \"store\": \"Metro Pharmacy\",\n  \"date\": \"2025-02-08\",\n  \"currency\": \"USD\",\n  \"items\": [\n    {\n      \"name\": \"Bike tube\",\n      \"quantity\": 1,\n      \"price\": 9.00\n    },\n    {\n      \"name\": \"Trail mix\",\n      \"quantity\": 2,\n      \"price\": 8.40\n    }\n  ],\n  \"subtotal\": 17.40,\n  \"tax\": 1.39,\n  \"total\": 18.79,\n  \"payment_method\": \"gift_card\"\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 50,
-  "outputTokens": 52
+  "inputTokens": 86,
+  "outputTokens": 159
 }

@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"Unknown\",\"date\":\"2025-03-02\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Apples lb\",\"quantity\":3,\"unitPrice\":1.89,\"amount\":5.67}],\"total\":11.84,\"paymentMethod\":\"debit\"}",
+  "text": "```json\n{\n  \"store\": \"Corner Grocery\",\n  \"date\": \"2025-03-02\",\n  \"currency\": \"USD\",\n  \"items\": [\n    {\n      \"name\": \"Apples lb\",\n      \"quantity\": 3,\n      \"price\": 5.67\n    },\n    {\n      \"name\": \"Trail mix\",\n      \"quantity\": 1,\n      \"price\": 4.20\n    }\n  ],\n  \"total\": 9.87,\n  \"payment_method\": \"debit\"\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 42,
-  "outputTokens": 46
+  "inputTokens": 70,
+  "outputTokens": 138
 }

@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"Trader Vics Hardware\",\"date\":\"2025-02-06\",\"currency\":\"USD\",\"lineItems\":[{\"description\":\"Eggs dozen\",\"quantity\":3,\"unitPrice\":4.49,\"amount\":13.47},{\"description\":\"Latte\",\"quantity\":2,\"unitPrice\":4.5,\"amount\":9},{\"description\":\"Bagel\",\"quantity\":2,\"unitPrice\":3.25,\"amount\":6.5}],\"subtotal\":28.97,\"tax\":2.32,\"total\":31.29}",
+  "text": "```json\n{\n  \"merchant\": \"Trader Vics Hardware\",\n  \"date\": \"2025-02-06\",\n  \"currency\": \"USD\",\n  \"lineItems\": [\n    {\n      \"description\": \"Eggs dozen\",\n      \"quantity\": 3,\n      \"amount\": 13.47\n    },\n    {\n      \"description\": \"Latte\",\n      \"quantity\": 2,\n      \"amount\": 9.00\n    },\n    {\n      \"description\": \"Bagel\",\n      \"quantity\": 2,\n      \"amount\": 6.50\n    }\n  ],\n  \"subtotal\": 28.97,\n  \"tax\": 2.32,\n  \"total\": 31.29\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 96,
-  "outputTokens": 83
+  "inputTokens": 154,
+  "outputTokens": 184
 }

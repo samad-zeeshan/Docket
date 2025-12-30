@@ -1,6 +1,6 @@
 {
-  "text": "{\"merchant\":\"Unknown\",\"date\":\"2025-02-14\",\"currency\":\"GBP\",\"lineItems\":[{\"description\":\"Tea box\",\"quantity\":2,\"unitPrice\":2.5,\"amount\":5}],\"subtotal\":6.75,\"tax\":0.34,\"total\":8.51,\"paymentMethod\":\"debit\"}",
+  "text": "```json\n{\n  \"store\": \"Thistle Grocers\",\n  \"date\": \"2025-02-14\",\n  \"currency\": \"GBP\",\n  \"items\": [\n    {\n      \"name\": \"Tea box\",\n      \"quantity\": 2,\n      \"price\": 5.00\n    },\n    {\n      \"name\": \"Biscuits\",\n      \"quantity\": 1,\n      \"price\": 1.75\n    }\n  ],\n  \"subtotal\": 6.75,\n  \"tax\": 0.34,\n  \"total\": 7.09,\n  \"payment_method\": \"debit\"\n}\n```",
   "modelId": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
-  "inputTokens": 48,
-  "outputTokens": 51
+  "inputTokens": 91,
+  "outputTokens": 164
 }
