@@ -377,8 +377,8 @@
   const SCENARIOS = [
     { key: 'clean', id: 'r02', color: 'var(--good)', title: 'A clean receipt', desc: 'Everything reads correctly and clears every check.',
       shows: 'The normal case. The store, date, items, and total all match. Every field is green.' },
-    { key: 'caught', id: 'r03', color: 'var(--bad)', title: 'A misread, caught', desc: 'The reader gets the total wrong. The score flags it.',
-      shows: 'Docket does not trust the reader. The wrong total is caught and shown in red, not passed on.' },
+    { key: 'caught', id: 'r37', color: 'var(--bad)', title: 'A misread, caught', desc: 'The reader doubles a line item. The score flags it.',
+      shows: 'The receipt prints "Pen pack x2 5.50". That 5.50 is the line total, not the price of one. The model read it as the price of one and doubled the line to 11.00. Every other field is right, so the format check sees nothing wrong. Only comparing against a known correct answer finds it.' },
     { key: 'rejected', color: 'var(--bad)', title: 'A bad result, refused', desc: 'The output does not fit the required format.',
       shows: 'When data does not fit the format, it is marked failed and held back. It is never saved as if it were fine.' },
     { key: 'idempotent', color: 'var(--steel)', title: 'The same receipt twice', desc: 'Send it again and nothing is duplicated.',
