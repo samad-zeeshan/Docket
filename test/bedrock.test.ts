@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { BedrockProvider, firstText } from '../src/lib/providers/bedrock';
+import { createProvider } from '../src/lib/providers';
 import type { BedrockRuntimeClient } from '@aws-sdk/client-bedrock-runtime';
 
 // Minimal fake that records the request body and returns a canned Bedrock reply.
@@ -33,6 +34,21 @@ describe('BedrockProvider', () => {
     const content = JSON.parse(cap.body!).messages[0].content;
     expect(content[0]).toEqual({ type: 'image', source: { type: 'base64', media_type: 'image/png', data: 'ZZ' } });
     expect(content[1]).toEqual({ type: 'text', text: 'read it' });
+  });
+});
+
+describe('createProvider', () => {
+  // The Lambda hands in an X-Ray wrapped client. If the factory quietly builds
+  // its own instead, the model call disappears from the trace and nobody notices
+  // until they are staring at a second of unexplained latency.
+  it('uses the bedrock client it is given rather than making its own', async () => {
+    const cap: { body?: string } = {};
+    const provider = createProvider({ DOCKET_PROVIDER: 'bedrock' } as NodeJS.ProcessEnv, {
+      bedrockClient: fakeClient(cap),
+    });
+    await provider.complete({ system: 'sys', user: 'hello' });
+    expect(cap.body).toBeDefined();
+    expect(JSON.parse(cap.body!).messages[0].content).toBe('hello');
   });
 });
 

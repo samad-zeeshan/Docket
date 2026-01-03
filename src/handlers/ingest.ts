@@ -9,6 +9,7 @@
 import type { SQSHandler, SQSRecord, SQSBatchItemFailure } from 'aws-lambda';
 import { S3Client } from '@aws-sdk/client-s3';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { BedrockRuntimeClient } from '@aws-sdk/client-bedrock-runtime';
 import { MetricUnit } from '@aws-lambda-powertools/metrics';
 import { deriveDocId } from '../lib/docid';
 import { parseS3Event } from '../lib/events';
@@ -57,13 +58,18 @@ let cached: IngestDeps | undefined;
 // Built lazily so importing this module in tests never needs env or AWS clients.
 function getDeps(): IngestDeps {
   if (!cached) {
-    // Wrap the SDK clients so S3 and DynamoDB calls show up as X-Ray subsegments,
-    // which is what gives the one-document trace from read to write.
+    // Wrap the SDK clients so S3, DynamoDB, and Bedrock calls show up as X-Ray
+    // subsegments, which is what gives the one-document trace from read to write.
+    //
+    // Bedrock especially. It is the slowest call in the pipeline by a wide margin,
+    // so an untraced client leaves a second of silence in the middle of the trace
+    // exactly where an operator is looking for the answer.
     const s3 = tracer.captureAWSv3Client(new S3Client({}));
     const ddb = documentClient(tracer.captureAWSv3Client(new DynamoDBClient({})));
+    const bedrock = tracer.captureAWSv3Client(new BedrockRuntimeClient({ maxAttempts: 3 }));
     cached = {
       store: new DynamoDocumentStore(requireEnv('TABLE_NAME'), ddb),
-      provider: createProvider(),
+      provider: createProvider(process.env, { bedrockClient: bedrock }),
       load: async (bucket, key) => {
         const bytes = await getObjectBytes(s3, bucket, key);
         const ext = key.toLowerCase().split('.').pop() ?? '';

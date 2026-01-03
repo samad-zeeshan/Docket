@@ -2,6 +2,7 @@
  * Provider factory. Chooses an implementation from the environment so the same
  * extraction code runs against Bedrock in Lambda and the recorded provider in CI.
  */
+import type { BedrockRuntimeClient } from '@aws-sdk/client-bedrock-runtime';
 import type { ModelProvider } from './types';
 import { BedrockProvider } from './bedrock';
 import { AnthropicProvider } from './anthropic';
@@ -15,12 +16,19 @@ export { BedrockProvider, AnthropicProvider, RecordedProvider, RecordingProvider
 const DEFAULT_BEDROCK_MODEL = 'us.anthropic.claude-haiku-4-5-20251001-v1:0';
 const DEFAULT_ANTHROPIC_MODEL = 'claude-haiku-4-5';
 
-export function createProvider(env: NodeJS.ProcessEnv = process.env): ModelProvider {
+export interface ProviderDeps {
+  // Let a caller hand in its own Bedrock client. The Lambda passes an X-Ray
+  // wrapped one, because the model call is the slowest thing in the pipeline and
+  // an untraced client leaves it as a silent gap in the middle of the trace.
+  bedrockClient?: BedrockRuntimeClient;
+}
+
+export function createProvider(env: NodeJS.ProcessEnv = process.env, deps: ProviderDeps = {}): ModelProvider {
   const fixtures = env.DOCKET_FIXTURES ?? 'eval/fixtures';
   const kind = env.DOCKET_PROVIDER ?? 'bedrock';
   switch (kind) {
     case 'bedrock': {
-      const provider = new BedrockProvider(env.MODEL_ID ?? DEFAULT_BEDROCK_MODEL);
+      const provider = new BedrockProvider(env.MODEL_ID ?? DEFAULT_BEDROCK_MODEL, deps.bedrockClient);
       return env.DOCKET_RECORD === '1' ? new RecordingProvider(provider, fixtures) : provider;
     }
     case 'anthropic': {
