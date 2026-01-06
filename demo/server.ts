@@ -14,7 +14,7 @@ import { createProvider } from '../src/lib/providers';
 import { extractReceipt, extractReceiptFromImage } from '../src/lib/extract';
 import { extractText } from '../src/lib/pdf';
 import { deriveDocId } from '../src/lib/docid';
-import { checkTotals } from '../src/lib/schema';
+import { checkLineItems, checkTotals } from '../src/lib/schema';
 import { providerName, provider, catalog, extractOne, scenario, evalAll } from './engine';
 
 const requestedPort = Number(process.env.PORT ?? 5173);
@@ -53,8 +53,8 @@ async function analyzeImage(bytes: Buffer, mediaType: string, filename: string) 
 
 // One uploaded or pasted receipt through the same extractor the pipeline uses.
 // There is no ground truth for a user's own receipt, so there is no accuracy
-// score here, only the clean data, whether it cleared the gate, and whether the
-// stated totals add up.
+// score here, only the clean data, whether it cleared the gate, and the two
+// arithmetic checks the receipt can make against itself.
 async function analyze(text: string, source: 'pdf' | 'text', filename: string, contentHash: string) {
   const docId = deriveDocId('docket-demo', filename, contentHash);
 
@@ -84,9 +84,18 @@ function shapeOutcome(outcome: Awaited<ReturnType<typeof extractReceipt>>, meta:
     outputTokens: outcome.outputTokens,
   };
   if (outcome.status === 'EXTRACTED') {
-    return { ...base, receipt: outcome.receipt, totals: checkTotals(outcome.receipt) ?? null, failureReason: null };
+    return {
+      ...base,
+      receipt: outcome.receipt,
+      totals: checkTotals(outcome.receipt) ?? null,
+      // Whether the lines add up to the subtotal. On your own receipt, with no
+      // label to score against, this is the only thing that can catch a misread
+      // line, so the demo shows it.
+      lines: checkLineItems(outcome.receipt) ?? null,
+      failureReason: null,
+    };
   }
-  return { ...base, receipt: null, totals: null, failureReason: outcome.failureReason };
+  return { ...base, receipt: null, totals: null, lines: null, failureReason: outcome.failureReason };
 }
 
 function json(res: ServerResponse, code: number, body: unknown): void {

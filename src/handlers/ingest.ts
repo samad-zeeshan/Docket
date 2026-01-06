@@ -22,6 +22,7 @@ import {
   type ExtractionOutcome,
   type OutcomeMeta,
 } from '../lib/extract';
+import { checkLineItems } from '../lib/schema';
 import { redactReceipt } from '../lib/redact';
 import { createProvider } from '../lib/providers';
 import { DynamoDocumentStore, documentClient, type DocumentStore } from '../lib/store';
@@ -147,6 +148,15 @@ export async function processRecord(deps: IngestDeps, record: SQSRecord): Promis
         metrics.addMetric('PiiRedacted', MetricUnit.Count, redactions.length);
         log.info('redacted pii before store', { docId, kinds: [...new Set(redactions.map((r) => r.kind))] });
       }
+      // The lines must add up to the subtotal. When they do not, the model
+      // misread a line and the schema gate cannot tell, because the JSON is
+      // valid. Record it and move on: a soft signal, not a gate.
+      const lines = checkLineItems(receipt);
+      if (lines && !lines.reconciles) {
+        metrics.addMetric('LineItemsMismatch', MetricUnit.Count, 1);
+        log.warn('line items do not sum to the subtotal', { docId, delta: lines.delta });
+      }
+
       await deps.store.markExtracted(docId, receipt, metaOf(outcome));
       log.info('extracted', { docId, latencyMs: outcome.latencyMs, outputTokens: outcome.outputTokens });
       return { docId, status: 'EXTRACTED', meta: metaOf(outcome) };

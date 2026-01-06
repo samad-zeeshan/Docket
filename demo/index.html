@@ -675,6 +675,11 @@
     // EXTRACTED
     const t = d.totals;
     const chip = t ? `<span class="rchip ${t.reconciles ? 'ok' : ''}">${t.reconciles ? 'totals add up' : 'totals off by ' + Math.abs(t.delta).toFixed(2)}</span>` : '';
+    // Your own receipt has no answer key. Passing the format check only means the
+    // shape was right, so the arithmetic is the only thing left that can catch a
+    // misread line. Show it next to the totals.
+    const li = d.lines;
+    const lineChip = li ? `<span class="rchip ${li.reconciles ? 'ok' : ''}">${li.reconciles ? 'lines add up' : 'lines off by ' + Math.abs(li.delta).toFixed(2)}</span>` : '';
     el.innerHTML = `
       <div class="rhead"><span class="status ok pop">passed</span><span class="doc">id ${esc(d.docId.slice(0, 20))}...</span></div>
       <pre class="json">${highlight(d.receipt)}</pre>
@@ -682,7 +687,7 @@
         <span class="mtr">time <b>${d.latencyMs}ms</b></span>
         <span class="mtr">tokens <b>${d.inputTokens + d.outputTokens}</b></span>
         <span class="mtr">${esc(d.provider)}</span>
-        ${chip ? '<span class="score">' + chip + '</span>' : ''}
+        ${chip || lineChip ? '<span class="score">' + chip + lineChip + '</span>' : ''}
       </div>`;
     staggerJson(el);
   }

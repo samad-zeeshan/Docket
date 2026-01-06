@@ -76,6 +76,24 @@ Getting the order wrong is not penalized. Missing a line, or inventing one, is.
 A document that fails the schema check scores zero on every field. There is no
 partial credit for output that would never have been saved.
 
+## The line mismatch row
+
+The report prints a `line mismatch` count under `failures`. It is not part of the
+score. It counts extractions that passed the schema check but whose own line
+amounts do not add up to their own subtotal, which means the model misread a line
+and no gate in the pipeline can tell. Decision 5 in `docs/decisions.md` explains
+where that came from.
+
+It is worth watching because it needs no label. Scoring needs an answer key, and
+a receipt somebody uploads has none. This check is what is left.
+
+On the current recording it reads 1 on `v1` and 0 on `v2`. Forty of the 42
+receipts have a subtotal, the invariant holds for all 40 labels, and the one
+receipt it flags is `r37`, off by 5.50. There are no false positives. That one
+receipt is also the entire reason `v1` scores 0.988 on line items in the table
+below rather than 1.000, which is the point: the check found the mistake on its
+own, without being told the answer.
+
 ## The prompt comparison
 
 Three prompts are kept. `v1` is what ships. `v2` is a shorter candidate. `broken`

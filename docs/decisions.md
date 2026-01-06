@@ -1,6 +1,6 @@
 # Design decisions
 
-Four decisions shape this pipeline. In each case the obvious choice is the wrong
+Five decisions shape this pipeline. In each case the obvious choice is the wrong
 one, so each is written down with what it costs us and what we turned down.
 
 These are meant to be read in order. Later ones lean on earlier ones.
@@ -283,3 +283,80 @@ the gate, and the gate is the part worth having.
 
 **Repairing with a different prompt.** That changes two things at once and makes
 the eval unable to say which one moved the number.
+
+---
+
+## 5. The line amounts have to add up to the subtotal, and saying so is not a gate
+
+### The problem
+
+The schema gate in decision 4 checks shape. It cannot check truth. A receipt can
+satisfy every rule in the schema and still be wrong, and the pipeline will store
+it without a word.
+
+This is not hypothetical. It is the first real receipt this pipeline ever read on
+live infrastructure. The paper said:
+
+```
+Bookmark Set x3        4.50
+```
+
+That 4.50 is the total for all three. The model read it as the price of one, did
+the multiplication nobody asked for, and wrote 13.50. Everything downstream was
+happy. The JSON was valid, so the schema gate passed it. Subtotal plus tax still
+equalled the total, so `checkTotals` passed it. The item went into DynamoDB with
+line amounts summing to 34.74 above a subtotal that said 25.74.
+
+Nothing in the system could see it. The only thing that disagreed with the
+receipt was the receipt.
+
+### What we do
+
+`checkLineItems` in `src/lib/schema.ts`. When a subtotal is present, the line
+amounts have to sum to it, within a cent for rounding.
+
+This is different from `checkTotals`. Whether subtotal plus tax equals the total
+is a property of a particular receipt, and tips and service charges break it on
+perfectly valid paper. Whether the lines sum to the subtotal is not a property of
+a receipt at all. It is what the word subtotal means. A discount does not break
+it either, because a discount is a line with a negative amount.
+
+The mismatch publishes a `LineItemsMismatch` metric and a warning with the delta.
+The eval counts it. The demo shows it beside the totals chip, which is where it
+earns the most, because a receipt you uploaded yourself has no answer key.
+
+### What this buys us
+
+A second opinion the model does not get to write. The model produces the lines
+and the subtotal separately, so when they agree that is evidence, and when they
+disagree that is a caught error.
+
+On the 42 receipt golden set, 40 have a subtotal, and the invariant holds for all
+40 labels. Run against the recorded real responses it flags exactly one, `r37`,
+off by 5.50, and `r37` really is misread. Zero false positives.
+
+### What it costs us
+
+It only works when the model returned a subtotal. Two of the 42 golden receipts
+have none, and those get no check at all.
+
+It catches an arithmetic disagreement, not a wrong answer. A model that misreads
+the subtotal and the line in the same direction is consistent and silent. So this
+narrows the blind spot, it does not close it.
+
+### What we turned down
+
+**Making it a hard gate.** Rejecting the document to `FAILED` on a mismatch is
+the obvious next move and probably the right one. It is not this commit. Turning
+a brand new check into a gate means the first unusual receipt it does not
+understand gets rejected in production, and right now the only evidence is one
+run over 40 receipts with one positive in it. Ship it as a metric, watch what it
+flags on real paper, promote it when the number is boring.
+
+**Repairing the receipt ourselves.** We know the quantity and the unit price, so
+we could recompute the amount and quietly fix the line. Then the stored receipt
+would say something the paper never said, and the metric that told us the model
+was wrong would read zero forever.
+
+**Widening the tolerance until it stops firing.** A check tuned until it is
+always quiet is a check you deleted with extra steps.

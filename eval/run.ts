@@ -11,7 +11,7 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import * as path from 'node:path';
 import { createProvider } from '../src/lib/providers';
 import { extractReceipt } from '../src/lib/extract';
-import type { Receipt } from '../src/lib/schema';
+import { checkLineItems, type Receipt } from '../src/lib/schema';
 import { promptByVersion } from './prompts';
 import { scoreReceipt, zeroScore, aggregate, SCORED_FIELDS, type ReceiptScore } from './score';
 import { costUsd, percentile, priceFor, projectMonthly } from './cost';
@@ -72,6 +72,7 @@ async function main(): Promise<void> {
   const latencies: number[] = [];
   const byCategory = new Map<string, ReceiptScore[]>();
   let failures = 0;
+  let lineItemMismatches = 0;
   let inputTokens = 0;
   let outputTokens = 0;
   let modelId = '';
@@ -87,6 +88,12 @@ async function main(): Promise<void> {
 
     const score = outcome.status === 'EXTRACTED' ? scoreReceipt(outcome.receipt, label) : zeroScore();
     if (outcome.status !== 'EXTRACTED') failures += 1;
+    if (outcome.status === 'EXTRACTED') {
+      // A valid receipt whose lines do not add up to its own subtotal. The gate
+      // cannot see this. Count it so a regression here is visible.
+      const lines = checkLineItems(outcome.receipt);
+      if (lines && !lines.reconciles) lineItemMismatches += 1;
+    }
     scores.push(score);
 
     let list = byCategory.get(entry.category);
@@ -123,7 +130,7 @@ async function main(): Promise<void> {
   };
   const latency: LatencyReport = { p50: percentile(latencies, 50), p95: percentile(latencies, 95), measured: live };
 
-  printTable(providerKind, promptVersion, agg, threshold, pass, { failures, perCategory, cost, latency });
+  printTable(providerKind, promptVersion, agg, threshold, pass, { failures, lineItemMismatches, perCategory, cost, latency });
 
   mkdirSync(RESULTS, { recursive: true });
   const outFile = path.join(RESULTS, `${providerKind}-${promptVersion}.json`);
@@ -142,6 +149,7 @@ async function main(): Promise<void> {
         latency,
         n: agg.n,
         failures,
+        lineItemMismatches,
         note: live
           ? 'live provider run, token counts and latency are measured'
           : 'recorded provider, replaying real Bedrock responses captured by npm run eval:record. Token counts are the counts the model reported. Latency is replay time and is not reported.',
@@ -162,7 +170,13 @@ function printTable(
   agg: ReturnType<typeof aggregate>,
   threshold: number,
   pass: boolean,
-  extra: { failures: number; perCategory: CategoryScore[]; cost: CostReport; latency: LatencyReport },
+  extra: {
+    failures: number;
+    lineItemMismatches: number;
+    perCategory: CategoryScore[];
+    cost: CostReport;
+    latency: LatencyReport;
+  },
 ): void {
   console.log(`\nDocket eval  provider=${provider}  prompt=${promptVersion}  n=${agg.n}\n`);
   for (const field of SCORED_FIELDS) {
@@ -173,6 +187,9 @@ function printTable(
     `  ${'overall'.padEnd(16)}${agg.overall.toFixed(3)}   threshold ${threshold.toFixed(3)}   ${pass ? 'PASS' : 'FAIL'}`,
   );
   console.log(`  ${'failures'.padEnd(16)}${extra.failures}`);
+  // Extractions the gate accepted whose own lines do not add up to their own
+  // subtotal. Not a failure, but not right either.
+  console.log(`  ${'line mismatch'.padEnd(16)}${extra.lineItemMismatches}`);
 
   console.log(`\n  by category`);
   for (const c of extra.perCategory) {

@@ -51,3 +51,27 @@ export function checkTotals(receipt: Receipt): TotalsCheck | undefined {
   const delta = Math.round((receipt.subtotal + tax - receipt.total) * 100) / 100;
   return { reconciles: Math.abs(delta) <= 0.02, delta };
 }
+
+export interface LineItemsCheck {
+  reconciles: boolean;
+  delta: number;
+}
+
+// The line amounts must add up to the subtotal. Unlike checkTotals this is not a
+// property of a particular receipt, it is what subtotal means: the sum of the
+// lines, before tax and before any tip. Discounts hold too, because a discount is
+// a line with a negative amount.
+//
+// It exists because a real model, on a real receipt, read "Bookmark Set x3 4.50"
+// and took 4.50 as the price of one rather than the total of three, then wrote
+// 13.50. Nothing else in the pipeline could see it. The JSON was valid, so the
+// schema gate passed. Subtotal plus tax still equalled the total, so checkTotals
+// passed. Only the lines disagreed with the subtotal.
+//
+// Soft, like checkTotals. A metric, not a gate. See docs/decisions.md.
+export function checkLineItems(receipt: Receipt): LineItemsCheck | undefined {
+  if (receipt.subtotal === undefined) return undefined;
+  const sum = receipt.lineItems.reduce((total, item) => total + item.amount, 0);
+  const delta = Math.round((sum - receipt.subtotal) * 100) / 100;
+  return { reconciles: Math.abs(delta) <= 0.02, delta };
+}
