@@ -1,6 +1,6 @@
 # Design decisions
 
-Five decisions shape this pipeline. In each case the obvious choice is the wrong
+Six decisions shape this pipeline. In each case the obvious choice is the wrong
 one, so each is written down with what it costs us and what we turned down.
 
 These are meant to be read in order. Later ones lean on earlier ones.
@@ -360,3 +360,88 @@ was wrong would read zero forever.
 
 **Widening the tolerance until it stops firing.** A check tuned until it is
 always quiet is a check you deleted with extra steps.
+
+---
+
+## 6. The alarm topic grants CloudWatch the right to publish to it, in writing
+
+### The problem
+
+Turning on a security control removed the alarms, and both the control and the
+alarms kept reporting that they were fine.
+
+The topic is created with `enforceSSL: true`, which attaches a resource policy
+denying any publish that does not arrive over TLS. That is a good thing to want.
+It is also the whole bug.
+
+It arrived in the commit that added cdk-nag, to satisfy rule `AwsSolutions-SNS3`,
+"The SNS Topic does not require publishers to use SSL." So the commit that
+hardened the stack is the commit that silenced its alarms, and the tool that
+found the weakness had nothing to say about the hole it opened.
+
+A brand new SNS topic has no resource policy at all, and SNS falls back to a
+default that lets the account that owns the topic publish to it. Attach a policy,
+for any reason, and that default is gone. Nothing warns you. `enforceSSL`
+attaches one, so CloudWatch became a stranger to a topic in its own account, and
+every alarm in this stack lost the ability to say anything.
+
+The alarms still worked. That is what made it bad. During the dead letter queue
+incident, `DlqNotEmpty` went red at 22:37:24 and recovered at 22:53:24, exactly
+as designed, and the console showed both. No email was sent. The only record is
+one line in the alarm's History tab:
+
+```
+Failed to execute action arn:aws:sns:...:AlarmTopic. Received error:
+"CloudWatch Alarms is not authorized to perform: SNS:Publish on resource:..."
+```
+
+An alarm nobody has ever tested is a guess. An alarm that fires, goes red in the
+console, and quietly cannot reach you is worse than no alarm at all, because now
+you believe you have one.
+
+### What we do
+
+Grant it explicitly, in `lib/constructs/observability.ts`. `cloudwatch.amazonaws.com`
+may `sns:Publish` to this topic, on the condition that `aws:SourceAccount` is this
+account and `aws:SourceArn` matches an alarm in this region. The deny for
+non-TLS publishes stays exactly as it was.
+
+Four tests in `test/stack.test.ts` hold it: the allow exists, the deny survives,
+the allow is scoped by both conditions, and every alarm still points at the one
+topic. Removing the grant fails two of them.
+
+The runbook now has a command that forces an alarm into `ALARM` and reads back
+the history, because that is the only way to see this class of failure.
+
+### What this buys us
+
+The alarms can reach a human, which was the entire point of having them.
+
+The grant is scoped. A service principal on a resource policy with no conditions
+lets any account's CloudWatch alarm publish to your topic, which is the confused
+deputy problem. `aws:SourceAccount` and `aws:SourceArn` close that.
+
+### What it costs us
+
+The policy is longer, and the reason it is longer is invisible unless you have
+been bitten. Hence the comment in the construct, this entry, and the tests. Left
+unexplained, some future reader deletes the grant as redundant, and the alarms go
+quiet again in a way nobody notices for months.
+
+### What we turned down
+
+**Dropping `enforceSSL`.** This makes the symptom disappear, since without an
+attached policy the SNS default comes back and CloudWatch can publish. It also
+throws away the TLS requirement to fix a permissions bug, and it would fail
+`AwsSolutions-SNS3` on the next synth. Fixing a security control by removing it
+is not a fix.
+
+**`topic.grantPublish(new ServicePrincipal('cloudwatch.amazonaws.com'))`.** One
+line, and it works. It also writes an allow with no conditions on it, so the
+topic accepts alarms from any account in AWS. The one line that works is not
+always the one line to write.
+
+**Trusting the deploy.** We did, for twelve commits. CDK synthesized a template
+that was valid, the stack deployed clean, cdk-nag passed, 102 tests passed, and
+the alarms were dead the entire time. Nothing short of firing one and reading the
+history would have found this, which is why the runbook now says to do that.

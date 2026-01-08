@@ -2,10 +2,11 @@
  * Alarms, an SNS topic with an email subscription, a monthly budget, and a
  * dashboard for the whole pipeline. Every alarm here has an entry in RUNBOOK.md.
  */
-import { Duration } from 'aws-cdk-lib';
+import { Duration, Stack } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
 import { SnsAction } from 'aws-cdk-lib/aws-cloudwatch-actions';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import * as sns from 'aws-cdk-lib/aws-sns';
 import * as subs from 'aws-cdk-lib/aws-sns-subscriptions';
 import * as budgets from 'aws-cdk-lib/aws-budgets';
@@ -28,6 +29,38 @@ export class Observability extends Construct {
 
     // enforceSSL adds a topic policy denying any publish that is not over TLS.
     const topic = new sns.Topic(this, 'AlarmTopic', { displayName: 'docket-alarms', enforceSSL: true });
+
+    // And attaching that policy is what breaks the alarms, so this grant is not
+    // optional. A new topic has no resource policy of its own, and SNS falls back
+    // to a default that lets the owning account publish. Attach any policy, for
+    // any reason, and the default is gone. enforceSSL attaches one. CloudWatch is
+    // then a stranger to this topic, so every alarm fires and none of them tell
+    // anyone:
+    //
+    //   Failed to execute action arn:aws:sns:...:AlarmTopic. Received error:
+    //   "CloudWatch Alarms is not authorized to perform: SNS:Publish"
+    //
+    // Which is worse than having no alarm, because the console still shows the
+    // alarm going red and you believe the email is on its way. Found by reading
+    // the alarm history after a real DLQ incident, not by any test.
+    //
+    // Scope it to alarms in this account so the topic cannot be used as a confused
+    // deputy by another account's alarm.
+    const stack = Stack.of(this);
+    topic.addToResourcePolicy(
+      new iam.PolicyStatement({
+        sid: 'AllowCloudWatchAlarmsToPublish',
+        effect: iam.Effect.ALLOW,
+        principals: [new iam.ServicePrincipal('cloudwatch.amazonaws.com')],
+        actions: ['sns:Publish'],
+        resources: [topic.topicArn],
+        conditions: {
+          StringEquals: { 'aws:SourceAccount': stack.account },
+          ArnLike: { 'aws:SourceArn': `arn:aws:cloudwatch:${stack.region}:${stack.account}:alarm:*` },
+        },
+      }),
+    );
+
     if (props.alarmEmail) topic.addSubscription(new subs.EmailSubscription(props.alarmEmail));
     const notify = new SnsAction(topic);
 

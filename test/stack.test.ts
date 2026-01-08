@@ -166,6 +166,58 @@ describe('event rule', () => {
   });
 });
 
+describe('alarm topic', () => {
+  // A topic with no resource policy falls back to an SNS default that lets the
+  // owning account publish. Attaching a policy for any reason discards that
+  // default, and enforceSSL attaches one. Without the grant below every alarm in
+  // this stack still turns red and none of them can reach the topic, which the
+  // console does not show you. Deployed, fired, and read in the alarm history.
+  it('lets CloudWatch alarms publish, which enforceSSL alone takes away', () => {
+    docket.hasResourceProperties('AWS::SNS::TopicPolicy', {
+      PolicyDocument: Match.objectLike({
+        Statement: Match.arrayWith([
+          Match.objectLike({
+            Effect: 'Allow',
+            Action: 'sns:Publish',
+            Principal: { Service: 'cloudwatch.amazonaws.com' },
+          }),
+        ]),
+      }),
+    });
+  });
+
+  it('still denies any publish that is not over TLS', () => {
+    docket.hasResourceProperties('AWS::SNS::TopicPolicy', {
+      PolicyDocument: Match.objectLike({
+        Statement: Match.arrayWith([
+          Match.objectLike({
+            Effect: 'Deny',
+            Action: 'sns:Publish',
+            Condition: { Bool: { 'aws:SecureTransport': 'false' } },
+          }),
+        ]),
+      }),
+    });
+  });
+
+  // An unscoped grant to a service principal lets any account's alarm publish to
+  // this topic. Both conditions keep it to alarms we own.
+  it('scopes the grant to alarms in this account', () => {
+    const policy = Object.values(docket.findResources('AWS::SNS::TopicPolicy'))[0]!;
+    const allow = policy.Properties.PolicyDocument.Statement.find(
+      (s: { Effect: string }) => s.Effect === 'Allow',
+    );
+    expect(allow.Condition.StringEquals['aws:SourceAccount']).toBeDefined();
+    expect(allow.Condition.ArnLike['aws:SourceArn']).toBeDefined();
+  });
+
+  it('points every alarm at that one topic', () => {
+    const alarms = Object.values(docket.findResources('AWS::CloudWatch::Alarm'));
+    expect(alarms.length).toBeGreaterThan(0);
+    for (const alarm of alarms) expect(alarm.Properties.AlarmActions).toHaveLength(1);
+  });
+});
+
 describe('query api', () => {
   it('requires IAM auth on every route, so an unsigned request is rejected', () => {
     const routes = Object.values(docket.findResources('AWS::ApiGatewayV2::Route'));

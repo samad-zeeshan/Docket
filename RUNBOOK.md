@@ -2,8 +2,32 @@
 
 What to do when an alarm fires. Every alarm in the stack has an entry here.
 
-Alarms notify the SNS topic `docket-alarms`, which emails whatever address is set
-in `cdk.json` under `docket:alarmEmail`.
+Alarms notify the SNS topic `docket-alarms`, which emails whatever address you
+pass at deploy time as `--context alarmEmail=you@example.com`. In CI that comes
+from the `ALARM_EMAIL` repository variable. Deploy without it and you get the
+alarms with nobody subscribed.
+
+An alarm that fires and an alarm that reaches you are two different things, and
+the console only shows you the first. If the topic cannot be published to, the
+alarm still goes red and the email never leaves. That failure is recorded in the
+alarm's History tab, not on the alarm itself. So after any change to the topic,
+prove the path end to end:
+
+```bash
+export TOPIC=$(aws sns list-topics --query "Topics[?contains(TopicArn,'AlarmTopic')].TopicArn" --output text | tr -d '\r')
+# a subscription still sitting at PendingConfirmation sends no mail
+aws sns list-subscriptions-by-topic --topic-arn "$TOPIC" --query 'Subscriptions[].[Endpoint,SubscriptionArn]' --output table
+
+# force an alarm red, then read the history for a failed action
+export ALARM=$(aws cloudwatch describe-alarms --alarm-name-prefix Docket --query "MetricAlarms[?contains(AlarmName,'DlqNotEmpty')].AlarmName" --output text | tr -d '\r')
+aws cloudwatch set-alarm-state --alarm-name "$ALARM" --state-value ALARM --state-reason "runbook check"
+aws cloudwatch describe-alarm-history --alarm-name "$ALARM" --max-records 5 \
+  --query 'AlarmHistoryItems[].[Timestamp,HistoryItemType,HistorySummary]' --output table
+```
+
+An email should arrive. If instead the history shows `Failed to execute action`
+with `not authorized to perform: SNS:Publish`, the topic has lost the resource
+policy that lets CloudWatch publish to it. See decision 6 in `docs/decisions.md`.
 
 Start by resolving the resource names. Everything below uses them.
 
