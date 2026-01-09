@@ -2,7 +2,7 @@
  * Alarms, an SNS topic with an email subscription, a monthly budget, and a
  * dashboard for the whole pipeline. Every alarm here has an entry in RUNBOOK.md.
  */
-import { Duration, Stack } from 'aws-cdk-lib';
+import { Annotations, Duration, Stack } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
 import { SnsAction } from 'aws-cdk-lib/aws-cloudwatch-actions';
@@ -61,7 +61,18 @@ export class Observability extends Construct {
       }),
     );
 
-    if (props.alarmEmail) topic.addSubscription(new subs.EmailSubscription(props.alarmEmail));
+    // No email means alarms with nobody on the other end, which looks exactly
+    // like alarms that work. The context key is namespaced, so a plain
+    // --context alarmEmail=... is not a typo CDK will complain about, it is a key
+    // nothing reads. Say so at synth rather than let the deploy look successful.
+    if (props.alarmEmail) {
+      topic.addSubscription(new subs.EmailSubscription(props.alarmEmail));
+    } else {
+      Annotations.of(this).addWarningV2(
+        'docket:no-alarm-email',
+        'No alarm email. Alarms will fire into a topic with no subscribers. Pass one with --context docket:alarmEmail=you@example.com',
+      );
+    }
     const notify = new SnsAction(topic);
 
     // DLQ depth > 0. A poison message is never routine, so alarm on the first one.

@@ -5,7 +5,7 @@
  */
 import { describe, it, expect, beforeAll } from 'vitest';
 import { App } from 'aws-cdk-lib';
-import { Template, Match } from 'aws-cdk-lib/assertions';
+import { Template, Match, Annotations as CdkAnnotations } from 'aws-cdk-lib/assertions';
 import { DocketStack } from '../lib/docket-stack';
 import { DocketCicdStack } from '../lib/cicd-stack';
 
@@ -215,6 +215,30 @@ describe('alarm topic', () => {
     const alarms = Object.values(docket.findResources('AWS::CloudWatch::Alarm'));
     expect(alarms.length).toBeGreaterThan(0);
     for (const alarm of alarms) expect(alarm.Properties.AlarmActions).toHaveLength(1);
+  });
+});
+
+describe('alarm subscription', () => {
+  // The address comes from `--context docket:alarmEmail=...`. Get the key wrong and
+  // CDK reads a key nobody looks at, deploys clean, and subscribes nobody, which
+  // from the console is indistinguishable from working alarms. Warn at synth.
+  it('subscribes nobody when no address is given', () => {
+    docket.resourceCountIs('AWS::SNS::Subscription', 0);
+  });
+
+  it('warns at synth rather than deploying alarms nobody receives', () => {
+    const app = new App();
+    const stack = new DocketStack(app, 'Docket', { env });
+    CdkAnnotations.fromStack(stack).hasWarning('/Docket/Observability', Match.stringLikeRegexp('docket:alarmEmail'));
+  });
+
+  it('subscribes the address it is given', () => {
+    const app = new App();
+    const stack = new DocketStack(app, 'Docket', { env, alarmEmail: 'ops@example.com' });
+    Template.fromStack(stack).hasResourceProperties('AWS::SNS::Subscription', {
+      Protocol: 'email',
+      Endpoint: 'ops@example.com',
+    });
   });
 });
 

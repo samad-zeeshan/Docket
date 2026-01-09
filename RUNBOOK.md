@@ -3,9 +3,15 @@
 What to do when an alarm fires. Every alarm in the stack has an entry here.
 
 Alarms notify the SNS topic `docket-alarms`, which emails whatever address you
-pass at deploy time as `--context alarmEmail=you@example.com`. In CI that comes
-from the `ALARM_EMAIL` repository variable. Deploy without it and you get the
-alarms with nobody subscribed.
+pass at deploy time as `--context docket:alarmEmail=you@example.com`. The key is
+namespaced. Pass a bare `alarmEmail` and CDK reads it as a key nothing looks at,
+deploys happily, and subscribes nobody. Synth prints a warning when the address
+is missing. In CI the address comes from the `ALARM_EMAIL` repository variable.
+
+An email subscription is not live until the recipient clicks the confirmation
+link. Until then it sits at `PendingConfirmation` and receives nothing, and it
+cannot be deleted, because an unconfirmed subscription has no ARN. It expires by
+itself after three days.
 
 An alarm that fires and an alarm that reaches you are two different things, and
 the console only shows you the first. If the topic cannot be published to, the
