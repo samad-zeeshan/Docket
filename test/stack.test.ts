@@ -13,11 +13,13 @@ const env = { account: '123456789012', region: 'us-east-1' };
 
 let docket: Template;
 let cicd: Template;
+// Kept so tests that need the construct tree (annotations) do not rebuild it.
+let docketStack: DocketStack;
 
 // Synthesizing bundles both Lambdas with esbuild, so do it once for the file.
 beforeAll(() => {
   const app = new App();
-  const docketStack = new DocketStack(app, 'Docket', { env });
+  docketStack = new DocketStack(app, 'Docket', { env });
   const cicdStack = new DocketCicdStack(app, 'DocketCicd', { env, githubOwner: 'o', githubRepo: 'r' });
   docket = Template.fromStack(docketStack);
   cicd = Template.fromStack(cicdStack);
@@ -211,10 +213,14 @@ describe('alarm topic', () => {
     expect(allow.Condition.ArnLike['aws:SourceArn']).toBeDefined();
   });
 
+  // Counting the actions is not enough: one action pointing at some other topic,
+  // one without the grant above and without a subscriber, passes that count and
+  // fires into nothing. Pin the target.
   it('points every alarm at that one topic', () => {
+    const topicId = Object.keys(docket.findResources('AWS::SNS::Topic'))[0]!;
     const alarms = Object.values(docket.findResources('AWS::CloudWatch::Alarm'));
     expect(alarms.length).toBeGreaterThan(0);
-    for (const alarm of alarms) expect(alarm.Properties.AlarmActions).toHaveLength(1);
+    for (const alarm of alarms) expect(alarm.Properties.AlarmActions).toEqual([{ Ref: topicId }]);
   });
 });
 
@@ -226,10 +232,10 @@ describe('alarm subscription', () => {
     docket.resourceCountIs('AWS::SNS::Subscription', 0);
   });
 
+  // The shared stack is built without an address, so it already carries the
+  // warning. Rebuilding one here would bundle both Lambdas a second time.
   it('warns at synth rather than deploying alarms nobody receives', () => {
-    const app = new App();
-    const stack = new DocketStack(app, 'Docket', { env });
-    CdkAnnotations.fromStack(stack).hasWarning('/Docket/Observability', Match.stringLikeRegexp('docket:alarmEmail'));
+    CdkAnnotations.fromStack(docketStack).hasWarning('/Docket/Observability', Match.stringLikeRegexp('docket:alarmEmail'));
   });
 
   it('subscribes the address it is given', () => {

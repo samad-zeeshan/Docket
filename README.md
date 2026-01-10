@@ -224,7 +224,7 @@ receipt had line items that summed to 34.74 above a subtotal of 25.74. That is
 now [checkLineItems](src/lib/schema.ts), which flags it and nothing else on the
 golden set.
 
-Also verified: TypeScript compiles clean, the linter passes, 109 tests pass,
+Also verified: TypeScript compiles clean, the linter passes, 111 tests pass,
 `cdk synth` produces valid CloudFormation with zero cdk-nag findings, and the
 LocalStack test exercises real S3 and DynamoDB behavior.
 

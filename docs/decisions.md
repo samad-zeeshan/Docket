@@ -312,18 +312,29 @@ receipt was the receipt.
 
 ### What we do
 
-`checkLineItems` in `src/lib/schema.ts`. When a subtotal is present, the line
-amounts have to sum to it, within a cent for rounding.
+`checkLineItems` in `src/lib/schema.ts`. When a subtotal is present and the
+receipt has lines to add up, the line amounts have to sum to it, within a cent
+for rounding.
 
-This is different from `checkTotals`. Whether subtotal plus tax equals the total
-is a property of a particular receipt, and tips and service charges break it on
-perfectly valid paper. Whether the lines sum to the subtotal is not a property of
-a receipt at all. It is what the word subtotal means. A discount does not break
-it either, because a discount is a line with a negative amount.
+A cent, not two. `checkTotals` allows two because subtotal and tax are each
+rounded on the paper, so their sum can be off by a cent from either. The lines
+and the subtotal are one rounding, done once, so a second cent of slack buys
+nothing except somewhere for a small misread to hide.
 
-The mismatch publishes a `LineItemsMismatch` metric and a warning with the delta.
-The eval counts it. The demo shows it beside the totals chip, which is where it
-earns the most, because a receipt you uploaded yourself has no answer key.
+This is different from `checkTotals` in a second way. Whether subtotal plus tax
+equals the total is a property of a particular receipt, and tips and service
+charges break it on perfectly valid paper. Whether the lines sum to the subtotal
+is not a property of a receipt at all. It is what the word subtotal means. A
+discount does not break it either, because a discount is a line with a negative
+amount.
+
+The mismatch publishes a `LineItemsMismatch` metric and a warning with the delta,
+after the receipt is stored, never before: the handler flushes metrics even on a
+failed write, so counting the mismatch first would count it again on every SQS
+retry. The metric has a dashboard widget, because a metric nobody can see is not
+being watched. The eval counts it. The demo shows it beside the totals chip,
+which is where it earns the most, because a receipt you uploaded yourself has no
+answer key.
 
 ### What this buys us
 
@@ -338,7 +349,18 @@ off by 5.50, and `r37` really is misread. Zero false positives.
 ### What it costs us
 
 It only works when the model returned a subtotal. Two of the 42 golden receipts
-have none, and those get no check at all.
+have none, and those get no check at all. It stays quiet on a receipt with no
+itemized lines too, a card slip that prints only subtotal, tip, and total. An
+empty list sums to zero, which disagrees with every subtotal ever printed, and a
+model that wrote no lines misread none of them. Flagging that would be the check
+calling its own blind spot a bug.
+
+It assumes the line amounts are net of tax. A VAT receipt that prints gross line
+amounts above a net subtotal is extracted correctly and flagged anyway. None of
+the 42 golden receipts is that shape, so the zero-false-positive number above was
+measured on paper that cannot show this. It is the strongest reason the check is
+still a metric and not a gate: promote it on a US-only sample and the first
+European receipt gets rejected for being read correctly.
 
 It catches an arithmetic disagreement, not a wrong answer. A model that misreads
 the subtotal and the line in the same direction is consistent and silent. So this
@@ -407,11 +429,18 @@ account and `aws:SourceArn` matches an alarm in this region. The deny for
 non-TLS publishes stays exactly as it was.
 
 Four tests in `test/stack.test.ts` hold it: the allow exists, the deny survives,
-the allow is scoped by both conditions, and every alarm still points at the one
-topic. Removing the grant fails two of them.
+the allow is scoped by both conditions, and every alarm still points at that
+exact topic, by reference and not merely at one action. Removing the grant fails
+two of them.
 
 The runbook now has a command that forces an alarm into `ALARM` and reads back
 the history, because that is the only way to see this class of failure.
+
+And the missing address is now an error on the deploy path, not a warning. Synth
+warns, which is right for a sandbox, but CI deploys unattended and a warning in a
+green log is read by nobody. The workflow refuses to deploy without
+`ALARM_EMAIL`. Shipping alarms with no subscriber is the same bug as shipping
+alarms that cannot publish; only the reason the email never arrives differs.
 
 ### What this buys us
 

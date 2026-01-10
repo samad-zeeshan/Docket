@@ -10,7 +10,7 @@ import { createProvider } from '../src/lib/providers';
 import { extractReceipt } from '../src/lib/extract';
 import { deriveDocId } from '../src/lib/docid';
 import { scoreReceipt, zeroScore, aggregate, type ReceiptScore } from '../eval/score';
-import type { Receipt } from '../src/lib/schema';
+import { checkLineItems, type Receipt } from '../src/lib/schema';
 import type { ModelProvider, ModelResult } from '../src/lib/providers/types';
 
 const ROOT = path.join(__dirname, '..');
@@ -81,6 +81,10 @@ export async function extractOne(id: string) {
     outputTokens: outcome.outputTokens,
     fields: scored.fields,
     score: scored.score,
+    // The check that needs no answer key. It is what catches r37, and the static
+    // site is built from here, so without this the hosted demo shows every check
+    // the pipeline runs except the one the docs point at.
+    lines: outcome.status === 'EXTRACTED' ? (checkLineItems(outcome.receipt) ?? null) : null,
   };
 }
 
@@ -122,11 +126,20 @@ export async function evalAll() {
   const scores: ReceiptScore[] = [];
   const byCategory = new Map<string, ReceiptScore[]>();
   let failures = 0;
+  // Extractions the gate accepted whose own lines do not add up to their own
+  // subtotal. Reported alongside failures, as eval/run.ts does, so the demo and
+  // the CLI report the same numbers.
+  let lineItemMismatches = 0;
   for (const m of manifest) {
     const label = labelOf(m.id);
     const outcome = await extractReceipt(provider, textOf(m));
     const score = outcome.status === 'EXTRACTED' ? scoreReceipt(outcome.receipt, label) : zeroScore();
-    if (outcome.status !== 'EXTRACTED') failures += 1;
+    if (outcome.status === 'EXTRACTED') {
+      const lines = checkLineItems(outcome.receipt);
+      if (lines && !lines.reconciles) lineItemMismatches += 1;
+    } else {
+      failures += 1;
+    }
     scores.push(score);
     let list = byCategory.get(m.category);
     if (!list) byCategory.set(m.category, (list = []));
@@ -136,5 +149,14 @@ export async function evalAll() {
   const perCategory = [...byCategory]
     .map(([category, s]) => ({ category, n: s.length, accuracy: Number(aggregate(s).overall.toFixed(4)) }))
     .sort((a, b) => a.category.localeCompare(b.category));
-  return { provider: providerName, n: agg.n, overall: agg.overall, perField: agg.perField, perCategory, failures, threshold: 0.9 };
+  return {
+    provider: providerName,
+    n: agg.n,
+    overall: agg.overall,
+    perField: agg.perField,
+    perCategory,
+    failures,
+    lineItemMismatches,
+    threshold: 0.9,
+  };
 }

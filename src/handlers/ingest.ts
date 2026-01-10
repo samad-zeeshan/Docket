@@ -148,16 +148,22 @@ export async function processRecord(deps: IngestDeps, record: SQSRecord): Promis
         metrics.addMetric('PiiRedacted', MetricUnit.Count, redactions.length);
         log.info('redacted pii before store', { docId, kinds: [...new Set(redactions.map((r) => r.kind))] });
       }
+      await deps.store.markExtracted(docId, receipt, metaOf(outcome));
+
       // The lines must add up to the subtotal. When they do not, the model
       // misread a line and the schema gate cannot tell, because the JSON is
       // valid. Record it and move on: a soft signal, not a gate.
+      //
+      // After the write, never before. The handler publishes buffered metrics in
+      // a finally, so a metric added ahead of a throwing markExtracted is still
+      // published, and then SQS redelivers a document still sitting at RECEIVED
+      // and counts the same misread receipt again.
       const lines = checkLineItems(receipt);
       if (lines && !lines.reconciles) {
         metrics.addMetric('LineItemsMismatch', MetricUnit.Count, 1);
         log.warn('line items do not sum to the subtotal', { docId, delta: lines.delta });
       }
 
-      await deps.store.markExtracted(docId, receipt, metaOf(outcome));
       log.info('extracted', { docId, latencyMs: outcome.latencyMs, outputTokens: outcome.outputTokens });
       return { docId, status: 'EXTRACTED', meta: metaOf(outcome) };
     }

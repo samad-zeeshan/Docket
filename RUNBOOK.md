@@ -6,7 +6,9 @@ Alarms notify the SNS topic `docket-alarms`, which emails whatever address you
 pass at deploy time as `--context docket:alarmEmail=you@example.com`. The key is
 namespaced. Pass a bare `alarmEmail` and CDK reads it as a key nothing looks at,
 deploys happily, and subscribes nobody. Synth prints a warning when the address
-is missing. In CI the address comes from the `ALARM_EMAIL` repository variable.
+is missing. In CI the address comes from the `ALARM_EMAIL` repository variable,
+and the deploy job refuses to run without it, because an unattended deploy has
+nobody to read a warning.
 
 An email subscription is not live until the recipient clicks the confirmation
 link. Until then it sits at `PendingConfirmation` and receives nothing, and it

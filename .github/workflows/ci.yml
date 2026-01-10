@@ -56,9 +56,17 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/docket-github-deploy
           aws-region: us-east-1
-      # The alarm address is a repository variable, not source. If ALARM_EMAIL is
-      # unset the context is empty, and the stack deploys with alarms that page
-      # nobody rather than paging a placeholder.
+      # The alarm address is a repository variable, not source. Unset it and the
+      # context is empty, the synth warning scrolls past in a green log, and the
+      # deploy ships alarms that page nobody. That is the failure this pipeline
+      # already had once. An unattended deploy has no one to read a warning, so
+      # here it is an error. Delete the variable on purpose and you edit this.
+      - name: require an alarm address before deploying
+        run: |
+          if [ -z "${{ vars.ALARM_EMAIL }}" ]; then
+            echo "::error::ALARM_EMAIL repository variable is unset. Deploying would create alarms with no subscriber."
+            exit 1
+          fi
       - name: cdk diff to the job summary
         run: |
           echo '## cdk diff' >> "$GITHUB_STEP_SUMMARY"

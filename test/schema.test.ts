@@ -108,8 +108,23 @@ describe('checkLineItems', () => {
     expect(checkLineItems(rounded)).toEqual({ reconciles: true, delta: -0.01 });
   });
 
+  // A cent, and not a cent more. checkTotals allows two because subtotal and tax
+  // are rounded separately; the lines and the subtotal are one rounding.
+  it('does not allow two cents, which would swallow a small misread', () => {
+    const off = ReceiptSchema.parse({ ...stationery, subtotal: 25.72 });
+    expect(checkLineItems(off)).toEqual({ reconciles: false, delta: 0.02 });
+  });
+
   it('returns undefined when there is no subtotal to check against', () => {
     const { subtotal: _subtotal, ...noSubtotal } = stationery;
     expect(checkLineItems(ReceiptSchema.parse(noSubtotal))).toBeUndefined();
+  });
+
+  // A receipt with a subtotal and no itemized lines is not a misread receipt. An
+  // empty list sums to zero, which disagrees with every subtotal, so checking it
+  // would flag every totals-only slip that ever reaches the pipeline.
+  it('returns undefined when there are no lines to add up', () => {
+    const totalsOnly = ReceiptSchema.parse({ ...stationery, lineItems: [] });
+    expect(checkLineItems(totalsOnly)).toBeUndefined();
   });
 });

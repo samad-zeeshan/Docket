@@ -37,9 +37,28 @@ export const ReceiptSchema = z.object({
 export type LineItem = z.infer<typeof LineItemSchema>;
 export type Receipt = z.infer<typeof ReceiptSchema>;
 
-export interface TotalsCheck {
+// The result of an arithmetic check. Both checks below answer the same question
+// about two numbers the model wrote down separately, so they answer it in the
+// same shape.
+export interface ReconcileCheck {
   reconciles: boolean;
   delta: number;
+}
+
+export type TotalsCheck = ReconcileCheck;
+export type LineItemsCheck = ReconcileCheck;
+
+// checkTotals allows two cents: subtotal and tax are each rounded on the paper,
+// so the sum can be off by a cent from either. checkLineItems allows one, because
+// the lines and the subtotal are the same rounding, done once.
+const TOTALS_TOLERANCE = 0.02;
+const LINE_ITEMS_TOLERANCE = 0.01;
+
+// Round to cents before comparing so float noise never decides the answer. Do it
+// once, here, rather than twice at the call sites.
+function reconcile(actual: number, expected: number, tolerance: number): ReconcileCheck {
+  const delta = Math.round((actual - expected) * 100) / 100;
+  return { reconciles: Math.abs(delta) <= tolerance, delta };
 }
 
 // Arithmetic sanity, kept out of the schema on purpose. Tips, rounding, and
@@ -48,13 +67,7 @@ export interface TotalsCheck {
 export function checkTotals(receipt: Receipt): TotalsCheck | undefined {
   if (receipt.subtotal === undefined) return undefined;
   const tax = receipt.tax ?? 0;
-  const delta = Math.round((receipt.subtotal + tax - receipt.total) * 100) / 100;
-  return { reconciles: Math.abs(delta) <= 0.02, delta };
-}
-
-export interface LineItemsCheck {
-  reconciles: boolean;
-  delta: number;
+  return reconcile(receipt.subtotal + tax, receipt.total, TOTALS_TOLERANCE);
 }
 
 // The line amounts must add up to the subtotal. Unlike checkTotals this is not a
@@ -68,10 +81,18 @@ export interface LineItemsCheck {
 // schema gate passed. Subtotal plus tax still equalled the total, so checkTotals
 // passed. Only the lines disagreed with the subtotal.
 //
+// Two receipts it cannot speak for, and returns undefined rather than guess:
+// one with no subtotal, and one with no itemized lines at all. An empty list
+// sums to zero, which disagrees with every subtotal, and the model that wrote
+// no lines misread nothing.
+//
+// It does assume the line amounts are net of tax. On a VAT receipt that prints
+// gross lines above a net subtotal, this fires on correct extraction. That is
+// the known false positive, and the reason it stays soft.
+//
 // Soft, like checkTotals. A metric, not a gate. See docs/decisions.md.
 export function checkLineItems(receipt: Receipt): LineItemsCheck | undefined {
-  if (receipt.subtotal === undefined) return undefined;
+  if (receipt.subtotal === undefined || receipt.lineItems.length === 0) return undefined;
   const sum = receipt.lineItems.reduce((total, item) => total + item.amount, 0);
-  const delta = Math.round((sum - receipt.subtotal) * 100) / 100;
-  return { reconciles: Math.abs(delta) <= 0.02, delta };
+  return reconcile(sum, receipt.subtotal, LINE_ITEMS_TOLERANCE);
 }

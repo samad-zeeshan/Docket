@@ -56,7 +56,7 @@ export class Observability extends Construct {
         resources: [topic.topicArn],
         conditions: {
           StringEquals: { 'aws:SourceAccount': stack.account },
-          ArnLike: { 'aws:SourceArn': `arn:aws:cloudwatch:${stack.region}:${stack.account}:alarm:*` },
+          ArnLike: { 'aws:SourceArn': `arn:${stack.partition}:cloudwatch:${stack.region}:${stack.account}:alarm:*` },
         },
       }),
     );
@@ -181,6 +181,15 @@ export class Observability extends Construct {
       new cloudwatch.GraphWidget({
         title: 'Token spend proxy',
         left: [metric('InputTokens', 'Sum'), metric('OutputTokens', 'Sum')],
+      }),
+    );
+    // Receipts the gate accepted whose own lines do not add up to their own
+    // subtotal. Decision 5 ships this as a metric to be watched on real paper
+    // before it becomes a gate, and a metric nobody can see is not watched.
+    dashboard.addWidgets(
+      new cloudwatch.GraphWidget({
+        title: 'Line items not summing to subtotal',
+        left: [metric('LineItemsMismatch', 'Sum')],
       }),
     );
     dashboard.addWidgets(

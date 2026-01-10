@@ -86,13 +86,16 @@ async function main(): Promise<void> {
     outputTokens += outcome.outputTokens;
     modelId = outcome.modelId;
 
-    const score = outcome.status === 'EXTRACTED' ? scoreReceipt(outcome.receipt, label) : zeroScore();
-    if (outcome.status !== 'EXTRACTED') failures += 1;
+    let score: ReceiptScore;
     if (outcome.status === 'EXTRACTED') {
+      score = scoreReceipt(outcome.receipt, label);
       // A valid receipt whose lines do not add up to its own subtotal. The gate
       // cannot see this. Count it so a regression here is visible.
       const lines = checkLineItems(outcome.receipt);
       if (lines && !lines.reconciles) lineItemMismatches += 1;
+    } else {
+      score = zeroScore();
+      failures += 1;
     }
     scores.push(score);
 
