@@ -51,8 +51,16 @@ flowchart LR
 
 ## Try it without an AWS account
 
-The demo runs the real extraction code on your machine, using saved model
-responses, so it needs no internet and no account.
+Live, in the browser, nothing to install:
+**[samad-zeeshan.github.io/Docket](https://samad-zeeshan.github.io/Docket/)**
+
+That page is the static build. It replays saved model responses, so the receipts,
+the checks, and the accuracy report are all real, and there is no backend behind
+it. Uploading your own receipt needs a model, so that part only works when you
+run it locally with a key.
+
+The demo also runs the real extraction code on your machine, using the same saved
+model responses, so it needs no internet and no account.
 
 ```bash
 npm install
@@ -167,11 +175,13 @@ anything is written.
 
 ## Status
 
-This has been deployed and run on a live AWS account. A receipt PDF went into S3
-and came out of DynamoDB as checked JSON, in 1.7 seconds, for a fifth of a cent.
-Every number on this page comes from that account.
+This has been deployed and run on a live AWS account, then torn down. A receipt
+PDF went into S3 and came out of DynamoDB as checked JSON. The model call took
+1.62 seconds and the whole function 2.82, of which 791ms was a cold start. It
+cost $0.0012, about an eighth of a cent. Every number on this page comes from
+that account, and the X-Ray trace it comes from is below.
 
-Deploying it once was worth more than any test. It found four bugs nothing else
+Deploying it once was worth more than any test. It found six bugs nothing else
 could:
 
 - the pinned model had been retired and no longer existed
@@ -179,14 +189,42 @@ could:
   CDK renames outputs declared inside a construct
 - the redrive tool listed one stuck message five times
 - and, worse, reported that it had moved nothing right after moving something
+- every alarm in the stack fired into an SNS topic that refused to accept it,
+  because requiring TLS on the topic silently discarded the policy that let
+  CloudWatch publish to it
+- and the deploy flag for the alarm email was namespaced, so passing the plain
+  key subscribed nobody, reported success, and changed nothing
+
+The last two are the same shape, and it is the shape worth learning. An alarm
+with no one on the other end looks exactly like an alarm that works. Both are
+[decision 6](docs/decisions.md).
 
 It also failed on its first document, because Bedrock had not yet approved the
 account. That was the good outcome. The handler threw instead of marking the
 receipt `FAILED`, SQS retried three times, the message landed in the dead letter
-queue, one alarm fired, and the redrive replayed it without creating a duplicate.
+queue, an alarm fired, and the redrive replayed it without creating a duplicate.
 Four claims in [docs/decisions.md](docs/decisions.md), tested by an accident.
 
-Also verified: TypeScript compiles clean, the linter passes, 96 tests pass,
+The alarm also proved it could not tell anyone, which is how the fifth bug was
+found. Here is the same alarm before the fix and after it:
+
+```
+18:05:51  Action       Successfully executed action arn:aws:sns:...AlarmTopic
+18:05:51  StateUpdate  Alarm updated from OK to ALARM
+16:53:24  StateUpdate  Alarm updated from ALARM to OK
+16:37:24  Action       Failed to execute action arn:aws:sns:...AlarmTopic
+16:37:24  StateUpdate  Alarm updated from OK to ALARM
+```
+
+Then the model got a receipt wrong in a way no gate could see. It read
+`Bookmark Set x3  4.50`, where 4.50 is the total for all three, as the price of
+one, and wrote 13.50. The JSON was valid, so the schema check passed. Subtotal
+plus tax still equalled the total, so the arithmetic check passed. The stored
+receipt had line items that summed to 34.74 above a subtotal of 25.74. That is
+now [checkLineItems](src/lib/schema.ts), which flags it and nothing else on the
+golden set.
+
+Also verified: TypeScript compiles clean, the linter passes, 109 tests pass,
 `cdk synth` produces valid CloudFormation with zero cdk-nag findings, and the
 LocalStack test exercises real S3 and DynamoDB behavior.
 
