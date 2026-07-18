@@ -23,12 +23,16 @@ const NAMESPACE = 'Docket';
 const INGEST_DIMS = { service: 'ingest' };
 
 export class Observability extends Construct {
+  // Exposed so the canary can alarm into the same topic these alarms use.
+  readonly alarmTopic: sns.Topic;
+
   constructor(scope: Construct, id: string, props: ObservabilityProps) {
     super(scope, id);
     const { ingest, api } = props;
 
     // enforceSSL adds a topic policy denying any publish that is not over TLS.
     const topic = new sns.Topic(this, 'AlarmTopic', { displayName: 'docket-alarms', enforceSSL: true });
+    this.alarmTopic = topic;
 
     // And attaching that policy is what breaks the alarms, so this grant is not
     // optional. A new topic has no resource policy of its own, and SNS falls back

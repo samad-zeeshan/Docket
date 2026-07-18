@@ -144,6 +144,39 @@ If this is a real spike in traffic, raise `maxConcurrency` on the SQS event
 source in `lib/constructs/pipeline.ts` and deploy. Remember what you are trading.
 The queue drains faster and the model bill goes up.
 
+## Alarm: CanaryFailing
+
+**What it means.** The synthetic canary either stored the wrong result for its
+known receipt, or stopped reporting. A scheduled Lambda uploads one fixed receipt
+to `canary/golden-receipt.pdf` every 15 minutes and checks DynamoDB holds the
+golden extraction for it, emitting `Docket/CanaryPass` as 1 for a pass and 0 for
+a fail. Two failing or missing windows in a row trip this. The upload dedupes to
+the same docId every run, so it costs pennies a month, not a model call a tick.
+
+**First three commands.**
+
+```bash
+# 1. Is the whole pipeline unhappy, or only the canary? A real outage trips the
+#    DLQ and error alarms too, so check them before chasing the canary.
+aws cloudwatch describe-alarms --alarm-name-prefix Docket \
+  --query 'MetricAlarms[].[AlarmName,StateValue]' --output table
+
+# 2. What did the last run see? Its log line says pass, fail, or error.
+export CANARY=$(aws lambda list-functions \
+  --query "Functions[?starts_with(FunctionName, 'Docket-CanaryCanaryFn')].FunctionName | [0]" --output text)
+aws logs tail /aws/lambda/$CANARY --since 45m
+
+# 3. Run it now rather than wait for the next tick.
+aws lambda invoke --function-name "$CANARY" /dev/stdout
+```
+
+A `0` means the receipt went in but the stored record was missing or did not
+match the golden value, so extraction or the write is broken: work the
+IngestErrors and DlqNotEmpty entries above. Missing data means the canary Lambda
+itself did not run: check its schedule rule and the function's own errors. A
+canary failure is synthetic and never reaches the DLQ, so there is nothing to
+redrive; fix the pipeline and the next tick clears the alarm.
+
 ## Budget: 10 dollars a month
 
 **What it means.** Actual spend passed 80 percent of the 10 dollar budget, or the

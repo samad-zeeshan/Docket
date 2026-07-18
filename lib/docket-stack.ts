@@ -7,6 +7,7 @@ import { Construct } from 'constructs';
 import { IngestPipeline } from './constructs/pipeline';
 import { QueryApi } from './constructs/api';
 import { Observability } from './constructs/observability';
+import { Canary } from './constructs/canary';
 
 export interface DocketStackProps extends StackProps {
   alarmEmail?: string;
@@ -23,10 +24,15 @@ export class DocketStack extends Stack {
 
     this.ingest = new IngestPipeline(this, 'Ingest');
     this.api = new QueryApi(this, 'Api', { table: this.ingest.table });
-    new Observability(this, 'Observability', {
+    const observability = new Observability(this, 'Observability', {
       ingest: this.ingest,
       api: this.api,
       alarmEmail: props.alarmEmail,
     });
+
+    // Continuous synthetic traffic: a scheduled receipt drop that alarms into the
+    // same topic if the pipeline stops storing the golden result. Added after
+    // observability so it can reuse that topic.
+    new Canary(this, 'Canary', { ingest: this.ingest, alarmTopic: observability.alarmTopic });
   }
 }

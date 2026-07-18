@@ -161,10 +161,13 @@ describe('event rule', () => {
     });
   });
 
-  it('has exactly one rule, targeting the ingest queue', () => {
-    docket.resourceCountIs('AWS::Events::Rule', 1);
-    const rule = Object.values(docket.findResources('AWS::Events::Rule'))[0]!;
-    expect(rule.Properties.Targets).toHaveLength(1);
+  it('routes the receipt rule to exactly one target, the ingest queue', () => {
+    // Two rules now: this receipt rule and the canary schedule. Select the one
+    // that filters S3 events, so adding the schedule cannot mask a regression here.
+    const receiptRule = Object.values(docket.findResources('AWS::Events::Rule')).find(
+      (r) => r.Properties.EventPattern,
+    )!;
+    expect(receiptRule.Properties.Targets).toHaveLength(1);
   });
 });
 
@@ -279,8 +282,11 @@ describe('logical ids', () => {
     expect(ids.some((id) => /^IngestIngestBucket/.test(id))).toBe(true);
   });
 
-  it('pins the event rule, so renaming it is a deliberate replacement', () => {
-    expect(logicalIds('AWS::Events::Rule')).toEqual([expect.stringMatching(/^IngestReceiptCreatedRule/)]);
+  it('pins the event rules, so renaming one is a deliberate replacement', () => {
+    const ids = logicalIds('AWS::Events::Rule').sort();
+    expect(ids).toHaveLength(2);
+    expect(ids.some((id) => /^IngestReceiptCreatedRule/.test(id))).toBe(true);
+    expect(ids.some((id) => /^CanarySchedule/.test(id))).toBe(true);
   });
 });
 

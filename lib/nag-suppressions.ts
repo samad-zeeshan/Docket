@@ -48,6 +48,13 @@ export function applyNagSuppressions(docket: Stack, cicd: Stack): void {
   NagSuppressions.addResourceSuppressionsByPath(docket, '/Docket/Api/QueryFn/ServiceRole/Resource', [
     managedPolicy('the query function'),
   ]);
+
+  // The canary function. Its own policy names one S3 object and one table ARN
+  // exactly, so it carries no IAM5 wildcard and needs no policy suppression.
+  NagSuppressions.addResourceSuppressionsByPath(docket, '/Docket/Canary/CanaryFn/Resource', [pinnedRuntime('The canary function')]);
+  NagSuppressions.addResourceSuppressionsByPath(docket, '/Docket/Canary/CanaryFn/ServiceRole/Resource', [
+    managedPolicy('the canary function'),
+  ]);
   NagSuppressions.addResourceSuppressionsByPath(
     docket,
     '/Docket/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/Resource',
