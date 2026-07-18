@@ -99,7 +99,7 @@ is the wrong one. They are written up in
 ## Tests
 
 ```bash
-npm test              # 96 tests: handlers, schema, scoring, providers, and the stack
+npm test              # 111 tests: handlers, schema, scoring, providers, and the stack
 npm run eval          # scores 42 receipts, fails under 0.90
 npm run synth         # CloudFormation, with cdk-nag best practice checks
 npm run lint
@@ -179,7 +179,7 @@ This has been deployed and run on a live AWS account, then torn down. A receipt
 PDF went into S3 and came out of DynamoDB as checked JSON. The model call took
 1.62 seconds and the whole function 2.82, of which 791ms was a cold start. It
 cost $0.0012, about an eighth of a cent. Every number on this page comes from
-that account, and the X-Ray trace it comes from is below.
+that account.
 
 Deploying it once was worth more than any test. It found six bugs nothing else
 could:
