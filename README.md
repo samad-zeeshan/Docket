@@ -22,6 +22,25 @@ it is:
 - a split between bad data and broken infrastructure, so alarms mean something
 - an evaluation harness that measures accuracy rather than assuming it
 
+## How it works
+
+A receipt put in S3 flows through EventBridge and SQS to a Lambda that asks Claude on Bedrock to read it, checks the reply against a Zod schema, and writes the result to DynamoDB.
+
+![Docket system overview](docs/diagrams/overview.png)
+The main parts of the stack: the upload path, the extractor, the read API, the dead letter queue, and the canary that tests it all every 15 minutes.
+
+![Receipt PDF upload to stored JSON](docs/diagrams/main-flow.png)
+One PDF from upload to a stored record, in 12 numbered steps, including the duplicate check and the single repair call.
+
+![Document states: stored result vs dead letter](docs/diagrams/states.png)
+Bad data ends as FAILED and stops there. Only infrastructure errors retry and can reach the dead letter queue.
+
+![Docket deployment: CI to CDK stacks](docs/diagrams/deployment.png)
+How a push to main is linted, tested, evaluated and deployed through GitHub OIDC into the CDK stack.
+
+Interactive versions with pan, zoom and theme switch: `docs/diagrams/overview.html`, `docs/diagrams/main-flow.html`, `docs/diagrams/states.html`, `docs/diagrams/deployment.html`
+
+
 ## Architecture
 
 ```mermaid
