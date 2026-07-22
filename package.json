@@ -26,17 +26,21 @@
     "demo:static": "tsx demo/build-static.ts",
     "eval": "tsx eval/run.ts",
     "eval:gen": "tsx eval/gen/synth.ts",
-    "eval:record": "DOCKET_PROVIDER=bedrock DOCKET_RECORD=1 tsx eval/run.ts"
+    "eval:record": "DOCKET_PROVIDER=bedrock DOCKET_RECORD=1 tsx eval/run.ts",
+    "data:fetch": "tsx eval/public/fetch.ts"
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",
     "@types/aws-lambda": "^8.10.145",
     "@types/node": "^20.16.5",
     "@types/pdf-parse": "^1.1.4",
+    "@types/pngjs": "^6.0.5",
     "aws-cdk": "^2.160.0",
     "cdk-nag": "^2.38.2",
     "esbuild": "^0.24.0",
     "eslint": "^9.11.1",
+    "hyparquet": "^1.31.1",
+    "sharp": "^0.35.4",
     "tsx": "^4.19.1",
     "typescript": "^5.6.2",
     "typescript-eslint": "^8.8.0",
@@ -55,7 +59,9 @@
     "@aws-sdk/lib-dynamodb": "^3.658.0",
     "aws-cdk-lib": "^2.160.0",
     "constructs": "^10.3.0",
+    "jpeg-js": "^0.4.4",
     "pdf-parse": "^1.1.1",
+    "pngjs": "^7.0.0",
     "zod": "^3.23.8"
   }
 }

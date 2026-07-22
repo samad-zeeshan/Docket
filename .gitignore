@@ -14,6 +14,10 @@ cdk.out/
 # published by the pages workflow, so it is not committed
 demo/static/
 
+# downloaded public datasets, prepared images and raw model runs. Fetched by
+# npm run data:fetch and checked against pinned sha256 sums, never committed.
+.cache/
+
 # test + coverage
 coverage/
 .vitest/
