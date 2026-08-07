@@ -5,7 +5,7 @@
  */
 import { ReceiptSchema, type Receipt } from './schema';
 import { activePrompt, type Prompt } from './prompt';
-import type { ImageInput, ModelProvider, ModelRequest } from './providers/types';
+import type { ImageInput, ModelProvider, ModelRequest, TokenLogprob } from './providers/types';
 
 // Thrown for bad data we do not want retried. Marked terminal so the handler
 // records FAILED instead of letting SQS redeliver it into the DLQ.
@@ -21,9 +21,17 @@ export interface OutcomeMeta {
   latencyMs: number;
 }
 
+// The response the gate accepted, kept so confidence can be read from the very
+// tokens that produced the stored values.
+export interface Evidence {
+  text: string;
+  tokenLogprobs?: TokenLogprob[];
+  repaired: boolean;
+}
+
 // Discriminated so callers narrow on status instead of asserting receipt exists.
 export type ExtractionOutcome =
-  | (OutcomeMeta & { status: 'EXTRACTED'; receipt: Receipt })
+  | (OutcomeMeta & { status: 'EXTRACTED'; receipt: Receipt; evidence: Evidence })
   | (OutcomeMeta & { status: 'FAILED'; failureReason: string });
 
 // Default image prompts. Kept here so a plain Prompt (which only defines the text
@@ -90,6 +98,8 @@ async function runExtraction(
   const modelId = first.modelId;
 
   let parsed = validate(first.text);
+  let accepted = first;
+  let repaired = false;
 
   // One repair pass. The model sees its own output and the exact Zod errors,
   // which fixes most near-misses without a second full guess.
@@ -98,6 +108,8 @@ async function runExtraction(
     inputTokens += repair.inputTokens;
     outputTokens += repair.outputTokens;
     parsed = validate(repair.text);
+    accepted = repair;
+    repaired = true;
   }
 
   const base = {
@@ -111,7 +123,12 @@ async function runExtraction(
   if (!parsed.ok) {
     return { status: 'FAILED', failureReason: parsed.error, ...base };
   }
-  return { status: 'EXTRACTED', receipt: parsed.value, ...base };
+  return {
+    status: 'EXTRACTED',
+    receipt: parsed.value,
+    evidence: { text: accepted.text, tokenLogprobs: accepted.tokenLogprobs, repaired },
+    ...base,
+  };
 }
 
 type Validated = { ok: true; value: Receipt } | { ok: false; error: string };

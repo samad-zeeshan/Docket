@@ -56,3 +56,19 @@ describe('extractReceiptFromImage', () => {
     expect(provider.calls[1]!.images?.[0]?.dataBase64).toBe('BBBB');
   });
 });
+
+describe('extraction evidence', () => {
+  it('keeps the accepted response text so confidence can be read from it', async () => {
+    const provider = new ScriptedProvider([wrongShape, validReceiptJson]);
+    const outcome = await extractReceipt(provider, 'text');
+    expect(outcome.status === 'EXTRACTED' && outcome.evidence.text).toBe(validReceiptJson);
+    expect(outcome.status === 'EXTRACTED' && outcome.evidence.repaired).toBe(true);
+  });
+
+  it('drops the confidence block before the gate, so it never reaches the stored receipt', async () => {
+    const withConf = JSON.stringify({ ...JSON.parse(validReceiptJson), confidence: { total: 0.9 } });
+    const outcome = await extractReceipt(new ScriptedProvider([withConf]), 'text');
+    expect(outcome.status).toBe('EXTRACTED');
+    expect(outcome.status === 'EXTRACTED' && 'confidence' in outcome.receipt).toBe(false);
+  });
+});

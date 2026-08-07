@@ -21,11 +21,19 @@ export interface ModelRequest {
   maxTokens?: number;
 }
 
+export interface TokenLogprob {
+  token: string;
+  logprob: number;
+}
+
 export interface ModelResult {
   text: string;
   modelId: string;
   inputTokens: number;
   outputTokens: number;
+  // Only the local provider returns these. Bedrock does not expose token
+  // probabilities for Claude, so that path has no perception signal.
+  tokenLogprobs?: TokenLogprob[];
 }
 
 export interface ModelProvider {
