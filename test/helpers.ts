@@ -1,13 +1,14 @@
 // Shared test doubles. Kept out of the handlers so nothing test-only ships in a
 // Lambda bundle.
 import type { SQSRecord } from 'aws-lambda';
-import type { DocumentStore } from '../src/lib/store';
+import type { DocumentStore, ReviewInfo } from '../src/lib/store';
 import type { DocumentRecord, ExtractionMetadata } from '../src/lib/model';
 import type { ModelProvider, ModelRequest, ModelResult } from '../src/lib/providers/types';
 import type { Receipt } from '../src/lib/schema';
 
 export class FakeStore implements DocumentStore {
   readonly items = new Map<string, DocumentRecord>();
+  readonly reviewQueue: { docId: string; reason: string }[] = [];
 
   async putReceived(record: DocumentRecord): Promise<'created' | 'duplicate'> {
     if (this.items.has(record.docId)) return 'duplicate';
@@ -19,9 +20,18 @@ export class FakeStore implements DocumentStore {
     return this.items.get(docId);
   }
 
-  async markExtracted(docId: string, receipt: Receipt, meta: ExtractionMetadata): Promise<void> {
+  async markExtracted(docId: string, receipt: Receipt, meta: ExtractionMetadata, review?: ReviewInfo): Promise<void> {
     const existing = this.items.get(docId);
-    if (existing) this.items.set(docId, { ...existing, status: 'EXTRACTED', receipt, meta });
+    if (!existing) return;
+    const status = review?.needsReview ? 'NEEDS_REVIEW' : 'EXTRACTED';
+    this.items.set(docId, {
+      ...existing,
+      status,
+      receipt,
+      meta,
+      ...(review ? { route: review.route, confidence: review.confidence, reviewReason: review.reason } : {}),
+    });
+    if (review?.needsReview) this.reviewQueue.push({ docId, reason: review.reason });
   }
 
   async markFailed(docId: string, reason: string, meta?: ExtractionMetadata): Promise<void> {

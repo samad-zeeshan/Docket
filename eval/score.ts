@@ -26,7 +26,7 @@ export interface ReceiptScore {
 
 // Casing, spacing, and trailing punctuation vary between a receipt and a label
 // without being wrong, so normalize them away before comparing merchant text.
-function normText(s: string): string {
+export function normText(s: string): string {
   return s
     .toLowerCase()
     .replace(/\s+/g, ' ')
@@ -36,11 +36,11 @@ function normText(s: string): string {
 
 // Compare in integer cents. Subtracting floats (8.38 - 8.37) does not land on
 // 0.01, so a direct tolerance check would reject a value that is a cent off.
-function moneyEqual(a: number, b: number): boolean {
+export function moneyEqual(a: number, b: number): boolean {
   return Math.abs(Math.round(a * 100) - Math.round(b * 100)) <= 1;
 }
 
-function optionalNumber(a: number | undefined, b: number | undefined): number {
+export function optionalNumber(a: number | undefined, b: number | undefined): number {
   if (a === undefined && b === undefined) return 1;
   if (a === undefined || b === undefined) return 0;
   return moneyEqual(a, b) ? 1 : 0;

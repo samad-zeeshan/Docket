@@ -23,6 +23,14 @@ import {
   type OutcomeMeta,
 } from '../lib/extract';
 import { checkLineItems } from '../lib/schema';
+import { imageStats } from '../lib/imagestats';
+import { routeFor, type RouterParams } from '../lib/router';
+import { calibratedConfidence, reviewDecision, signalsFromEvidence, type CalibrationParams } from '../lib/calibrate';
+import { promptSmall } from '../lib/prompt';
+import { LocalProvider } from '../lib/providers/local';
+import type { StoredRoute } from '../lib/model';
+import calibrationJson from '../lib/params/calibration.json';
+import routerJson from '../lib/params/router.json';
 import { redactReceipt } from '../lib/redact';
 import { createProvider } from '../lib/providers';
 import { DynamoDocumentStore, documentClient, type DocumentStore } from '../lib/store';
@@ -44,14 +52,26 @@ const IMAGE_MEDIA_TYPES: Record<string, string> = {
 
 export interface IngestDeps {
   store: DocumentStore;
+  // The large model, Claude on Bedrock. Every doubt in routing lands here.
   provider: ModelProvider;
+  smallProvider?: ModelProvider;
+  router?: RouterParams;
+  calibration?: CalibrationParams;
   load(bucket: string, key: string): Promise<ExtractInput>;
 }
 
 export interface RecordResult {
   docId: string;
-  status: 'EXTRACTED' | 'FAILED' | 'SKIPPED';
+  status: 'EXTRACTED' | 'NEEDS_REVIEW' | 'FAILED' | 'SKIPPED';
   meta?: OutcomeMeta;
+  route?: StoredRoute;
+}
+
+// The committed parameter files start empty and are filled by eval/v2. Empty
+// means not fitted, and an unfitted router or calibrator must not be applied.
+function fitted<T extends object>(params: T, key: keyof T): T | undefined {
+  const v = params[key];
+  return Array.isArray(v) ? (v.length > 0 ? params : undefined) : v && Object.keys(v).length > 0 ? params : undefined;
 }
 
 let cached: IngestDeps | undefined;
@@ -68,9 +88,13 @@ function getDeps(): IngestDeps {
     const s3 = tracer.captureAWSv3Client(new S3Client({}));
     const ddb = documentClient(tracer.captureAWSv3Client(new DynamoDBClient({})));
     const bedrock = tracer.captureAWSv3Client(new BedrockRuntimeClient({ maxAttempts: 3 }));
+    const smallUrl = process.env.SMALL_MODEL_URL;
     cached = {
-      store: new DynamoDocumentStore(requireEnv('TABLE_NAME'), ddb),
+      store: new DynamoDocumentStore(requireEnv('TABLE_NAME'), ddb, process.env.REVIEW_TABLE_NAME),
       provider: createProvider(process.env, { bedrockClient: bedrock }),
+      smallProvider: smallUrl ? new LocalProvider(smallUrl, process.env.SMALL_MODEL_ID ?? 'qwen/qwen3.5-9b') : undefined,
+      router: fitted(routerJson as RouterParams, 'weights'),
+      calibration: fitted(calibrationJson as CalibrationParams, 'fields'),
       load: async (bucket, key) => {
         const bytes = await getObjectBytes(s3, bucket, key);
         const ext = key.toLowerCase().split('.').pop() ?? '';
@@ -137,10 +161,7 @@ export async function processRecord(deps: IngestDeps, record: SQSRecord): Promis
 
   try {
     const input = await deps.load(s3obj.bucket, s3obj.key);
-    const outcome =
-      input.kind === 'image'
-        ? await extractReceiptFromImage(deps.provider, input.images)
-        : await extractReceipt(deps.provider, input.text);
+    const { outcome, route } = await extractRouted(deps, input);
     if (outcome.status === 'EXTRACTED') {
       // Scrub any PII the model echoed into a free-text field before it is stored.
       const { receipt, redactions } = redactReceipt(outcome.receipt);
@@ -148,7 +169,20 @@ export async function processRecord(deps: IngestDeps, record: SQSRecord): Promis
         metrics.addMetric('PiiRedacted', MetricUnit.Count, redactions.length);
         log.info('redacted pii before store', { docId, kinds: [...new Set(redactions.map((r) => r.kind))] });
       }
-      await deps.store.markExtracted(docId, receipt, metaOf(outcome));
+
+      // The gate already passed. From here confidence only chooses between
+      // EXTRACTED and NEEDS_REVIEW, and the calibrator was fitted on the small
+      // model alone, so it is applied to that route and no other.
+      const calibration = route === 'small' ? deps.calibration : undefined;
+      const signals = signalsFromEvidence(outcome.receipt, outcome.evidence);
+      const confidence = calibratedConfidence(calibration, signals);
+      const decision = reviewDecision(calibration, confidence, signals);
+      await deps.store.markExtracted(docId, receipt, metaOf(outcome), {
+        route,
+        confidence,
+        needsReview: decision.needsReview,
+        reason: decision.reason,
+      });
 
       // The lines must add up to the subtotal. When they do not, the model
       // misread a line and the schema gate cannot tell, because the JSON is
@@ -164,12 +198,13 @@ export async function processRecord(deps: IngestDeps, record: SQSRecord): Promis
         log.warn('line items do not sum to the subtotal', { docId, delta: lines.delta });
       }
 
-      log.info('extracted', { docId, latencyMs: outcome.latencyMs, outputTokens: outcome.outputTokens });
-      return { docId, status: 'EXTRACTED', meta: metaOf(outcome) };
+      const status = decision.needsReview ? 'NEEDS_REVIEW' : 'EXTRACTED';
+      log.info('extracted', { docId, status, route, reason: decision.reason, latencyMs: outcome.latencyMs });
+      return { docId, status, meta: metaOf(outcome), route };
     }
     await deps.store.markFailed(docId, outcome.failureReason, metaOf(outcome));
-    log.warn('failed schema gate', { docId, reason: outcome.failureReason });
-    return { docId, status: 'FAILED', meta: metaOf(outcome) };
+    log.warn('failed schema gate', { docId, reason: outcome.failureReason, route });
+    return { docId, status: 'FAILED', meta: metaOf(outcome), route };
   } catch (err) {
     if (err instanceof ExtractionError) {
       await deps.store.markFailed(docId, err.message);
@@ -180,11 +215,30 @@ export async function processRecord(deps: IngestDeps, record: SQSRecord): Promis
   }
 }
 
+// Photos go through the router. A small model answer that fails the gate is
+// retried once on Claude, so routing can cost money but never a receipt. PDFs
+// carry no image statistics and always take the large model.
+async function extractRouted(deps: IngestDeps, input: ExtractInput): Promise<{ outcome: ExtractionOutcome; route: StoredRoute }> {
+  if (input.kind !== 'image') return { outcome: await extractReceipt(deps.provider, input.text), route: 'large' };
+  const first = input.images[0];
+  const stats = first ? imageStats(Buffer.from(first.dataBase64, 'base64'), first.mediaType) : undefined;
+  const decision = routeFor(stats, deps.router, deps.smallProvider !== undefined);
+  if (decision.route === 'small' && deps.smallProvider) {
+    const small = await extractReceiptFromImage(deps.smallProvider, input.images, promptSmall);
+    if (small.status === 'EXTRACTED') return { outcome: small, route: 'small' };
+    log.info('small model failed the gate, escalating', { reason: small.failureReason });
+    return { outcome: await extractReceiptFromImage(deps.provider, input.images), route: 'small-escalated' };
+  }
+  return { outcome: await extractReceiptFromImage(deps.provider, input.images), route: 'large' };
+}
+
 // One place that turns a record outcome into metrics, so the counters cannot
 // drift from what actually happened.
 function emit(result: RecordResult): void {
   metrics.addMetric('DocumentsProcessed', MetricUnit.Count, 1);
-  if (result.status === 'EXTRACTED') metrics.addMetric('ExtractionSucceeded', MetricUnit.Count, 1);
+  if (result.status === 'EXTRACTED' || result.status === 'NEEDS_REVIEW') metrics.addMetric('ExtractionSucceeded', MetricUnit.Count, 1);
+  if (result.status === 'NEEDS_REVIEW') metrics.addMetric('NeedsReview', MetricUnit.Count, 1);
+  if (result.route) metrics.addMetric(`Route_${result.route}`, MetricUnit.Count, 1);
   if (result.status === 'FAILED') metrics.addMetric('ExtractionFailed', MetricUnit.Count, 1);
   if (result.meta) {
     metrics.addMetric('ExtractionLatency', MetricUnit.Milliseconds, result.meta.latencyMs);

@@ -12,7 +12,7 @@ import type { DocumentRecord, DocumentStatus } from '../lib/model';
 import { log } from '../lib/log';
 import { metrics, tracer } from '../lib/powertools';
 
-const STATUSES: DocumentStatus[] = ['RECEIVED', 'EXTRACTED', 'FAILED'];
+export const STATUSES: DocumentStatus[] = ['RECEIVED', 'EXTRACTED', 'NEEDS_REVIEW', 'FAILED'];
 const DEFAULT_LIMIT = 20;
 const MAX_LIMIT = 100;
 

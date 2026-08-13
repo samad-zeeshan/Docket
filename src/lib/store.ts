@@ -5,8 +5,9 @@
  * a real table, which is what keeps the unit suite free and deterministic.
  */
 import { DynamoDBClient, ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
-import { DynamoDBDocumentClient, PutCommand, GetCommand, UpdateCommand, QueryCommand } from '@aws-sdk/lib-dynamodb';
-import type { DocumentRecord, DocumentStatus, ExtractionMetadata } from './model';
+import { DynamoDBDocumentClient, PutCommand, GetCommand, UpdateCommand, QueryCommand, TransactWriteCommand } from '@aws-sdk/lib-dynamodb';
+import type { DocumentRecord, DocumentStatus, ExtractionMetadata, StoredRoute } from './model';
+import type { ConfidenceField } from './confidence';
 import type { Receipt } from './schema';
 
 export const STATUS_INDEX = 'status-index';
@@ -20,10 +21,17 @@ export function documentClient(base?: DynamoDBClient): DynamoDBDocumentClient {
   });
 }
 
+export interface ReviewInfo {
+  route: StoredRoute;
+  confidence: Partial<Record<ConfidenceField, number>>;
+  needsReview: boolean;
+  reason: string;
+}
+
 export interface DocumentStore {
   putReceived(record: DocumentRecord): Promise<'created' | 'duplicate'>;
   get(docId: string): Promise<DocumentRecord | undefined>;
-  markExtracted(docId: string, receipt: Receipt, meta: ExtractionMetadata): Promise<void>;
+  markExtracted(docId: string, receipt: Receipt, meta: ExtractionMetadata, review?: ReviewInfo): Promise<void>;
   markFailed(docId: string, reason: string, meta?: ExtractionMetadata): Promise<void>;
   listByStatus(status: DocumentStatus, limit: number): Promise<DocumentRecord[]>;
 }
@@ -34,6 +42,7 @@ export class DynamoDocumentStore implements DocumentStore {
   constructor(
     private readonly tableName: string,
     client?: DynamoDBDocumentClient,
+    private readonly reviewTableName?: string,
   ) {
     this.client = client ?? documentClient();
   }
@@ -77,20 +86,36 @@ export class DynamoDocumentStore implements DocumentStore {
     return (out.Items ?? []) as DocumentRecord[];
   }
 
-  async markExtracted(docId: string, receipt: Receipt, meta: ExtractionMetadata): Promise<void> {
+  async markExtracted(docId: string, receipt: Receipt, meta: ExtractionMetadata, review?: ReviewInfo): Promise<void> {
+    const now = new Date().toISOString();
+    const status = review?.needsReview ? 'NEEDS_REVIEW' : 'EXTRACTED';
+    const update = {
+      TableName: this.tableName,
+      Key: { docId },
+      UpdateExpression: review
+        ? 'SET #s = :s, receipt = :r, meta = :m, updatedAt = :u, #route = :route, confidence = :c, reviewReason = :why REMOVE failureReason'
+        : 'SET #s = :s, receipt = :r, meta = :m, updatedAt = :u REMOVE failureReason',
+      ExpressionAttributeNames: (review ? { '#s': 'status', '#route': 'route' } : { '#s': 'status' }) as Record<string, string>,
+      ExpressionAttributeValues: {
+        ':s': status,
+        ':r': receipt,
+        ':m': meta,
+        ':u': now,
+        ...(review ? { ':route': review.route, ':c': review.confidence, ':why': review.reason } : {}),
+      },
+    };
+    if (!review?.needsReview || !this.reviewTableName) {
+      await this.client.send(new UpdateCommand(update));
+      return;
+    }
+    // One transaction, so a receipt is never marked NEEDS_REVIEW without a queue
+    // item for someone to pick up, or queued while its record still says RECEIVED.
     await this.client.send(
-      new UpdateCommand({
-        TableName: this.tableName,
-        Key: { docId },
-        UpdateExpression:
-          'SET #s = :s, receipt = :r, meta = :m, updatedAt = :u REMOVE failureReason',
-        ExpressionAttributeNames: { '#s': 'status' },
-        ExpressionAttributeValues: {
-          ':s': 'EXTRACTED',
-          ':r': receipt,
-          ':m': meta,
-          ':u': new Date().toISOString(),
-        },
+      new TransactWriteCommand({
+        TransactItems: [
+          { Update: update },
+          { Put: { TableName: this.reviewTableName, Item: { docId, queuedAt: now, reason: review.reason, route: review.route } } },
+        ],
       }),
     );
   }

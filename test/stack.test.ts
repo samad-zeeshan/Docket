@@ -271,8 +271,9 @@ describe('logical ids', () => {
   // resource and create a different one". For the table that is data loss, for the
   // bucket it is every stored receipt. Pinning the ids makes a rename a decision
   // someone has to make on purpose, rather than a diff nobody reads.
-  it('pins the documents table', () => {
-    expect(logicalIds('AWS::DynamoDB::Table')).toEqual([expect.stringMatching(/^IngestDocumentsTable/)]);
+  it('pins the documents table and the review queue', () => {
+    const ids = logicalIds('AWS::DynamoDB::Table').sort();
+    expect(ids).toEqual([expect.stringMatching(/^IngestDocumentsTable/), expect.stringMatching(/^IngestReviewQueue/)]);
   });
 
   it('pins the ingest and access log buckets', () => {
@@ -295,7 +296,7 @@ describe('stack outputs', () => {
   // construct otherwise picks up the construct path and a hash, which turns
   // BucketName into IngestBucketName4EFEBE9C and quietly breaks every runbook
   // command. Pin the names here so nobody has to find that out during an alarm.
-  it.each(['BucketName', 'QueueUrl', 'DlqUrl', 'TableName', 'ApiUrl', 'Region'])(
+  it.each(['BucketName', 'QueueUrl', 'DlqUrl', 'TableName', 'ReviewQueueName', 'ApiUrl', 'Region'])(
     'exposes %s under exactly that key',
     (key) => {
       docket.hasOutput(key, { Value: Match.anyValue() });
@@ -327,5 +328,27 @@ describe('cicd stack', () => {
         ]),
       }),
     });
+  });
+});
+
+describe('review queue', () => {
+  it('is its own table with point in time recovery', () => {
+    const queue = logicalIds('AWS::DynamoDB::Table').filter((id) => id.startsWith('IngestReviewQueue'));
+    expect(queue).toHaveLength(1);
+    const props = docket.findResources('AWS::DynamoDB::Table')[queue[0]!]!.Properties;
+    expect(props.KeySchema).toEqual([{ AttributeName: 'docId', KeyType: 'HASH' }]);
+    expect(props.PointInTimeRecoverySpecification).toEqual({ PointInTimeRecoveryEnabled: true });
+    expect(props.BillingMode).toBe('PAY_PER_REQUEST');
+  });
+
+  it('is handed to the ingest function by name', () => {
+    docket.hasResourceProperties('AWS::Lambda::Function', {
+      Environment: { Variables: Match.objectLike({ REVIEW_TABLE_NAME: Match.anyValue() }) },
+    });
+  });
+
+  it('lists NEEDS_REVIEW as a status the read API accepts', async () => {
+    const { STATUSES } = await import('../src/handlers/query');
+    expect(STATUSES).toContain('NEEDS_REVIEW');
   });
 });

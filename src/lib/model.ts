@@ -3,8 +3,13 @@
  * The extraction fields are absent until the extractor runs.
  */
 import type { Receipt } from './schema';
+import type { ConfidenceField } from './confidence';
 
-export type DocumentStatus = 'RECEIVED' | 'EXTRACTED' | 'FAILED';
+// NEEDS_REVIEW passed the schema gate like EXTRACTED. The difference is only that
+// a person should look before anyone relies on it.
+export type DocumentStatus = 'RECEIVED' | 'EXTRACTED' | 'NEEDS_REVIEW' | 'FAILED';
+
+export type StoredRoute = 'small' | 'large' | 'small-escalated';
 
 export interface ExtractionMetadata {
   modelId: string;
@@ -25,4 +30,7 @@ export interface DocumentRecord {
   receipt?: Receipt;
   failureReason?: string;
   meta?: ExtractionMetadata;
+  route?: StoredRoute;
+  confidence?: Partial<Record<ConfidenceField, number>>;
+  reviewReason?: string;
 }

@@ -43,6 +43,7 @@ export class IngestPipeline extends Construct {
   readonly queue: sqs.Queue;
   readonly deadLetterQueue: sqs.Queue;
   readonly table: dynamodb.Table;
+  readonly reviewQueue: dynamodb.Table;
   readonly ingestFn: NodejsFunction;
 
   constructor(scope: Construct, id: string) {
@@ -90,6 +91,20 @@ export class IngestPipeline extends Construct {
       sortKey: { name: 'receivedAt', type: dynamodb.AttributeType.STRING },
     });
 
+    // Receipts that passed the gate but that the calibrated confidence says a
+    // person should check. A table rather than a queue, because a reviewer lists
+    // and picks, and nothing here needs delivery semantics.
+    this.reviewQueue = new dynamodb.Table(this, 'ReviewQueue', {
+      partitionKey: { name: 'docId', type: dynamodb.AttributeType.STRING },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      removalPolicy: RemovalPolicy.DESTROY,
+      pointInTimeRecoverySpecification: { pointInTimeRecoveryEnabled: true },
+    });
+
+    // No small model endpoint unless one is passed at deploy time. Without it the
+    // router sends everything to Claude, which is what v1 did.
+    const smallModelUrl = this.node.tryGetContext('docket:smallModelUrl') as string | undefined;
+
     this.deadLetterQueue = new sqs.Queue(this, 'IngestDlq', {
       retentionPeriod: Duration.days(14),
       enforceSSL: true,
@@ -104,6 +119,8 @@ export class IngestPipeline extends Construct {
       tracing: Tracing.ACTIVE,
       environment: {
         TABLE_NAME: this.table.tableName,
+        REVIEW_TABLE_NAME: this.reviewQueue.tableName,
+        ...(smallModelUrl ? { SMALL_MODEL_URL: smallModelUrl } : {}),
         DOCKET_PROVIDER: 'bedrock',
         MODEL_ID,
         ANTHROPIC_KEY_PARAM,
@@ -129,6 +146,7 @@ export class IngestPipeline extends Construct {
     });
 
     this.table.grantReadWriteData(this.ingestFn);
+    this.reviewQueue.grantWriteData(this.ingestFn);
     this.bucket.grantRead(this.ingestFn);
 
     // Primary path: invoke Claude on Bedrock. Named exactly, with no wildcard.
@@ -184,5 +202,6 @@ export class IngestPipeline extends Construct {
     stackOutput(this, 'QueueUrl', this.queue.queueUrl);
     stackOutput(this, 'DlqUrl', this.deadLetterQueue.queueUrl);
     stackOutput(this, 'TableName', this.table.tableName);
+    stackOutput(this, 'ReviewQueueName', this.reviewQueue.tableName);
   }
 }
