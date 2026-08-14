@@ -33,11 +33,13 @@ function arg(name: string, fallback: string): string {
   return i >= 0 && process.argv[i + 1] ? process.argv[i + 1]! : fallback;
 }
 
-// The perturbation subset is fixed before any result is seen: the first 50 test
+// The perturbation subset is fixed before any result is seen: the first 20 test
 // split receipts of each source in id order. Choosing after would be cherry picking.
+// Forty receipts at fifteen damage settings is 600 calls, about what one shared
+// consumer GPU finishes in an afternoon.
 export function perturbationSubset(all: PreparedReceipt[]): PreparedReceipt[] {
   const pick = (source: string) =>
-    all.filter((r) => r.source === source && r.split === 'test').sort((a, b) => a.id.localeCompare(b.id)).slice(0, 50);
+    all.filter((r) => r.source === source && r.split === 'test').sort((a, b) => a.id.localeCompare(b.id)).slice(0, 20);
   return [...pick('sroie'), ...pick('cord')];
 }
 
