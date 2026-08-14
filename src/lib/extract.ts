@@ -140,9 +140,19 @@ function validate(modelText: string): Validated {
   } catch {
     return { ok: false, error: 'model did not return valid JSON' };
   }
-  const result = ReceiptSchema.safeParse(json);
+  const result = ReceiptSchema.safeParse(dropNullOptionals(json));
   if (result.success) return { ok: true, value: result.data };
   return { ok: false, error: formatIssues(result.error.issues) };
+}
+
+// null on an optional field means the receipt does not show it, which the schema
+// spells as absent. Required fields are left alone, so a null total still fails.
+const OPTIONAL_KEYS = ['subtotal', 'tax', 'paymentMethod'];
+function dropNullOptionals(json: unknown): unknown {
+  if (!json || typeof json !== 'object' || Array.isArray(json)) return json;
+  const out = { ...(json as Record<string, unknown>) };
+  for (const k of OPTIONAL_KEYS) if (out[k] === null) delete out[k];
+  return out;
 }
 
 // Models sometimes wrap JSON in a ```json fence despite being told not to.

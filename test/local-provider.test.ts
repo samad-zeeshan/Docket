@@ -57,3 +57,10 @@ describe('LocalProvider', () => {
     await expect(new LocalProvider('http://h', 'm').complete({ system: 's', user: 'u' })).rejects.toThrow('500');
   });
 });
+
+describe('RECEIPT_JSON_SCHEMA', () => {
+  it('makes the model decide on subtotal, tax and payment instead of letting the grammar skip them', () => {
+    expect(RECEIPT_JSON_SCHEMA.required).toEqual(expect.arrayContaining(['subtotal', 'tax', 'paymentMethod']));
+    expect(RECEIPT_JSON_SCHEMA.properties.subtotal.type).toEqual(['number', 'null']);
+  });
+});

@@ -5,6 +5,10 @@
  */
 
 const money = { type: 'number' };
+// Optional money fields are required but nullable. Left optional, a grammar lets
+// a 9B model skip straight from lineItems to total, and it did on 40 of 42
+// golden receipts. Forcing the key makes it write a value or say null.
+const maybeMoney = { type: ['number', 'null'] };
 
 export const RECEIPT_JSON_SCHEMA = {
   type: 'object',
@@ -20,17 +24,17 @@ export const RECEIPT_JSON_SCHEMA = {
         required: ['description', 'quantity', 'amount'],
       },
     },
-    subtotal: money,
-    tax: money,
+    subtotal: maybeMoney,
+    tax: maybeMoney,
     total: money,
-    paymentMethod: { type: 'string', enum: ['cash', 'credit', 'debit', 'gift_card', 'other'] },
+    paymentMethod: { type: ['string', 'null'], enum: ['cash', 'credit', 'debit', 'gift_card', 'other', null] },
     confidence: {
       type: 'object',
       properties: Object.fromEntries(
         ['merchant', 'date', 'currency', 'total', 'subtotal', 'tax', 'lineItems'].map((k) => [k, { type: 'number' }]),
       ),
-      required: ['merchant', 'date', 'currency', 'total', 'lineItems'],
+      required: ['merchant', 'date', 'currency', 'total', 'subtotal', 'tax', 'lineItems'],
     },
   },
-  required: ['merchant', 'date', 'currency', 'lineItems', 'total', 'confidence'],
+  required: ['merchant', 'date', 'currency', 'lineItems', 'subtotal', 'tax', 'total', 'paymentMethod', 'confidence'],
 } as const;

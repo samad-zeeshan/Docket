@@ -72,3 +72,18 @@ describe('extraction evidence', () => {
     expect(outcome.status === 'EXTRACTED' && 'confidence' in outcome.receipt).toBe(false);
   });
 });
+
+describe('null optional fields', () => {
+  it('reads null on an optional field as absent, so a grammar that forces the key still passes the gate', async () => {
+    const withNulls = JSON.stringify({ ...JSON.parse(validReceiptJson), subtotal: null, tax: null, paymentMethod: null });
+    const outcome = await extractReceipt(new ScriptedProvider([withNulls]), 'text');
+    expect(outcome.status).toBe('EXTRACTED');
+    expect(outcome.status === 'EXTRACTED' && outcome.receipt.subtotal).toBeUndefined();
+  });
+
+  it('still refuses null on a required field', async () => {
+    const noTotal = JSON.stringify({ ...JSON.parse(validReceiptJson), total: null });
+    const outcome = await extractReceipt(new ScriptedProvider([noTotal, noTotal]), 'text');
+    expect(outcome.status).toBe('FAILED');
+  });
+});
