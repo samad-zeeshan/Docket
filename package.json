@@ -27,7 +27,10 @@
     "eval": "tsx eval/run.ts",
     "eval:gen": "tsx eval/gen/synth.ts",
     "eval:record": "DOCKET_PROVIDER=bedrock DOCKET_RECORD=1 tsx eval/run.ts",
-    "data:fetch": "tsx eval/public/fetch.ts"
+    "data:fetch": "tsx eval/public/fetch.ts",
+    "eval:small": "tsx eval/public/run-small.ts",
+    "eval:v2": "tsx eval/v2/report.ts --check",
+    "eval:v2:build": "tsx eval/v2/records.ts && tsx eval/v2/report.ts"
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",

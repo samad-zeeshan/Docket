@@ -1,5 +1,5 @@
-# Lint, test, and synth on every push. The deploy job is wired but gated off
-# until Phase 6 turns it on. Eval runs here starting in Phase 5.
+# Lint, test, both evals and synth on every push. The deploy job is gated on a
+# repository variable.
 name: ci
 
 on:
@@ -24,6 +24,9 @@ jobs:
       # Recorded provider, so this is deterministic and free. Fails the build if
       # field accuracy drops below the threshold in eval/run.ts.
       - run: npm run eval
+      # Rebuilds calibration, STP, routing and robustness results from the
+      # committed per field records and fails if any committed result drifts.
+      - run: npm run eval:v2
       - run: npm run synth
 
   deploy:
