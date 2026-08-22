@@ -1,17 +1,12 @@
 /**
- * Offline demo engine: the catalog, per-sample extraction, the two scenarios, and
- * the full eval, all on the recorded provider so they run with no AWS account.
- * Shared by the local server and the static-site build so both show identical
- * data. Uploads are not here, they live in the server because they need a model.
+ * The golden set eval for the demo page, on the recorded provider so it runs with no AWS account.
  */
 import { readFileSync } from 'node:fs';
 import * as path from 'node:path';
 import { createProvider } from '../src/lib/providers';
 import { extractReceipt } from '../src/lib/extract';
-import { deriveDocId } from '../src/lib/docid';
 import { scoreReceipt, zeroScore, aggregate, type ReceiptScore } from '../eval/score';
 import { checkLineItems, type Receipt } from '../src/lib/schema';
-import type { ModelProvider, ModelResult } from '../src/lib/providers/types';
 
 const ROOT = path.join(__dirname, '..');
 const GOLDEN = path.join(ROOT, 'eval', 'golden');
@@ -38,88 +33,6 @@ function labelOf(id: string): Receipt {
 
 function textOf(entry: ManifestEntry): string {
   return readFileSync(path.join(GOLDEN, entry.text), 'utf8');
-}
-
-// The receipt strip. Only what the UI needs to render a chip.
-export function catalog() {
-  return manifest.map((m) => {
-    const label = labelOf(m.id);
-    return {
-      id: m.id,
-      merchant: label.merchant,
-      date: label.date,
-      currency: label.currency,
-      total: label.total,
-      items: label.lineItems.length,
-      category: m.category,
-    };
-  });
-}
-
-export async function extractOne(id: string) {
-  const entry = manifest.find((m) => m.id === id);
-  if (!entry) throw new Error(`unknown id ${id}`);
-  const text = textOf(entry);
-  const label = labelOf(id);
-  const outcome = await extractReceipt(provider, text);
-  // A demo docId, derived the same way the pipeline does, just off a stable key.
-  const docId = deriveDocId('docket-demo', `${id}.pdf`, id);
-
-  const scored = outcome.status === 'EXTRACTED' ? scoreReceipt(outcome.receipt, label) : zeroScore();
-  return {
-    id,
-    provider: providerName,
-    promptVersion: outcome.promptVersion,
-    docId,
-    status: outcome.status,
-    text,
-    label,
-    receipt: outcome.status === 'EXTRACTED' ? outcome.receipt : null,
-    failureReason: outcome.status === 'FAILED' ? outcome.failureReason : null,
-    latencyMs: outcome.latencyMs,
-    inputTokens: outcome.inputTokens,
-    outputTokens: outcome.outputTokens,
-    fields: scored.fields,
-    score: scored.score,
-    // The check that needs no answer key. It is what catches r37, and the static
-    // site is built from here, so without this the hosted demo shows every check
-    // the pipeline runs except the one the docs point at.
-    lines: outcome.status === 'EXTRACTED' ? (checkLineItems(outcome.receipt) ?? null) : null,
-  };
-}
-
-// Stands in for a model that returns data missing required fields, so the
-// scenario can show the schema gate refusing bad output.
-class RejectingProvider implements ModelProvider {
-  readonly name = 'demo-stub';
-  async complete(): Promise<ModelResult> {
-    return { text: '{ "merchant": "Corner Grocery", "items": 3 }', modelId: 'demo-stub', inputTokens: 44, outputTokens: 12 };
-  }
-}
-
-export async function scenario(kind: string) {
-  if (kind === 'rejected') {
-    const entry = manifest.find((m) => m.id === 'r02')!;
-    const text = textOf(entry);
-    const outcome = await extractReceipt(new RejectingProvider(), text);
-    return {
-      kind,
-      status: outcome.status,
-      failureReason: outcome.status === 'FAILED' ? outcome.failureReason : null,
-      badOutput: '{ "merchant": "Corner Grocery", "items": 3 }',
-      text,
-    };
-  }
-  if (kind === 'idempotent') {
-    const base = await extractOne('r02');
-    // The same two-write check the pipeline does with a conditional put: the
-    // second write for a docId that already exists is a no-op.
-    const seen = new Set<string>();
-    const first = seen.has(base.docId) ? 'duplicate' : (seen.add(base.docId), 'created');
-    const second = seen.has(base.docId) ? 'duplicate' : (seen.add(base.docId), 'created');
-    return { kind, docId: base.docId, merchant: base.label.merchant, receipt: base.receipt, text: base.text, first, second };
-  }
-  throw new Error(`unknown scenario ${kind}`);
 }
 
 export async function evalAll() {

@@ -231,6 +231,38 @@
     * { animation: none !important; transition: none !important; scroll-behavior: auto; }
     .rise, .json .ln { opacity: 1; transform: none; }
   }
+  /* v2 additions */
+  .banner { margin-top: 18px; padding: 12px 16px; border: 1px solid color-mix(in srgb, var(--steel) 40%, var(--line)); border-radius: 12px; background: color-mix(in srgb, var(--steel) 10%, transparent); font-size: .9rem; color: var(--text); max-width: 760px; }
+  .banner b { color: var(--steel-2); }
+  .shot { padding: 14px; display: grid; place-items: center; min-height: 260px; }
+  .shot img { max-width: 100%; max-height: 520px; border-radius: 8px; border: 1px solid var(--line); background: #fff; }
+  .status.rev { color: var(--brass-2); background: color-mix(in srgb, var(--brass) 14%, transparent); border: 1px solid color-mix(in srgb, var(--brass) 38%, transparent); }
+  .status.rev::before { background: var(--brass); }
+  .why2 { padding: 10px 15px; font-family: var(--mono); font-size: .7rem; color: var(--muted); border-bottom: 1px solid var(--line); }
+  .conf { display: inline-block; width: 46px; height: 5px; border-radius: 3px; background: var(--bg-2); border: 1px solid var(--line); vertical-align: middle; overflow: hidden; }
+  .conf i { display: block; height: 100%; background: var(--steel-2); }
+  .idcard { margin: 14px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; font-family: var(--mono); font-size: .72rem; color: var(--muted); }
+  .idcard b { color: var(--text); }
+  .chart { padding: 16px; }
+  .chart svg { width: 100%; height: auto; display: block; }
+  .chart .axis { stroke: var(--line-2); }
+  .chart text { fill: var(--faint); font-family: var(--mono); font-size: 10px; }
+  .slider { display: flex; align-items: center; gap: 14px; padding: 0 16px 16px; flex-wrap: wrap; }
+  .slider input[type=range] { flex: 1 1 260px; accent-color: var(--brass); }
+  .readout { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; padding: 0 16px 16px; }
+  .tile { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: color-mix(in srgb, var(--card-2) 55%, transparent); }
+  .tile .v { font-size: 1.4rem; font-weight: 700; color: var(--brass); font-variant-numeric: tabular-nums; }
+  .tile .l { font-family: var(--mono); font-size: .66rem; color: var(--faint); }
+  .rel { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; padding: 16px; }
+  .rel .cell { border: 1px solid var(--line); border-radius: 10px; padding: 10px; }
+  .rel .cell h4 { margin: 0 0 6px; font-size: .8rem; font-weight: 620; }
+  .rel .cell p { margin: 6px 0 0; font-family: var(--mono); font-size: .66rem; color: var(--faint); }
+  table.t { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: .72rem; }
+  table.t th, table.t td { padding: 7px 10px; border-bottom: 1px solid var(--line); text-align: right; }
+  table.t th:first-child, table.t td:first-child { text-align: left; }
+  table.t th { color: var(--faint); font-weight: 500; }
+  .tw { padding: 6px 16px 16px; overflow-x: auto; }
+  .fine { padding: 0 16px 14px; font-size: .8rem; color: var(--muted); }
 </style>
 </head>
 <body>
@@ -241,513 +273,330 @@
     <header class="rise d1">
       <div class="brand"><span class="mark"><i></i></span> Docket</div>
       <div class="hbadges">
-        <span class="pill" id="pillMode"><span class="dot"></span> offline demo</span>
-        <span class="pill" id="pillHost">runs on your machine</span>
+        <span class="pill"><span class="dot"></span> recorded results</span>
+        <span class="pill">no backend, no model on this page</span>
       </div>
     </header>
 
     <section class="hero">
-      <p class="eyebrow rise d1">From receipt to clean data</p>
-      <h1 class="rise d2">Turn any receipt into <span class="g">clean, checked data</span>.</h1>
-      <p class="sub rise d3">Docket reads a receipt, pulls out the details, and checks every field before you see it. Try a scenario below to watch it work.</p>
+      <p class="eyebrow rise d1">Receipts to checked data</p>
+      <h1 class="rise d2">Which receipts can skip a person, <span class="g">and how sure are we?</span></h1>
+      <p class="sub rise d3">Docket reads a receipt and stores it as clean data, but only after a strict format check. Each field also gets a confidence score, and a receipt goes to a person when any field looks doubtful.</p>
+      <div class="banner rise d4"><b>This page runs on recorded results.</b> Every number and every receipt below was produced earlier by a real model run and saved. Nothing here calls a model. The small model is Qwen 3.5 9B running locally; the results for Claude come from the saved Bedrock responses.</div>
     </section>
 
-    <p class="section-title rise d3">What is this</p>
-    <div class="help rise d4">
-      <div>
-        <p>Docket is a small pipeline that reads a receipt and returns its details as clean data. The store, the date, each item, and the total.</p>
-        <p>It never trusts the reader blindly. <b>Every result is checked against a strict format and scored against a known correct answer.</b> Anything wrong is caught and held back, not passed on.</p>
-        <p>This page runs the real code on your machine. It uses saved sample results, so it needs no internet and no account.</p>
-      </div>
-      <div class="steps">
-        <div class="step"><span class="num">1</span><span>Read the receipt</span></div>
-        <div class="step"><span class="num">2</span><span>Pull out the fields</span></div>
-        <div class="step"><span class="num">3</span><span>Check the format</span></div>
-        <div class="step"><span class="num">4</span><span>Score the result</span></div>
-      </div>
-    </div>
-
-    <p class="section-title">See what it handles</p>
+    <p class="section-title">Four receipts</p>
     <div class="scn" id="scn"></div>
 
     <div class="grid">
       <div class="panel">
-        <div class="panel-h"><span class="t">Receipt</span><span class="r" id="inMeta">pick a scenario</span></div>
-        <div class="receipt" id="receipt">Run a scenario above and its receipt text loads here.</div>
-        <div class="pipe" id="pipe"></div>
+        <div class="panel-h"><span class="t">Receipt</span><span class="r" id="inMeta">pick one above</span></div>
+        <div id="left"><div class="empty"><span>Pick a receipt above.</span></div></div>
       </div>
-
       <div class="panel">
-        <div class="panel-h"><span class="t">Result</span><span class="r" id="resMeta"></span></div>
+        <div class="panel-h"><span class="t">What Docket did</span><span class="r" id="resMeta"></span></div>
         <div class="note" id="note"></div>
-        <div class="result" id="result">
-          <div class="empty">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h16M4 12h10M4 17h7"/></svg>
-            <span>Run a scenario to see the clean data, the check result, and the field scores.</span>
-          </div>
-        </div>
+        <div class="result" id="result"><div class="empty"><span>The stored result, each field's confidence, and whether a person is needed show up here.</span></div></div>
       </div>
     </div>
+    <p class="fine" id="attrib"></p>
 
-    <p class="section-title">Or try any of the samples</p>
-    <div class="strip" id="strip"></div>
+    <p class="section-title">Straight through or review</p>
+    <div class="panel">
+      <div class="panel-h"><span class="t">Drag the threshold</span><span class="r" id="stpMeta"></span></div>
+      <div class="chart" id="stpChart"></div>
+      <div class="slider">
+        <span class="t" style="font-family:var(--mono);font-size:.72rem;color:var(--faint)">threshold</span>
+        <input type="range" id="thr" min="0" max="100" step="1" value="90" aria-label="confidence threshold" />
+        <span id="thrVal" style="font-family:var(--mono)">0.90</span>
+      </div>
+      <div class="readout" id="readout"></div>
+      <p class="fine" id="stpNote"></p>
+    </div>
 
-    <p class="section-title">Bring your own receipt</p>
+    <p class="section-title">Is the confidence honest?</p>
+    <div class="panel">
+      <div class="panel-h"><span class="t">Reliability per field, test split</span><span class="r">bar height is how often fields in that bin were right</span></div>
+      <div class="rel" id="rel"></div>
+      <p class="fine">A score that tells the truth puts each bar on the dashed line. Red is the confidence the model writes down itself. Blue is the same field after calibration on receipts the model had not been scored on.</p>
+    </div>
+
+    <p class="section-title">Which model reads it</p>
+    <div class="panel">
+      <div class="panel-h"><span class="t">Router and cost</span><span class="r">decided from the image, before any model call</span></div>
+      <div class="readout" id="routeTiles" style="padding-top:16px"></div>
+      <div class="tw" id="pathTable"></div>
+      <p class="fine" id="costNote"></p>
+    </div>
+
+    <p class="section-title">When the photo is bad</p>
+    <div class="panel">
+      <div class="panel-h"><span class="t">Field accuracy under damage</span><span class="r" id="pertMeta"></span></div>
+      <div class="tw" id="pertTable" style="padding-top:14px"></div>
+      <p class="fine" id="homNote"></p>
+    </div>
+
+    <p class="section-title">Check your own photo</p>
     <div class="panel byo">
-      <div class="panel-h"><span class="t">Analyze a receipt</span><span class="r" id="byoState">checking...</span></div>
+      <div class="panel-h"><span class="t">Upload</span><span class="r">recorded results only</span></div>
       <div class="byo-b">
         <div class="byo-in">
-          <div class="drop" id="drop" tabindex="0" role="button" aria-label="Upload a PDF or photo of a receipt">
+          <div class="drop" id="drop" tabindex="0" role="button" aria-label="Upload a receipt photo">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 15V4m0 0L8 8m4-4l4 4"/><path d="M4 15v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>
-            <div class="dt">Drop a PDF or photo here, or <span class="lnk">choose a file</span></div>
-            <div class="dh">PDF read on your machine, or a photo read by the model. Up to 12 MB.</div>
-            <input type="file" id="file" accept="application/pdf,image/png,image/jpeg,image/webp,.pdf,.png,.jpg,.jpeg,.webp" hidden />
+            <div class="dt">Drop a JPEG or PNG here, or <span class="lnk">choose a file</span></div>
+            <div class="dh">It stays in your browser. Nothing is uploaded anywhere.</div>
+            <input type="file" id="file" accept="image/png,image/jpeg,.png,.jpg,.jpeg" hidden />
           </div>
-          <button class="pastetog" id="pasteTog" type="button">or paste receipt text instead</button>
-          <div class="paste" id="pasteWrap" hidden>
-            <textarea id="pasteText" placeholder="Paste the lines of a receipt here, then analyze."></textarea>
-            <button class="btn brass" id="analyzePaste" type="button">Analyze text</button>
-          </div>
-          <p class="byo-hint" id="byoHint"></p>
+          <p class="byo-hint">If the photo is one of the recorded receipts above, you get its saved result. For any other photo this page measures the image the way the router does and tells you which model it would go to. Reading the fields needs a model, which this page does not have.</p>
         </div>
-        <div class="byo-out" id="byoOut">
-          <div class="empty">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 8h10M7 12h6M7 16h8"/></svg>
-            <span>Upload a PDF or paste text. The clean JSON shows up here.</span>
-          </div>
-        </div>
+        <div class="byo-out" id="byoOut"><div class="empty"><span>Your photo's route shows up here.</span></div></div>
       </div>
     </div>
 
-    <p class="section-title" id="evalTitle">Accuracy on the sample set</p>
+    <p class="section-title" id="evalTitle">The 42 hand checked receipts</p>
     <div class="panel evalcard">
-      <div class="panel-h"><span class="t">Score</span><span class="r">checked automatically on every change</span></div>
+      <div class="panel-h"><span class="t">Claude Haiku 4.5, saved Bedrock responses</span><span class="r">replayed on every change</span></div>
       <div class="panel-b">
-        <div class="bignum">
-          <div>
-            <div class="v" id="evalOverall">-</div>
-            <div class="l">overall accuracy</div>
-          </div>
-          <div class="gate" id="evalGate" style="visibility:hidden">clears the 0.90 bar</div>
-        </div>
-        <div>
-          <div class="bars" id="bars"></div>
-          <div class="cats" id="evalCats"></div>
-          <div style="margin-top:16px"><button class="btn ghost" id="runEval">Score the whole set</button></div>
-        </div>
+        <div class="bignum"><div><div class="v" id="evalOverall">-</div><div class="l">field accuracy</div></div></div>
+        <div><div class="bars" id="bars"></div></div>
       </div>
     </div>
 
     <footer>
-      <span><b>Runs on your machine.</b> Uses saved sample results, so no internet or account is needed.</span>
-      <span>Built on the same code the pipeline uses.</span>
-      <span>Colors from UI/UX Pro Max, Banking palette.</span>
+      <span><b>Recorded results.</b> No model runs on this page.</span>
+      <span>Receipt images: CORD v2, CC BY 4.0.</span>
     </footer>
   </div>
 
 <script>
   const $ = (s) => document.querySelector(s);
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  // In the static build, data.json is inlined as window.__DOCKET__ and the page
-  // reads from it. Served locally, there is no such object and these fall through
-  // to the server. One index.html, both modes.
-  const STATIC = window.__DOCKET__ || null;
-  async function apiGet(path) {
-    if (STATIC) {
-      if (path === '/api/catalog') return STATIC.catalog;
-      if (path === '/api/eval') return STATIC.eval;
-      throw new Error('no static data for ' + path);
-    }
-    return (await fetch(path)).json();
-  }
-  async function apiPost(path, body) {
-    if (STATIC) {
-      if (path === '/api/extract') return STATIC.samples[body.id];
-      if (path === '/api/scenario') return STATIC.scenarios[body.kind];
-      throw new Error('no static data for ' + path);
-    }
-    return (await fetch(path, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) })).json();
-  }
-  const STAGES = ['read', 'get text', 'pull fields', 'check', 'save'];
-  const FIELDS = ['merchant','date','currency','total','subtotal','tax','paymentMethod','lineItems'];
-  const LABELS = { paymentMethod: 'payment', lineItems: 'items' };
-  const lab = (f) => LABELS[f] || f;
-
-  const SCENARIOS = [
-    { key: 'clean', id: 'r02', color: 'var(--good)', title: 'A clean receipt', desc: 'Everything reads correctly and clears every check.',
-      shows: 'The normal case. The store, date, items, and total all match. Every field is green.' },
-    { key: 'caught', id: 'r37', color: 'var(--bad)', title: 'A misread, caught', desc: 'The reader doubles a line item. The score flags it.',
-      shows: 'The receipt prints "Pen pack x2 5.50". That 5.50 is the line total, not the price of one. The model read it as the price of one and doubled the line to 11.00. Every other field is right, so the format check sees nothing wrong. Two things find it: the known correct answer, and the receipt itself, whose line amounts no longer add up to its own subtotal.' },
-    { key: 'rejected', color: 'var(--bad)', title: 'A bad result, refused', desc: 'The output does not fit the required format.',
-      shows: 'When data does not fit the format, it is marked failed and held back. It is never saved as if it were fine.' },
-    { key: 'idempotent', color: 'var(--steel)', title: 'The same receipt twice', desc: 'Send it again and nothing is duplicated.',
-      shows: 'The second copy has the same id and is skipped. You never get a double entry.' },
-  ];
-
-  /* cursor hue-shift aura, champagne to moonlight */
-  (function aura() {
-    const el = $('#aura');
-    const brass = [198,169,104], steel = [112,137,176];
-    let tx = innerWidth*0.5, ty = innerHeight*0.28, cx = tx, cy = ty, th = 0.2, ch = 0.2;
-    addEventListener('pointermove', (e) => { tx = e.clientX; ty = e.clientY; th = Math.min(1, Math.max(0, e.clientX / innerWidth)); }, { passive: true });
-    const mix = (a, b, t) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
-    function frame() {
-      cx += (tx - cx) * 0.08; cy += (ty - cy) * 0.08; ch += (th - ch) * 0.05;
-      const c = mix(brass, steel, ch);
-      el.style.setProperty('--gx', (cx / innerWidth * 100).toFixed(2) + '%');
-      el.style.setProperty('--gy', (cy / innerHeight * 100).toFixed(2) + '%');
-      el.style.setProperty('--glow', `rgba(${c[0]},${c[1]},${c[2]},0.14)`);
-      requestAnimationFrame(frame);
-    }
-    if (!reduce) requestAnimationFrame(frame);
-  })();
-
-  const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;' }[c]));
-  const money = (n, cur) => n.toFixed(2) + (cur && cur !== 'USD' ? ' ' + cur : '');
-  const fmt = (v) => v === undefined ? 'empty' : typeof v === 'number' ? v.toFixed(2) : String(v);
+  const D = window.__DOCKET__;
+  const V = D.v2;
+  const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  const pct = (x) => (x === null || x === undefined ? 'n/a' : (x * 100).toFixed(1) + '%');
+  const num = (x, d = 3) => (x === null || x === undefined ? 'n/a' : Number(x).toFixed(d));
+  const LAB = { lineItems: 'items', paymentMethod: 'payment' };
+  const lab = (f) => LAB[f] || f;
 
   function highlight(obj) {
     const raw = esc(JSON.stringify(obj, null, 2));
     return raw.split('\n').map((line) => {
       const h = line.replace(/("(?:[^"\\]|\\.)*"\s*:)|("(?:[^"\\]|\\.)*")|(-?\d+(?:\.\d+)?)|(true|false|null)/g,
-        (m, key, str, num, bool) => key ? `<span class="key">${key}</span>` : str ? `<span class="str">${str}</span>` : num ? `<span class="num">${num}</span>` : `<span class="bool">${bool}</span>`);
+        (m, key, str, n, b) => key ? `<span class="key">${key}</span>` : str ? `<span class="str">${str}</span>` : n ? `<span class="num">${n}</span>` : `<span class="bool">${b}</span>`);
       return `<span class="ln">${h}</span>`;
     }).join('');
   }
 
-  /* pipeline stage animation */
-  function renderPipe(state) {
-    const pipe = $('#pipe'); pipe.innerHTML = '';
-    STAGES.forEach((s, i) => {
-      const el = document.createElement('span');
-      el.className = 'stage' + (state[i] ? ' ' + state[i] : '');
-      el.innerHTML = `<span class="b"></span>${s}`;
-      pipe.appendChild(el);
-      if (i < STAGES.length - 1) { const sep = document.createElement('span'); sep.className = 'sep'; pipe.appendChild(sep); }
-    });
-  }
-  function animateStages() {
-    return new Promise((resolve) => {
-      const state = STAGES.map(() => ''); renderPipe(state);
-      if (reduce) { state.forEach((_, i) => (state[i] = 'done')); renderPipe(state); return resolve(); }
-      let i = 0;
-      (function step() {
-        if (i > 0) state[i - 1] = 'done';
-        if (i < STAGES.length) { state[i] = 'active'; renderPipe(state); i++; setTimeout(step, 160); }
-        else { renderPipe(state); resolve(); }
-      })();
-    });
+  /* the four receipts */
+  const EX = V.examples || {};
+  const SCN = [
+    { key: 'standard', color: 'var(--good)', title: 'A standard receipt', desc: 'Clean photo, every field read right.' },
+    { key: 'hard', color: 'var(--bad)', title: 'A hard receipt', desc: 'The model gets a field wrong. Does the confidence notice?' },
+    { key: 'blurred', color: 'var(--steel)', title: 'A blurred receipt', desc: 'The same kind of photo, blurred on purpose.' },
+    { key: 'pair', color: 'var(--brass)', title: 'Two near identical receipts', desc: 'Same shop, same layout. Can they be told apart?' },
+  ];
+
+  function statusOf(e) {
+    if (e.status === 'FAILED') return '<span class="status fail pop">failed the format check</span>';
+    return e.needsReview ? '<span class="status rev pop">needs a person</span>' : '<span class="status ok pop">straight through</span>';
   }
 
-  /* scenarios */
-  function renderScenarios() {
-    const box = $('#scn'); box.innerHTML = '';
-    SCENARIOS.forEach((s) => {
+  function fieldRow(f) {
+    const bar = f.confidence === null ? '' : `<span class="conf" title="confidence ${f.confidence}"><i style="width:${(f.confidence * 100).toFixed(0)}%"></i></span> ${num(f.confidence, 2)}`;
+    const show = (v) => v === null ? 'empty' : typeof v === 'object' ? (Array.isArray(v) ? v.length + ' lines' : '...') : String(v);
+    const diff = f.correct ? '' : ` <span class="diff"><s>${esc(show(f.predicted))}</s> to <em>${esc(show(f.label))}</em></span>`;
+    return `<span class="fchip ${f.correct ? 'ok' : 'bad'}"><span class="ic">${f.correct ? '✓' : '✕'}</span>${lab(f.field)} ${bar}${diff}</span>`;
+  }
+
+  function showOne(e, note) {
+    $('#left').innerHTML = `<div class="shot"><img src="${e.image.file}" alt="receipt photo ${esc(e.id)}" /></div>`;
+    $('#inMeta').textContent = e.id + (e.variant !== 'clean' ? ', ' + e.variant : '');
+    $('#resMeta').textContent = 'route: small model';
+    $('#note').className = 'note show'; $('#note').innerHTML = `<b>What this shows.</b> ${note}`;
+    $('#result').innerHTML = `<div class="rhead">${statusOf(e)}</div>
+      <div class="why2">${esc(e.reason)}</div>
+      <div class="fields" style="padding-top:12px">${e.fields.map(fieldRow).join('')}</div>
+      ${e.receipt ? `<pre class="json">${highlight(e.receipt)}</pre>` : `<div class="badout">${esc(e.failureReason || '')}</div>`}`;
+  }
+
+  function notes(e, kind) {
+    const wrong = e.fields.filter((f) => !f.correct).map((f) => lab(f.field));
+    if (kind === 'standard') return e.needsReview ? 'Every labelled field is right, and still the confidence sends it to a person. That is the cost of a strict threshold.' : 'Every labelled field is right, every confidence clears the threshold, and it is stored with no person involved.';
+    const what = wrong.length ? `The ${wrong.join(' and ')} ${wrong.length > 1 ? 'are' : 'is'} wrong. ` : 'Every labelled field happens to be right. ';
+    if (e.status === 'FAILED') return what + 'The answer did not fit the format even after one repair, so nothing was stored.';
+    return what + (e.needsReview ? 'The confidence was low enough to send it to a person, so the mistake does not go through unseen.' : 'The confidence did not catch it, so this one would have gone through wrong. It is shown because it happened.');
+  }
+
+  function showPair() {
+    const p = EX.pair;
+    $('#left').innerHTML = p.items.map((it, i) => `<div class="idcard"><b>Receipt ${i + 1}</b>, ${esc(p.merchant)}<br/>document id ${esc(it.docId.slice(0, 24))}...</div>`).join('') +
+      '<p class="fine">These two come from SROIE, which is shown as values rather than pictures.</p>';
+    $('#inMeta').textContent = 'same merchant, same template';
+    $('#resMeta').textContent = '';
+    const same = p.items[0].docId === p.items[1].docId;
+    $('#note').className = 'note show';
+    $('#note').innerHTML = `<b>What this shows.</b> The document id is a hash of the file, so two receipts that look alike still get ${same ? 'the same id, which is a bug' : 'different ids'}. ${p.swaps.length ? 'Here a value from one receipt turned up in the other: ' + esc(p.swaps.join(', ')) + '.' : 'No value from one receipt turned up in the other.'}`;
+    $('#result').innerHTML = p.items.map((it, i) => `<div class="rhead">${statusOf(it)}<span class="doc">receipt ${i + 1}</span></div>
+      <div class="fields" style="padding-top:12px">${it.fields.map(fieldRow).join('')}</div>`).join('');
+  }
+
+  function renderScn() {
+    const box = $('#scn');
+    SCN.forEach((s) => {
+      if (!EX[s.key]) return;
       const b = document.createElement('button');
-      b.className = 'scard'; b.dataset.key = s.key;
-      b.innerHTML = `<div class="st"><span class="glyph" style="background:${s.color}"></span><h3>${s.title}</h3></div>
-        <p>${s.desc}</p><span class="go">run this &rarr;</span>`;
-      b.addEventListener('click', () => runScenario(s, b));
+      b.className = 'scard';
+      b.innerHTML = `<div class="st"><span class="glyph" style="background:${s.color}"></span><h3>${s.title}</h3></div><p>${s.desc}</p><span class="go">show &rarr;</span>`;
+      b.addEventListener('click', () => {
+        document.querySelectorAll('.scard').forEach((c) => c.classList.remove('sel')); b.classList.add('sel');
+        if (s.key === 'pair') showPair(); else showOne(EX[s.key], notes(EX[s.key], s.key));
+      });
       box.appendChild(b);
     });
+    if (EX.attribution) $('#attrib').textContent = EX.attribution;
   }
 
-  let busy = false;
-  async function runScenario(s, btn) {
-    if (busy) return; busy = true;
-    document.querySelectorAll('.scard, .rcard').forEach((c) => c.classList.remove('sel'));
-    if (btn) btn.classList.add('sel');
-    setNote(s.shows);
-    $('#result').innerHTML = '<div class="empty"><span>running...</span></div>';
-
-    const req = s.key === 'rejected' || s.key === 'idempotent'
-      ? apiPost('/api/scenario', { kind: s.key })
-      : apiPost('/api/extract', { id: s.id });
-
-    const [data] = await Promise.all([req, animateStages()]);
-    loadReceiptText(data);
-    renderResult(data);
-    busy = false;
-  }
-
-  async function runSample(id, btn) {
-    if (busy) return; busy = true;
-    document.querySelectorAll('.scard, .rcard').forEach((c) => c.classList.remove('sel'));
-    if (btn) btn.classList.add('sel');
-    setNote('');
-    $('#result').innerHTML = '<div class="empty"><span>running...</span></div>';
-    const [data] = await Promise.all([apiPost('/api/extract', { id }), animateStages()]);
-    loadReceiptText(data);
-    renderResult(data);
-    busy = false;
-  }
-
-  function setNote(text) {
-    const n = $('#note');
-    if (!text) { n.className = 'note'; n.innerHTML = ''; return; }
-    n.className = 'note show'; n.innerHTML = `<b>What this shows.</b> ${text}`;
-  }
-
-  function loadReceiptText(d) {
-    $('#inMeta').textContent = d.kind ? d.kind : 'sample';
-    if (d.text) $('#receipt').innerHTML = esc(d.text).replace(/^(.+)$/m, '<span class="em">$1</span>');
-  }
-
-  function renderResult(d) {
-    $('#resMeta').textContent = d.provider ? `saved result, ${d.provider}` : 'saved result';
-    const el = $('#result');
-
-    if (d.kind === 'idempotent') {
-      el.innerHTML = `
-        <div class="rhead"><span class="status ok pop">SAVED ONCE</span><span class="doc">id ${d.docId.slice(0,20)}...</span></div>
-        <div class="writes">
-          <div class="wrow"><span class="tag created">created</span><span class="lbl">First upload of ${esc(d.merchant)}<small>new id, written to the store</small></span></div>
-          <div class="wrow"><span class="tag dup">skipped</span><span class="lbl">Same receipt sent again<small>same id, recognized and not written</small></span></div>
-        </div>
-        <pre class="json">${highlight(d.receipt)}</pre>`;
-      staggerJson(el);
-      return;
-    }
-
-    if (d.status === 'FAILED') {
-      el.innerHTML = `
-        <div class="rhead"><span class="status fail pop">failed the check</span></div>
-        <div class="badout">${esc(d.badOutput || '')}
-          <div class="why">This is missing required fields, so it did not fit the format. It is held back, not saved.</div>
-        </div>`;
-      return;
-    }
-
-    // EXTRACTED
-    const fieldsHtml = FIELDS.filter((f) => (d.receipt && f in d.receipt) || d.label[f] !== undefined).map((f) => fieldChip(f, d)).join('');
-    // The one check that needs no answer key, shown next to the score that does.
-    // On r37 it is what disagrees with the model, all on its own.
-    const lineChip = reconChip(d.lines, 'lines');
-    el.innerHTML = `
-      <div class="rhead"><span class="status ok pop">passed</span><span class="doc">id ${d.docId.slice(0,20)}...</span></div>
-      <pre class="json">${highlight(d.receipt)}</pre>
-      <div class="rfoot">
-        <span class="mtr">time <b>${d.latencyMs}ms</b></span>
-        <span class="mtr">tokens <b>${d.inputTokens + d.outputTokens}</b></span>
-        ${lineChip}
-        <span class="score"><span class="v" data-to="${d.score.toFixed(2)}">0.00</span><span class="l">accuracy</span></span>
-      </div>
-      <div class="fields">${fieldsHtml}</div>`;
-    staggerJson(el);
-    countUp(el.querySelector('.score .v'));
-  }
-
-  function staggerJson(el) { el.querySelectorAll('.json .ln').forEach((ln, i) => (ln.style.animationDelay = (i * 42) + 'ms')); }
-
-  function fieldChip(f, d) {
-    const sc = d.fields[f];
-    if (f === 'lineItems') { const good = sc >= 0.999; return chip(good, lab(f), good ? '' : `score ${sc.toFixed(2)}`); }
-    const good = sc === 1;
-    const diff = good ? '' : `<span class="diff"><s>${esc(fmt(d.receipt[f]))}</s> to <em>${esc(fmt(d.label[f]))}</em></span>`;
-    return chip(good, lab(f), diff);
-  }
-  const chip = (good, name, extra) => `<span class="fchip ${good ? 'ok' : 'bad'}"><span class="ic">${good ? '✓' : '✕'}</span>${name}${extra ? ' ' + extra : ''}</span>`;
-
-  // An arithmetic check the receipt makes against itself: totals, or lines. Absent
-  // when the receipt gave nothing to check against.
-  const reconChip = (c, noun) =>
-    c ? `<span class="rchip ${c.reconciles ? 'ok' : ''}">${c.reconciles ? noun + ' add up' : noun + ' off by ' + Math.abs(c.delta).toFixed(2)}</span>` : '';
-
-  function countUp(node) {
-    if (!node) return;
-    const to = parseFloat(node.dataset.to);
-    if (reduce) { node.textContent = to.toFixed(2); return; }
-    const start = performance.now(), dur = 640;
-    (function tick(t) {
-      const k = Math.min(1, (t - start) / dur);
-      node.textContent = (to * (1 - Math.pow(1 - k, 3))).toFixed(2);
-      if (k < 1) requestAnimationFrame(tick);
-    })(start);
-  }
-
-  /* samples strip */
-  async function loadCatalog() {
-    const data = await apiGet('/api/catalog');
-    const strip = $('#strip'); strip.innerHTML = '';
-    data.receipts.forEach((r) => {
-      const b = document.createElement('button');
-      b.className = 'rcard'; b.dataset.id = r.id;
-      b.innerHTML = `<div class="m">${esc(r.merchant)}</div><div class="meta"><span class="amt">${money(r.total, r.currency)}</span><span class="it">${r.items} item${r.items > 1 ? 's' : ''}</span></div>`;
-      b.addEventListener('click', () => runSample(r.id, b));
-      strip.appendChild(b);
-    });
-    setUploadState(data);
-  }
-
-  /* bring your own receipt */
-  function setUploadState(cat) {
-    const st = $('#byoState'), hint = $('#byoHint');
-    if (STATIC) {
-      st.textContent = 'local only';
-      st.style.color = 'var(--faint)';
-      hint.innerHTML = 'This hosted page runs the baked-in samples. To analyze your own PDF, photo, or text, run the demo locally with <code>npm run demo</code>.';
-      return;
-    }
-    if (cat.uploadReady) {
-      st.textContent = 'model connected: ' + cat.uploadProvider;
-      st.style.color = 'var(--good)';
-      hint.innerHTML = 'A PDF or a photo runs through the same reader and format check the samples use. The clean JSON is what comes out the other side.';
+  /* STP curve with a draggable threshold */
+  const W = 560, H = 260, ML = 48, MB = 32, MT = 12, MR = 16;
+  function renderStp() {
+    if (!V.stp) return;
+    const cal = V.stp.curveCalibrated, ver = V.stp.curveVerbalized;
+    const yMax = Math.max(0.02, ...cal.map((p) => p.fieldErrorRate), ...ver.map((p) => p.fieldErrorRate));
+    const x = (v) => ML + v * (W - ML - MR), y = (v) => H - MB - (v / yMax) * (H - MB - MT);
+    const path = (pts) => pts.map((p, i) => `${i ? 'L' : 'M'}${x(p.stpRate).toFixed(1)},${y(p.fieldErrorRate).toFixed(1)}`).join('');
+    const ticks = [0, 0.25, 0.5, 0.75, 1];
+    $('#stpChart').innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="share straight through against field error">
+      ${ticks.map((t) => `<line class="axis" x1="${x(0)}" x2="${x(1)}" y1="${y(t * yMax)}" y2="${y(t * yMax)}" stroke-opacity=".4"/><text x="${x(0) - 6}" y="${y(t * yMax) + 3}" text-anchor="end">${(t * yMax * 100).toFixed(1)}%</text><text x="${x(t)}" y="${H - 12}" text-anchor="middle">${t * 100}%</text>`).join('')}
+      <path d="${path(ver)}" fill="none" stroke="var(--bad)" stroke-width="2" stroke-dasharray="5 4"/>
+      <path d="${path(cal)}" fill="none" stroke="var(--steel-2)" stroke-width="2.2"/>
+      <line id="op" stroke="var(--good)" stroke-dasharray="3 3"/>
+      <circle id="dot" r="6" fill="var(--brass)" stroke="#000" stroke-opacity=".3"/>
+      <text x="${W - MR}" y="${MT + 10}" text-anchor="end" fill="var(--steel-2)">calibrated</text>
+      <text x="${W - MR}" y="${MT + 24}" text-anchor="end" fill="var(--bad)">what the model says</text>
+      <text x="${(ML + W) / 2}" y="${H}" text-anchor="middle">share of receipts with no person</text>
+    </svg>`;
+    const op = (V.stp.operating || []).find((o) => o.alpha === 0.01);
+    $('#stpMeta').textContent = `${V.stp.split.test} test receipts`;
+    const update = () => {
+      const t = Number($('#thr').value) / 100;
+      $('#thrVal').textContent = t.toFixed(2);
+      const p = cal.reduce((a, b) => (Math.abs(b.threshold - t) < Math.abs(a.threshold - t) ? b : a));
+      const d = $('#dot'); d.setAttribute('cx', x(p.stpRate)); d.setAttribute('cy', y(p.fieldErrorRate));
+      $('#readout').innerHTML = [
+        ['straight through', pct(p.stpRate)], ['field error among them', pct(p.fieldErrorRate)],
+        ['receipts passed', p.passed + ' of ' + V.stp.split.test], ['wrong fields passed', p.fieldErrors + ' of ' + p.fields],
+      ].map(([l, v]) => `<div class="tile"><div class="v">${v}</div><div class="l">${l}</div></div>`).join('');
+    };
+    if (op && op.threshold !== null) {
+      $('#thr').value = Math.round(op.threshold * 100);
+      $('#stpNote').textContent = `The pipeline threshold is ${op.threshold}, the lowest one whose field error stayed at or under 1 percent on the validation split. On the test split it lets through ${pct(op.test.stpRate)} of receipts with ${pct(op.test.fieldErrorRate)} field error.`;
     } else {
-      st.textContent = 'offline, samples only';
-      st.style.color = 'var(--faint)';
-      hint.innerHTML = 'Reading a PDF works offline. Pulling fields from a new receipt, or reading a photo, needs a model, so set <code>ANTHROPIC_API_KEY</code> and restart the demo. The samples above work offline right now.';
+      $('#stpNote').textContent = 'No threshold kept field error at or under 1 percent on the validation split, so the pipeline sends every small model receipt to a person. The curve shows what looser budgets would buy.';
     }
+    $('#thr').addEventListener('input', update); update();
   }
 
+  /* reliability diagrams */
+  function mini(bins, color) {
+    const w = 200, h = 130, m = 18, xx = (v) => m + v * (w - 2 * m), yy = (v) => h - m - v * (h - 2 * m);
+    return `<svg viewBox="0 0 ${w} ${h}"><line x1="${xx(0)}" y1="${yy(0)}" x2="${xx(1)}" y2="${yy(1)}" stroke="var(--faint)" stroke-dasharray="3 3"/>
+      ${bins.filter((b) => b.n > 0).map((b) => `<rect x="${xx(b.lo) + 1}" y="${yy(b.accuracy)}" width="${xx(b.hi) - xx(b.lo) - 2}" height="${yy(0) - yy(b.accuracy)}" fill="${color}" fill-opacity=".75"><title>n=${b.n}, right ${(b.accuracy * 100).toFixed(0)}%</title></rect>`).join('')}
+      <line x1="${xx(0)}" x2="${xx(1)}" y1="${yy(0)}" y2="${yy(0)}" stroke="var(--line-2)"/></svg>`;
+  }
+  function renderRel() {
+    if (!V.calibration) return;
+    $('#rel').innerHTML = V.calibration.fields.map((f) => `<div class="cell"><h4>${lab(f.field)} <span style="color:var(--faint);font-weight:400">right ${pct(f.testAccuracy)} of ${f.n.test}</span></h4>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">${mini(f.reliabilityVerbalized, 'var(--bad)')}${mini(f.reliabilityCalibrated, 'var(--steel-2)')}</div>
+      <p>ECE ${num(f.verbalized.ece)} said, ${num(f.calibrated.ece)} calibrated. AUROC ${num(f.verbalized.auroc)} to ${num(f.calibrated.auroc)}.</p></div>`).join('');
+  }
+
+  /* routing */
+  function renderRouting() {
+    const r = V.routing; if (!r) return;
+    $('#routeTiles').innerHTML = [
+      ['small model was enough', pct(r.router.smallSufficesRate)], ['router accuracy', pct(r.router.accuracy)],
+      ['sent to the small model', pct(r.router.routedSmallShare)], ['Claude only, per 1,000', '$' + num(r.cost.claudeEstimatePer1k, 2)],
+      ['with the router, per 1,000', '$' + num(r.cost.routedEstimatePer1k, 2)],
+    ].map(([l, v]) => `<div class="tile"><div class="v">${v}</div><div class="l">${l}</div></div>`).join('');
+    const p = r.paths, c = r.constrainedVsUnconstrained;
+    const row = (name, s) => `<tr><td>${name}</td><td>${pct(s.schemaValidFirstTry)}</td><td>${pct(s.schemaValidAfterRepair)}</td><td>${num(s.overall ?? s.contentAccuracy)}</td></tr>`;
+    $('#pathTable').innerHTML = `<table class="t"><tr><th>path</th><th>valid first try</th><th>valid after repair</th><th>field accuracy</th></tr>
+      ${row('Claude Haiku 4.5, 42 hand checked', p.claudeHaikuRecorded)}${row('Qwen 3.5 9B with grammar, 42 hand checked', p.smallConstrained)}${row('Qwen 3.5 9B no grammar, 42 hand checked', p.smallUnconstrained)}
+      ${row('Qwen 3.5 9B with grammar, ' + c.n + ' photos', c.constrained)}${row('Qwen 3.5 9B no grammar, ' + c.n + ' photos', c.unconstrained)}</table>`;
+    $('#costNote').textContent = 'Claude cost on photos is an estimate from Anthropic\'s image token rule, not a measured bill: no Bedrock credentials were available for the public receipts. The small model runs locally and has no API cost.';
+  }
+
+  /* robustness */
+  function renderPert() {
+    const p = V.perturbation; if (!p) return;
+    $('#pertMeta').textContent = `${p.subsetSize} receipts, chosen before any run`;
+    const by = Object.fromEntries(p.variants.map((v) => [v.variant, v]));
+    const kinds = { blur: 'blur', rotate: 'rotation', crop: 'crop', dark: 'darker', jpeg: 'JPEG compression' };
+    $('#pertTable').innerHTML = `<table class="t"><tr><th>damage</th><th>clean</th><th>level 1</th><th>level 2</th><th>level 3</th></tr>
+      ${Object.entries(kinds).map(([k, n]) => `<tr><td>${n}</td><td>${num(by.clean.fieldAccuracy)}</td>${[1, 2, 3].map((l) => `<td>${num(by[k + '-' + l] && by[k + '-' + l].fieldAccuracy)}</td>`).join('')}</tr>`).join('')}</table>`;
+    const h = p.homogeneity;
+    $('#homNote').textContent = `Near identical receipts: ${h.idsDistinct} of ${h.pairs} same-merchant pairs got distinct ids, and ${h.pairsWithSwaps} pairs had a value from the other receipt show up. The id hashes the file, so the same paper photographed twice becomes two documents. That limit is known and not fixed.`;
+  }
+
+  /* upload: recorded match, else router statistics measured in the browser */
+  async function sha256(buf) { return [...new Uint8Array(await crypto.subtle.digest('SHA-256', buf))].map((b) => b.toString(16).padStart(2, '0')).join(''); }
+  function statsFromImage(img, bytes) {
+    const side = 400, s = Math.min(1, side / Math.max(img.naturalWidth, img.naturalHeight));
+    const w = Math.max(1, Math.round(img.naturalWidth * s)), h = Math.max(1, Math.round(img.naturalHeight * s));
+    const cv = document.createElement('canvas'); cv.width = w; cv.height = h;
+    const ctx = cv.getContext('2d'); ctx.drawImage(img, 0, 0, w, h);
+    const d = ctx.getImageData(0, 0, w, h).data, g = new Float32Array(w * h);
+    for (let i = 0; i < w * h; i++) g[i] = (0.299 * d[i * 4] + 0.587 * d[i * 4 + 1] + 0.114 * d[i * 4 + 2]) / 255;
+    let sum = 0; for (const v of g) sum += v; const bright = sum / g.length;
+    let sq = 0; for (const v of g) sq += (v - bright) ** 2; const contrast = Math.sqrt(sq / g.length);
+    let ls = 0, lq = 0, n = 0;
+    for (let y = 1; y < h - 1; y++) for (let x = 1; x < w - 1; x++) { const lap = g[(y - 1) * w + x] + g[(y + 1) * w + x] + g[y * w + x - 1] + g[y * w + x + 1] - 4 * g[y * w + x]; ls += lap; lq += lap * lap; n++; }
+    const ink = bright - Math.max(0.08, contrast); let inkN = 0, lines = 0, inLine = false;
+    for (let y = 0; y < h; y++) { let row = 0; for (let x = 0; x < w; x++) if (g[y * w + x] < ink) { row++; inkN++; } const busy = row / w > 0.02; if (busy && !inLine) lines++; inLine = busy; }
+    const W0 = img.naturalWidth, H0 = img.naturalHeight;
+    return { width: W0, height: H0, aspect: H0 / W0, megapixels: W0 * H0 / 1e6, bytesPerPixel: bytes / (W0 * H0), brightness: bright, contrast, sharpness: n ? lq / n - (ls / n) ** 2 : 0, inkDensity: inkN / g.length, textLines: lines };
+  }
+  function routerScore(p, s) {
+    const f = [Math.log(Math.max(s.sharpness, 1e-8)), s.brightness, s.contrast, s.inkDensity, Math.log1p(s.textLines), s.aspect, Math.log(Math.max(s.megapixels, 1e-6)), Math.log(Math.max(s.bytesPerPixel, 1e-6))];
+    const z = f.reduce((a, x, i) => a + ((x - p.mean[i]) / (p.std[i] || 1)) * p.weights[i + 1], p.weights[0]);
+    return 1 / (1 + Math.exp(-z));
+  }
+  async function onFile(file) {
+    const out = $('#byoOut');
+    if (!/^image\/(png|jpeg)$/.test(file.type)) { out.innerHTML = '<div class="empty"><span>Use a JPEG or PNG photo.</span></div>'; return; }
+    const buf = await file.arrayBuffer(), hash = await sha256(buf);
+    const match = ['standard', 'hard', 'blurred'].find((k) => EX[k] && EX[k].image.sha256 === hash);
+    if (match) { out.innerHTML = `<div class="nomodel"><div class="head"><span class="tag">recorded receipt</span></div><p>This photo is the ${match} example, so here is its saved result.</p></div>`; showOne(EX[match], notes(EX[match], match)); return; }
+    const url = URL.createObjectURL(file), img = new Image();
+    img.onload = () => {
+      const s = statsFromImage(img, file.size); URL.revokeObjectURL(url);
+      const r = V.router;
+      if (!r || !r.weights || !r.weights.length) { out.innerHTML = '<div class="empty"><span>The router has not been fitted yet.</span></div>'; return; }
+      const p = routerScore(r, s), small = p >= r.threshold;
+      out.innerHTML = `<div class="nomodel"><div class="head"><span class="tag">${small ? 'would go to the small model' : 'would go to Claude'}</span></div>
+        <p>The router gives this photo a ${(p * 100).toFixed(0)} percent chance that the small model reads every field right. Its cut is ${(r.threshold * 100).toFixed(0)} percent, so it ${small ? 'goes to the small model first, and to Claude only if that answer fails the format check' : 'goes straight to Claude'}.</p>
+        <p class="cap">measured in your browser</p>
+        <div class="txt">sharpness ${s.sharpness.toFixed(5)}\nbrightness ${s.brightness.toFixed(2)}, contrast ${s.contrast.toFixed(2)}\nink ${s.inkDensity.toFixed(3)}, printed lines ${s.textLines}\n${s.width} x ${s.height} px</div>
+        <p>No fields were read. That needs a model, and this page has none.</p></div>`;
+    };
+    img.src = url;
+  }
   const drop = $('#drop'), fileInput = $('#file');
   drop.addEventListener('click', () => fileInput.click());
   drop.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); } });
   ['dragenter', 'dragover'].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add('drag'); }));
-  drop.addEventListener('dragleave', (e) => { if (!drop.contains(e.relatedTarget)) drop.classList.remove('drag'); });
-  drop.addEventListener('drop', (e) => { e.preventDefault(); drop.classList.remove('drag'); const f = e.dataTransfer.files[0]; if (f) analyzeFile(f); });
-  fileInput.addEventListener('change', () => { const f = fileInput.files[0]; if (f) analyzeFile(f); fileInput.value = ''; });
+  drop.addEventListener('dragleave', () => drop.classList.remove('drag'));
+  drop.addEventListener('drop', (e) => { e.preventDefault(); drop.classList.remove('drag'); if (e.dataTransfer.files[0]) onFile(e.dataTransfer.files[0]); });
+  fileInput.addEventListener('change', () => { if (fileInput.files[0]) onFile(fileInput.files[0]); fileInput.value = ''; });
 
-  $('#pasteTog').addEventListener('click', () => {
-    const w = $('#pasteWrap'), open = !w.hidden;
-    w.hidden = open;
-    $('#pasteTog').textContent = open ? 'or paste receipt text instead' : 'hide the paste box';
-    if (!open) $('#pasteText').focus();
-  });
-  $('#analyzePaste').addEventListener('click', () => {
-    const t = $('#pasteText').value.trim();
-    if (!t) return $('#pasteText').focus();
-    postAnalyze({ body: JSON.stringify({ text: t }), headers: { 'content-type': 'application/json' } }, 'text');
-  });
-
-  const IMG_TYPES = { png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', webp: 'image/webp' };
-  async function analyzeFile(file) {
-    const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
-    const ext = (file.name.split('.').pop() || '').toLowerCase();
-    const imgType = /^image\/(png|jpeg|webp)$/.test(file.type) ? file.type : IMG_TYPES[ext];
-    if (!isPdf && !imgType) return byoMessage('Upload a PDF or a photo (png, jpg, webp), or paste the text instead.');
-    if (file.size > 12 * 1024 * 1024) return byoMessage('That file is over 12 MB. Try a smaller file.');
-    const buf = await file.arrayBuffer();
-    const ct = isPdf ? 'application/pdf' : imgType;
-    postAnalyze({ body: buf, headers: { 'content-type': ct, 'x-filename': encodeURIComponent(file.name) } }, isPdf ? 'pdf' : 'image', file.name);
+  /* golden set */
+  function renderEval() {
+    const e = D.eval, FIELDS = ['merchant', 'date', 'currency', 'total', 'subtotal', 'tax', 'paymentMethod', 'lineItems'];
+    $('#evalOverall').textContent = e.overall.toFixed(3);
+    $('#bars').innerHTML = FIELDS.map((f) => `<div class="bar"><span class="n">${lab(f)}</span><span class="track"><span class="fill" style="width:${(e.perField[f] * 100).toFixed(1)}%"></span></span><span class="p">${e.perField[f].toFixed(3)}</span></div>`).join('');
   }
 
-  let byoBusy = false;
-  async function postAnalyze(init, source, name) {
-    if (STATIC) return byoMessage('Uploading your own receipt needs the local server. Run npm run demo to try a PDF, photo, or pasted text.');
-    if (byoBusy) return; byoBusy = true;
-    const verb = source === 'pdf' ? 'reading ' + esc(name || 'your PDF') : source === 'image' ? 'reading ' + esc(name || 'your photo') : 'reading your text';
-    $('#byoOut').innerHTML = `<div class="empty"><span>${verb}...</span></div>`;
-    try {
-      const d = await (await fetch('/api/analyze', { method: 'POST', ...init })).json();
-      renderByo(d);
-    } catch (err) {
-      byoMessage('Something went wrong reading that. ' + (err && err.message ? err.message : ''));
-    }
-    byoBusy = false;
-  }
-
-  const byoMessage = (msg) => ($('#byoOut').innerHTML = `<div class="empty"><span>${esc(msg)}</span></div>`);
-
-  function renderByo(d) {
-    const el = $('#byoOut');
-    if (d.error && !d.status) return byoMessage(d.error);
-
-    if (d.status === 'UNREADABLE') {
-      el.innerHTML = `<div class="nomodel"><div class="head"><span class="tag">no text</span></div>
-        <p>This PDF has no text to pull. It is likely scanned or image only, and reading images is out of scope for this demo.</p>
-        <p style="color:var(--faint);font-family:var(--mono);font-size:.72rem">${esc(d.error || '')}</p></div>`;
-      return;
-    }
-
-    if (d.status === 'NO_MODEL') {
-      const isImg = d.source === 'image';
-      const body = isImg
-        ? `<p>The photo was received, but a photo has no text to read on your machine, so this one needs a model. Set <code>ANTHROPIC_API_KEY</code> and restart the demo, then the same pipeline reads it live.</p>`
-        : `<p>The PDF was read on your machine. Pulling the fields from a new receipt needs a model connected, so set <code>ANTHROPIC_API_KEY</code> and restart the demo. The same pipeline then runs live.</p>
-           <p class="cap">text pulled from your file</p>
-           <div class="txt">${esc(d.text || '')}</div>`;
-      el.innerHTML = `<div class="nomodel">
-        <div class="head"><span class="tag">${isImg ? 'photo received' : 'read, not extracted'}</span></div>
-        ${body}</div>`;
-      return;
-    }
-
-    if (d.status === 'FAILED') {
-      el.innerHTML = `<div class="rhead"><span class="status fail pop">failed the check</span><span class="doc">id ${esc(d.docId.slice(0, 20))}...</span></div>
-        <div class="badout">${esc(d.failureReason || 'did not fit the format')}
-          <div class="why">The reader returned data that did not fit the required format, so it is held back, not saved.</div>
-        </div>`;
-      return;
-    }
-
-    // EXTRACTED. Your own receipt has no answer key. Passing the format check only
-    // means the shape was right, so the arithmetic is the only thing left that can
-    // catch a misread line. Show both checks together.
-    const chips = reconChip(d.totals, 'totals') + reconChip(d.lines, 'lines');
-    el.innerHTML = `
-      <div class="rhead"><span class="status ok pop">passed</span><span class="doc">id ${esc(d.docId.slice(0, 20))}...</span></div>
-      <pre class="json">${highlight(d.receipt)}</pre>
-      <div class="rfoot">
-        <span class="mtr">time <b>${d.latencyMs}ms</b></span>
-        <span class="mtr">tokens <b>${d.inputTokens + d.outputTokens}</b></span>
-        <span class="mtr">${esc(d.provider)}</span>
-        ${chips ? '<span class="score">' + chips + '</span>' : ''}
-      </div>`;
-    staggerJson(el);
-  }
-
-  /* full eval */
-  function renderBars(perField) {
-    const bars = $('#bars'); bars.innerHTML = '';
-    FIELDS.forEach((f) => {
-      const v = perField[f] ?? 0;
-      const row = document.createElement('div');
-      row.className = 'bar';
-      row.innerHTML = `<span class="n">${lab(f)}</span><span class="track"><span class="fill"></span></span><span class="p">${v.toFixed(2)}</span>`;
-      bars.appendChild(row);
-      requestAnimationFrame(() => (row.querySelector('.fill').style.width = (v * 100) + '%'));
-    });
-  }
-  function renderCats(perCategory, lineItemMismatches) {
-    const box = $('#evalCats'); box.innerHTML = '';
-    (perCategory || []).forEach((c) => {
-      const chip = document.createElement('span');
-      chip.className = 'rchip' + (c.accuracy >= 0.9 ? ' ok' : '');
-      chip.innerHTML = `${esc(c.category)}<b>${c.accuracy.toFixed(2)}</b><span class="cn">n${c.n}</span>`;
-      box.appendChild(chip);
-    });
-    // Not part of the score. Receipts the format check passed whose own lines do
-    // not add up to their own subtotal, which is the one mistake a score needs no
-    // answer key to find.
-    if (lineItemMismatches !== undefined) {
-      const chip = document.createElement('span');
-      chip.className = 'rchip' + (lineItemMismatches === 0 ? ' ok' : '');
-      chip.innerHTML = `line mismatch<b>${lineItemMismatches}</b>`;
-      box.appendChild(chip);
-    }
-  }
-  $('#runEval').addEventListener('click', async (e) => {
-    const btn = e.currentTarget; btn.disabled = true; btn.textContent = 'scoring the set...';
-    const d = await apiGet('/api/eval');
-    renderBars(d.perField);
-    renderCats(d.perCategory, d.lineItemMismatches);
-    $('#evalTitle').textContent = `Accuracy on ${d.n} sample receipts`;
-    const node = $('#evalOverall'); node.dataset.to = d.overall.toFixed(2); node.textContent = '0.00'; countUp(node);
-    const gate = $('#evalGate'); gate.style.visibility = 'visible';
-    gate.textContent = (d.overall >= d.threshold ? 'clears the ' : 'below the ') + d.threshold.toFixed(2) + ' bar';
-    gate.style.color = d.overall >= d.threshold ? 'var(--good)' : 'var(--bad)';
-    btn.disabled = false; btn.textContent = 'Score the set again';
-  });
-
-  renderBars(Object.fromEntries(FIELDS.map((f) => [f, 0])));
-  renderScenarios();
-  loadCatalog();
-  if (STATIC) {
-    const m = $('#pillMode'); if (m) m.innerHTML = '<span class="dot"></span> live demo';
-    const h = $('#pillHost'); if (h) h.textContent = 'sample data, no backend';
-    $('#runEval').click(); // the baked eval is instant, so show the score on load
-  }
+  renderScn(); renderStp(); renderRel(); renderRouting(); renderPert(); renderEval();
 </script>
 </body>
 </html>

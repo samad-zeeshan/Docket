@@ -1,12 +1,12 @@
 /**
- * Bake the offline demo into a static site: one index.html with the catalog, each
- * sample's extraction, the two scenarios, and the eval all embedded, so it runs
- * with no backend and no cost on any static host. Uploads are not part of the
- * static build, they need the local server and a model, so the page says so.
+ * Bake the demo into a static site: one index.html with the recorded results embedded, plus the example images.
+ *
+ * Everything comes from committed files, so the Pages build needs no model, no datasets and no AWS account.
  */
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import * as path from 'node:path';
-import { catalog, extractOne, scenario, evalAll, providerName } from './engine';
+import { evalAll, providerName } from './engine';
+import { v2Data } from './v2';
 
 const DEMO = __dirname;
 const OUT = path.join(DEMO, 'static');
@@ -21,22 +21,13 @@ function forScript(json: string): string {
 }
 
 async function main(): Promise<void> {
-  const receipts = catalog();
-  const samples: Record<string, unknown> = {};
-  for (const r of receipts) samples[r.id] = await extractOne(r.id);
-  const scenarios = { rejected: await scenario('rejected'), idempotent: await scenario('idempotent') };
-  const evaluation = await evalAll();
+  const data = { provider: providerName, builtStatic: true, eval: await evalAll(), v2: v2Data() };
 
-  const data = {
-    provider: providerName,
-    builtStatic: true,
-    catalog: { provider: providerName, uploadReady: false, uploadProvider: providerName, receipts },
-    samples,
-    scenarios,
-    eval: evaluation,
-  };
-
-  mkdirSync(OUT, { recursive: true });
+  mkdirSync(path.join(OUT, 'v2'), { recursive: true });
+  const images = path.join(DEMO, 'v2');
+  if (existsSync(images)) {
+    for (const f of readdirSync(images).filter((n) => n.endsWith('.jpg'))) copyFileSync(path.join(images, f), path.join(OUT, 'v2', f));
+  }
   const dataJson = JSON.stringify(data);
   writeFileSync(path.join(OUT, 'data.json'), dataJson);
 
@@ -45,7 +36,7 @@ async function main(): Promise<void> {
   if (injected === html) throw new Error('could not inject data: no </head> in index.html');
   writeFileSync(path.join(OUT, 'index.html'), injected);
 
-  console.log(`wrote static demo to ${OUT}: ${receipts.length} samples, ${(dataJson.length / 1024).toFixed(0)} KB embedded`);
+  console.log(`wrote static demo to ${OUT}: ${(dataJson.length / 1024).toFixed(0)} KB embedded`);
 }
 
 void main();

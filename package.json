@@ -22,7 +22,7 @@
     "deploy": "cdk deploy --require-approval never",
     "destroy": "cdk destroy",
     "redrive": "tsx ops/redrive.ts",
-    "demo": "tsx demo/server.ts",
+    "demo": "tsx demo/build-static.ts && tsx demo/server.ts",
     "demo:static": "tsx demo/build-static.ts",
     "eval": "tsx eval/run.ts",
     "eval:gen": "tsx eval/gen/synth.ts",
@@ -30,7 +30,9 @@
     "data:fetch": "tsx eval/public/fetch.ts",
     "eval:small": "tsx eval/public/run-small.ts",
     "eval:v2": "tsx eval/v2/report.ts --check",
-    "eval:v2:build": "tsx eval/v2/records.ts && tsx eval/v2/report.ts"
+    "eval:v2:build": "tsx eval/v2/records.ts && tsx eval/v2/report.ts",
+    "demo:pick": "tsx demo/pick-examples.ts",
+    "readme": "tsx eval/v2/readme.ts"
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",
