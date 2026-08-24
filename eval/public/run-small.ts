@@ -33,13 +33,13 @@ function arg(name: string, fallback: string): string {
   return i >= 0 && process.argv[i + 1] ? process.argv[i + 1]! : fallback;
 }
 
-// The perturbation subset is fixed before any result is seen: the first 20 test
-// split receipts of each source in id order. Choosing after would be cherry picking.
-// Forty receipts at fifteen damage settings is 600 calls, about what one shared
-// consumer GPU finishes in an afternoon.
-export function perturbationSubset(all: PreparedReceipt[]): PreparedReceipt[] {
+// The perturbation subset is the first few test split receipts of each source in
+// id order, fixed before any perturbed run. Choosing after would be cherry picking.
+// It is small because the GPU is shared: four receipts at fifteen settings is 60
+// calls, and every one of them is a real model run.
+export function perturbationSubset(all: PreparedReceipt[], perSource = 2): PreparedReceipt[] {
   const pick = (source: string) =>
-    all.filter((r) => r.source === source && r.split === 'test').sort((a, b) => a.id.localeCompare(b.id)).slice(0, 20);
+    all.filter((r) => r.source === source && r.split === 'test').sort((a, b) => a.id.localeCompare(b.id)).slice(0, perSource);
   return [...pick('sroie'), ...pick('cord')];
 }
 
@@ -54,6 +54,10 @@ async function main(): Promise<void> {
   const url = arg('url', process.env.LOCAL_MODEL_URL ?? 'http://localhost:1234');
   const model = arg('model', process.env.LOCAL_MODEL_ID ?? 'qwen/qwen3.5-9b');
   const constrained = set !== 'unconstrained' && set !== 'golden-unconstrained';
+  // A wall clock budget, so a run on a shared GPU stops at a known time instead
+  // of whenever it finishes. Jobs run in a fixed order, so the cut is not chosen.
+  const budgetMs = Number(arg('max-minutes', '0')) * 60_000;
+  const onlySource = arg('source', '');
   const provider = new LocalProvider(url, model, { constrained });
   const out = path.join(RUNS, `${set}.jsonl`);
   mkdirSync(RUNS, { recursive: true });
@@ -75,7 +79,7 @@ async function main(): Promise<void> {
     }
   } else {
     const all = JSON.parse(readFileSync(LABELS, 'utf8')) as PreparedReceipt[];
-    const receipts = set === 'main' ? all : perturbationSubset(all);
+    const receipts = (set === 'main' ? all : perturbationSubset(all, set === 'unconstrained' ? 10 : 2)).filter((r) => !onlySource || r.source === onlySource);
     const variants = set === 'perturb' ? allVariants() : ['clean'];
     for (const r of receipts) {
       for (const variant of variants) {
@@ -99,7 +103,7 @@ async function main(): Promise<void> {
   let finished = 0;
   const started = Date.now();
   async function worker(): Promise<void> {
-    while (next < todo.length) {
+    while (next < todo.length && (!budgetMs || Date.now() - started < budgetMs)) {
       const job = todo[next++]!;
       const t0 = Date.now();
       let line: RunLine;
