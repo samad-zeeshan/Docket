@@ -1,6 +1,6 @@
 /**
  * Alarms, an SNS topic with an email subscription, a monthly budget, and a
- * dashboard for the whole pipeline. Every alarm here has an entry in RUNBOOK.md.
+ * dashboard for the whole pipeline. Every alarm here has a line in the README.
  */
 import { Annotations, Duration, Stack } from 'aws-cdk-lib';
 import { Construct } from 'constructs';

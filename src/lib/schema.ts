@@ -90,7 +90,7 @@ export function checkTotals(receipt: Receipt): TotalsCheck | undefined {
 // gross lines above a net subtotal, this fires on correct extraction. That is
 // the known false positive, and the reason it stays soft.
 //
-// Soft, like checkTotals. A metric, not a gate. See docs/decisions.md.
+// Soft, like checkTotals. A metric, not a gate. See the README, Design decisions.
 export function checkLineItems(receipt: Receipt): LineItemsCheck | undefined {
   if (receipt.subtotal === undefined || receipt.lineItems.length === 0) return undefined;
   const sum = receipt.lineItems.reduce((total, item) => total + item.amount, 0);

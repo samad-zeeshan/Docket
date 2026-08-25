@@ -9,7 +9,7 @@
  * minute cadence at pennies a month: the model runs once, then every later tick
  * just re-reads the stored record and confirms it is still intact. A table
  * reset re-primes on the next tick, which re-exercises real extraction end to
- * end. See RUNBOOK.md, alarm CanaryFailing.
+ * end. See the README, When an alarm fires.
  */
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';

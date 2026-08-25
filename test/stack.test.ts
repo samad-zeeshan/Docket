@@ -292,7 +292,7 @@ describe('logical ids', () => {
 });
 
 describe('stack outputs', () => {
-  // RUNBOOK.md resolves every one of these by name. A CfnOutput declared inside a
+  // The alarm commands in the README resolve these by name. A CfnOutput declared inside a
   // construct otherwise picks up the construct path and a hash, which turns
   // BucketName into IngestBucketName4EFEBE9C and quietly breaks every runbook
   // command. Pin the names here so nobody has to find that out during an alarm.
