@@ -95,7 +95,7 @@ export class Canary extends Construct {
       datapointsToAlarm: 2,
       treatMissingData: cloudwatch.TreatMissingData.BREACHING,
       alarmDescription:
-        'Synthetic canary failed or stopped reporting: the pipeline did not store the golden receipt. See the README, section When an alarm fires.',
+        'Synthetic canary failed or stopped reporting: the pipeline did not store the golden receipt. Check the other Docket alarms first, then invoke the canary function by hand.',
     }).addAlarmAction(new SnsAction(alarmTopic));
   }
 }

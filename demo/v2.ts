@@ -14,11 +14,11 @@ function read(rel: string): unknown {
 // Trimmed to what the page draws. The full files stay in eval/results for anyone
 // who wants every bin and every threshold.
 export function v2Data() {
-  const stp = read('eval/results/stp.json') as { curveCalibrated: unknown[]; curveVerbalized: unknown[]; operating: unknown[]; ladder: unknown[]; split: unknown } | null;
+  const stp = read('eval/results/stp.json') as { curveCalibrated: unknown[]; curveVerbalized: unknown[]; operating: unknown[]; pooled: unknown[]; ladder: unknown[]; split: unknown } | null;
   const calibration = read('eval/results/calibration.json') as { fields: Record<string, unknown>[]; receipts: unknown; schemaFailures: number } | null;
   return {
     examples: read('demo/v2/examples.json'),
-    stp: stp && { curveCalibrated: stp.curveCalibrated, curveVerbalized: stp.curveVerbalized, operating: stp.operating, ladder: stp.ladder, split: stp.split },
+    stp: stp && { curveCalibrated: stp.curveCalibrated, curveVerbalized: stp.curveVerbalized, operating: stp.operating, pooled: stp.pooled, ladder: stp.ladder, split: stp.split },
     calibration: calibration && {
       receipts: calibration.receipts,
       schemaFailures: calibration.schemaFailures,

@@ -22,8 +22,8 @@ const HANDLERS = path.join(__dirname, '..', '..', 'src', 'handlers');
 // is reproducible instead of tracking whatever "latest" points at.
 //
 // This is a cross region inference profile, not a bare foundation model id.
-// Current Claude models on Bedrock cannot be invoked on demand by their bare id;
-// the profile routes each call to whichever US region has capacity. Haiku is the
+// Current Claude models on Bedrock cannot be invoked on demand by their bare id.
+// The profile routes each call to whichever US region has capacity. Haiku is the
 // cheapest model that reads a receipt well, and it accepts images, which the
 // photo path needs.
 const MODEL_ID = 'us.anthropic.claude-haiku-4-5-20251001-v1:0';

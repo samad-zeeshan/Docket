@@ -9,7 +9,7 @@
  * minute cadence at pennies a month: the model runs once, then every later tick
  * just re-reads the stored record and confirms it is still intact. A table
  * reset re-primes on the next tick, which re-exercises real extraction end to
- * end. See the README, When an alarm fires.
+ * end. When it fails, check the other alarms first, since a real outage trips them too.
  */
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
@@ -62,7 +62,7 @@ export const handler = async (): Promise<void> => {
     const etag = (put.ETag ?? '').replace(/"/g, '');
     const docId = deriveDocId(bucket, CANARY_KEY, etag);
 
-    // Wait out a first-run extraction; a steady-state tick finds it already there.
+    // Wait out a first-run extraction. A steady-state tick finds it already there.
     const deadline = Date.now() + POLL_BUDGET_MS;
     let record = await store.get(docId);
     while ((!record || record.status === 'RECEIVED') && Date.now() < deadline) {

@@ -1,252 +1,119 @@
 # Docket
 
-Docket turns a receipt into clean, checked data.
+Docket reads a photo or PDF of a receipt and turns it into clean, checked data. It refuses to save anything that fails a strict format check, because a model will happily invent a field, and a retry can never create a duplicate. Every field also gets a confidence score, and a receipt goes to a person whenever one of its fields looks doubtful.
 
-Drop a PDF or a photo of a receipt into an S3 bucket. A few seconds later the
-store name, the date, every line item, and the total are in DynamoDB as
-structured JSON. Nothing is saved unless it passes a strict format check first.
+**[Open the demo](https://samad-zeeshan.github.io/Docket/)**. It replays recorded results: no login, no waiting, no model behind it. A 90 second walkthrough is in [docs/demo.mp4](docs/demo.mp4).
 
-It is a small event driven pipeline on AWS, written in TypeScript with the CDK.
-
-## Why it exists
-
-Language models are good at reading receipts. They are not good at being
-trusted. A model will happily return a total of `$12.99` as a string, invent a
-field it could not find, or drop a line item and never mention it.
-
-So the extraction is not the interesting part of this project. Everything around
-it is:
-
-- a schema gate that refuses bad output instead of saving it
-- ids derived from content, so a retry cannot create a duplicate
-- a split between bad data and broken infrastructure, so alarms mean something
-- an evaluation harness that measures accuracy rather than assuming it
+![Docket demo](docs/demo.gif)
 
 ## How it works
 
-A receipt put in S3 flows through EventBridge and SQS to a Lambda that asks Claude on Bedrock to read it, checks the reply against a Zod schema, and writes the result to DynamoDB.
+![System overview](docs/diagrams/overview.png)
+A receipt put in S3 goes through EventBridge and SQS to a Lambda that reads it with a model and writes the result to DynamoDB.
 
-![Docket system overview](docs/diagrams/overview.png)
-The main parts of the stack: the upload path, the extractor, the read API, the dead letter queue, and the canary that tests it all every 15 minutes.
+![Pre-inference router](docs/diagrams/router.png)
+Before any model call, the router looks at the photo and picks a small local model or Claude on Bedrock.
 
-![Receipt PDF upload to stored JSON](docs/diagrams/main-flow.png)
-One PDF from upload to a stored record, in 12 numbered steps, including the duplicate check and the single repair call.
+![Confidence and review](docs/diagrams/review-flow.png)
+The schema gate decides whether an answer can be stored. Confidence only decides whether a person looks first.
 
-![Document states: stored result vs dead letter](docs/diagrams/states.png)
-Bad data ends as FAILED and stops there. Only infrastructure errors retry and can reach the dead letter queue.
+![Straight-through decision](docs/diagrams/stp-decision.png)
+The threshold is set on one group of receipts and judged on another, and the least confident field decides. The upload flow, document states and deployment are in `docs/diagrams/` too, each with an interactive version.
 
-![Docket deployment: CI to CDK stacks](docs/diagrams/deployment.png)
-How a push to main is linted, tested, evaluated and deployed through GitHub OIDC into the CDK stack.
+## Data
 
-Interactive versions with pan, zoom and theme switch: `docs/diagrams/overview.html`, `docs/diagrams/main-flow.html`, `docs/diagrams/states.html`, `docs/diagrams/deployment.html`
+<!-- results:data -->
+| Set | Receipts read | Fields scored | Licence |
+| --- | ---: | ---: | ---: |
+| SROIE (Malaysia, scans) | 446 | merchant, date, total | CC BY 4.0 per the mirror |
+| CORD v2 (Indonesia, photos) | 160 | line items, subtotal, tax, total | CC BY 4.0 |
 
+The small model read 606 of the 1,987 downloaded receipts before its time budget ran out, 149 of them in the test split.
+<!-- /results -->
 
-## Architecture
+The run stopped at a time limit because the GPU is shared. The order was fixed first (SROIE, then CORD), so results did not pick the cut, and it falls short of the thousand receipts planned. SROIE company, date and total map to merchant, date and total. CORD menu lines, subtotal, tax and total map to the same fields. Neither set labels currency, so it is not scored, and no field is scored where a set does not label it. `npm run data:fetch` downloads both against pinned sha256 sums. The repo keeps only ids, splits and image hashes, plus four CORD images for the demo.
 
-```mermaid
-flowchart LR
-  U[Receipt upload] --> S3[(S3 bucket)]
-  S3 -->|Object Created| EB[EventBridge rule]
-  EB --> Q[SQS queue]
-  Q --> L[Ingest Lambda]
-  L <--> BR[Claude on Bedrock]
-  L --> DB[(DynamoDB)]
-  Q -. 3 failures .-> DLQ[(Dead letter queue)]
-  DB --> API[HTTP API, IAM auth]
-```
+## Straight-through processing
 
-1. A receipt lands in S3. Only `.pdf`, `.jpg`, `.jpeg`, `.png`, and `.webp`
-   uploads go any further.
-2. S3 tells EventBridge. A rule filters on the file type and puts a message on
-   an SQS queue.
-3. The ingest Lambda reads the object. A PDF is read as text. A photo is sent to
-   the model as an image.
-4. Claude on Bedrock returns JSON. The JSON is checked against a strict schema.
-   If it fails, the model gets exactly one chance to fix it, with the errors
-   handed back to it.
-5. A result that passes is written to DynamoDB. A result that fails is recorded
-   as `FAILED` with the reason. It is never saved as if it were fine.
-6. A read API serves one document or a list by status.
+<!-- results:stp -->
+| Field error budget | Threshold (from val) | Straight through (test) | Field error (test) | Same rule on stated confidence | Highest ladder rung held |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 1.0% | 0.94 | 7.4% | 0.0% | 0.0% | fit-val split |
+| 5.0% | 0.88 | 18.1% | 3.9% | 0.0% | fit-val split |
+| 10.0% | 0.61 | 46.3% | 6.5% | 0.0% | fit-val split |
 
-## Try it without an AWS account
+At a 1.0% field error budget, 11 of 149 test receipts (7.4%) pass with no person, and 0 of their 32 fields are wrong. Thresholds were picked on 161 validation receipts. By set that is 11 SROIE and 0 CORD receipts. Judged on all six fields at once, as the pipeline does today, no threshold meets any of the 3 budgets, so the pipeline sends every small model receipt to a person.
+<!-- /results -->
 
-Live, in the browser, nothing to install:
-**[samad-zeeshan.github.io/Docket](https://samad-zeeshan.github.io/Docket/)**
+The table judges each receipt on the fields calibrated for its set, which assumes the document type is known. The pipeline does not know it yet. On the confidence the model writes down, no threshold met any budget. The fit and val rung of the validity ladder (arXiv 2608.14639) holds, which bounds error on average and certifies nothing. The exact binomial rungs certify nothing yet because the validation split is small.
 
-That page is the static build. It replays saved model responses, so the receipts,
-the checks, and the accuracy report are all real, and there is no backend behind
-it. Uploading your own receipt needs a model, so that part only works when you
-run it locally with a key.
+<!-- results:calibration -->
+| Field | Test fields | Right | ECE stated | ECE calibrated | AUROC stated | AUROC calibrated |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| merchant | 111 | 74.8% | 0.217 | 0.177 | 0.606 | 0.771 |
+| date | 104 | 93.3% | 0.045 | 0.047 | 0.543 | 0.802 |
+| total | 146 | 88.4% | 0.105 | 0.069 | 0.343 | 0.772 |
+| subtotal | 37 | 54.0% | 0.440 | 0.060 | 0.338 | 0.612 |
+| tax | 37 | 21.6% | 0.611 | 0.127 | 0.830 | 0.914 |
+| line items | 36 | 44.4% | 0.477 | 0.216 | 0.613 | 0.564 |
+<!-- /results -->
 
-The demo also runs the real extraction code on your machine, using the same saved
-model responses, so it needs no internet and no account.
+ECE is the average gap between stated confidence and how often a field is right. Calibration helps most on subtotal and tax, where the model said it was sure and was often wrong. Date does not improve, and line items rank worse after calibration, so line items are the weakest part of the decision.
 
-```bash
-npm install
-npm run demo
-# open http://localhost:5173
-```
+## Routing and cost
 
-You get 42 sample receipts, four scenarios that show what the pipeline handles,
-and the full accuracy report. To analyze your own receipt, set
-`ANTHROPIC_API_KEY` and restart. Then a PDF or a photo you upload runs through
-the same pipeline for real.
+<!-- results:routing -->
+| Path | Receipts | Valid first try | Valid after repair | Field accuracy |
+| --- | ---: | ---: | ---: | ---: |
+| Claude Haiku 4.5, hand checked text | 42 | 100.0% | 100.0% | 0.999 |
+| Qwen 3.5 9B with grammar, hand checked text | 42 | 100.0% | 100.0% | 0.984 |
+| Qwen 3.5 9B without grammar, hand checked text | 42 | 100.0% | 100.0% | 0.987 |
+| Qwen 3.5 9B with grammar, public photos | 20 | 100.0% | 100.0% | 0.909 |
+| Qwen 3.5 9B without grammar, public photos | 20 | 85.0% | 85.0% | 0.559 |
 
-There is also a static build with everything baked in, for hosting with no
-backend:
+Without the grammar, 3 of 20 photo answers never became valid JSON. On the test split the small model got every field right on 55.0% of receipts. The router predicts that with 64.4% accuracy and sends 43.6% to the small model, where field error is 10.0% against 35.9% on the rest. Claude on every photo would cost an estimated $2.32 per 1,000 receipts, $1.31 with the router.
+<!-- /results -->
 
-```bash
-npm run demo:static   # writes demo/static
-```
+The small model is Qwen 3.5 9B on a local GPU. Claude Haiku 4.5 ran only on the hand checked receipts, from saved Bedrock responses. There were no Bedrock credentials for the public sets, so Claude on public photos is not run and its cost there is an estimate from the published image token rule. The router beats a coin but not by much, the warning in arXiv 2608.06607: routing pays only when the cheap model's failures show in the image.
 
-## What the pipeline gets right
+## Robustness
 
-Four decisions are worth reading about, because in each case the obvious choice
-is the wrong one. They are written up in
-[docs/decisions.md](docs/decisions.md):
+<!-- results:robustness -->
+On 4 receipts, field accuracy is 0.667 clean and, at the worst level of each damage, blur 0.071, rotation 0.786, crop 0.857, darker 0.786, jpeg compression 0.643. Near identical receipts: of 371 same-merchant SROIE pairs, 6 are the same file shipped twice and share an id as they should, and 0 different files share an id. Of the 85 pairs where both receipts were read, 0 had a date or total from the other receipt turn up.
+<!-- /results -->
 
-- **Document ids come from content, not from a counter.** SQS delivers at least
-  once, so a generated id means duplicates.
-- **Bad data becomes `FAILED`. Only broken infrastructure reaches the dead letter
-  queue.** Retrying a corrupt PDF three times helps nobody, and it turns the DLQ
-  alarm into noise.
-- **S3 fires through EventBridge, not a direct bucket notification.** Filtering
-  belongs in infrastructure, and EventBridge does not mangle the object key.
-- **Every model response is schema checked, with exactly one repair attempt.**
-  Zero repairs throws away good calls. Unlimited repairs throws away money.
+## What this does not show
 
-## Tests
+- Claude's accuracy on the public photos. Every public number is the small model.
+- Small differences. The test split is small enough that a few points are noise, and the damage suite is a smoke test, not a curve.
+- Production use. Docket was deployed to a test account and torn down. It serves no one. The review queue is a table with no screen.
+- Duplicate photos. The id hashes the file, so one receipt photographed twice gets two ids.
+
+## Design decisions
+
+- **Ids come from content**: a hash of bucket, key and ETag plus a conditional write, so redelivery or a dead letter replay never makes a second record.
+- **Bad data becomes FAILED, and only broken infrastructure retries**, so the dead letter queue alarm means an outage. Every answer gets a Zod schema check and exactly one repair.
+- **Confidence decides review, never correctness.** It runs after the gate, applies only to the route it was fitted on, and writes the record and its review queue item in one transaction. On the Claude path, which has no token probabilities, only the arithmetic checks can send a receipt to review.
+- **The alarm topic grants CloudWatch the right to publish, in writing.** TLS enforcement had silently removed the default grant and every alarm went quiet. To test an alarm, force it with `aws cloudwatch set-alarm-state` and read its history. Card numbers, emails and phone numbers are scrubbed before storage, and uploads expire after a month.
+
+## Run it
 
 ```bash
-npm test              # 111 tests: handlers, schema, scoring, providers, and the stack
-npm run eval          # scores 42 receipts, fails under 0.90
-npm run synth         # CloudFormation, with cdk-nag best practice checks
-npm run lint
+npm install && npm test && npm run eval && npm run eval:v2   # tests, the hand checked eval, the drift check
+npm run demo                                                  # the demo page on http://localhost:5173
 ```
 
-The stack itself is tested. `test/stack.test.ts` asserts what the design
-promises: the dead letter queue trips after three tries, every bucket blocks
-public access and refuses plain HTTP, Bedrock access is limited to the Anthropic
-model family instead of every model, the table has point in time recovery on,
-and the event rule routes only receipt uploads. It also pins the logical ids of
-the table, the buckets, and the rule, because renaming one of those in
-CloudFormation means delete and recreate.
+## Papers
 
-`cdk-nag` runs during `npm run synth`, so an AWS best practice violation fails
-the build the same way a failing test does. Anything accepted on purpose is
-suppressed one finding at a time with a written reason, in
-`lib/nag-suppressions.ts`.
+- arXiv 2609.20110, Perception, Layout, and Validation: calibrated confidence for straight-through processing.
+- arXiv 2608.14639, Valid Per-Field Selective Risk Control for Document Extraction: the validity ladder.
+- arXiv 2609.26489, Calibration as a First-Class Criterion in LLM Evaluation.
+- arXiv 2608.06607, Pre-Inference Routing for Cost-Efficient Document Field Extraction.
+- arXiv 2609.23742, Constrained Decoding Eliminates Structural Failures in Small LLMs.
+- arXiv 2606.26041, How Robust is OCR-Reasoning? The five kinds of damage.
+- arXiv 2606.25343, Invoice Haystack: the near identical receipt test.
+- arXiv 2608.22214, Query-Driven Multimodal Information Extraction from Long Documents: future work, for multi-page statements.
 
-There is also an end to end test against LocalStack. It puts a real object in a
-real S3 bucket, runs the handler against a real DynamoDB table, and checks that a
-redelivered message is skipped rather than processed twice. It needs Docker:
+## Licence
 
-```bash
-docker compose -f docker-compose.localstack.yml up -d
-npm run test:integration
-docker compose -f docker-compose.localstack.yml down
-```
-
-## Accuracy
-
-Extraction is scored field by field against a labeled set of 42 receipts. Thirty
-are ordinary. Twelve are deliberately hard: other currencies, discount lines that
-go negative, a missing subtotal, foreign VAT wording, dates in odd formats, and a
-tip that makes the total not add up.
-
-Claude Haiku 4.5 scores **0.999** on that set. CI fails below 0.90.
-
-That number is real. It comes from replaying responses recorded from the live
-model on Bedrock, so CI can check it on every push without a model call. The
-token counts, and therefore the cost figures, are the ones the model reported.
-Latency is the only thing a replay cannot give you, so it is measured live:
-**p50 1.6s, p95 2.0s**, at **$0.0012 per receipt**.
-
-The one field it does not ace is line items, and the one category is foreign VAT.
-See [eval/README.md](eval/README.md), which also explains why the shorter `v2`
-prompt now looks better than the one that ships, and what would settle it.
-
-## Deploy
-
-```bash
-npx cdk bootstrap aws://<account>/us-east-1
-npx cdk deploy DocketCicd                    # GitHub OIDC provider and deploy role
-npx cdk deploy Docket --context docket:alarmEmail=you@example.com
-```
-
-The pipeline runs Claude Haiku on Bedrock. Serverless models enable themselves the
-first time you invoke one, so there is nothing to switch on, but a first time
-Anthropic user may be asked to submit use case details before the first call
-succeeds. Do that before deploying, not during.
-
-CI deploys on merge to `main` using a role assumed through GitHub OIDC. There are
-no long lived AWS keys anywhere in this repo.
-
-## Running it
-
-[RUNBOOK.md](RUNBOOK.md) has one entry per alarm, with the first three commands
-to run and what to do next. When a message ends up in the dead letter queue,
-`npm run redrive` moves it back once the cause is fixed.
-
-[docs/data-handling.md](docs/data-handling.md) covers what is stored, for how
-long, and how card numbers, emails, and phone numbers are scrubbed before
-anything is written.
-
-## Status
-
-This has been deployed and run on a live AWS account, then torn down. A receipt
-PDF went into S3 and came out of DynamoDB as checked JSON. The model call took
-1.62 seconds and the whole function 2.82, of which 791ms was a cold start. It
-cost $0.0012, about an eighth of a cent. Every number on this page comes from
-that account.
-
-Deploying it once was worth more than any test. It found six bugs nothing else
-could:
-
-- the pinned model had been retired and no longer existed
-- the runbook's first command resolved every variable to an empty string, because
-  CDK renames outputs declared inside a construct
-- the redrive tool listed one stuck message five times
-- and, worse, reported that it had moved nothing right after moving something
-- every alarm in the stack fired into an SNS topic that refused to accept it,
-  because requiring TLS on the topic silently discarded the policy that let
-  CloudWatch publish to it
-- and the deploy flag for the alarm email was namespaced, so passing the plain
-  key subscribed nobody, reported success, and changed nothing
-
-The last two are the same shape, and it is the shape worth learning. An alarm
-with no one on the other end looks exactly like an alarm that works. Both are
-[decision 6](docs/decisions.md).
-
-It also failed on its first document, because Bedrock had not yet approved the
-account. That was the good outcome. The handler threw instead of marking the
-receipt `FAILED`, SQS retried three times, the message landed in the dead letter
-queue, an alarm fired, and the redrive replayed it without creating a duplicate.
-Four claims in [docs/decisions.md](docs/decisions.md), tested by an accident.
-
-The alarm also proved it could not tell anyone, which is how the fifth bug was
-found. Here is the same alarm before the fix and after it:
-
-```
-18:05:51  Action       Successfully executed action arn:aws:sns:...AlarmTopic
-18:05:51  StateUpdate  Alarm updated from OK to ALARM
-16:53:24  StateUpdate  Alarm updated from ALARM to OK
-16:37:24  Action       Failed to execute action arn:aws:sns:...AlarmTopic
-16:37:24  StateUpdate  Alarm updated from OK to ALARM
-```
-
-Then the model got a receipt wrong in a way no gate could see. It read
-`Bookmark Set x3  4.50`, where 4.50 is the total for all three, as the price of
-one, and wrote 13.50. The JSON was valid, so the schema check passed. Subtotal
-plus tax still equalled the total, so the arithmetic check passed. The stored
-receipt had line items that summed to 34.74 above a subtotal of 25.74. That is
-now [checkLineItems](src/lib/schema.ts), which flags it and nothing else on the
-golden set.
-
-Also verified: TypeScript compiles clean, the linter passes, 111 tests pass,
-`cdk synth` produces valid CloudFormation with zero cdk-nag findings, and the
-LocalStack test exercises real S3 and DynamoDB behavior.
-
-## License
-
-MIT. See [LICENSE](LICENSE).
+MIT, see [LICENSE](LICENSE). SROIE and CORD belong to their authors and are used under CC BY 4.0.

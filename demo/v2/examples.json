@@ -1,0 +1,315 @@
+{
+ "standard": {
+  "id": "cord-train-105",
+  "variant": "clean",
+  "status": "EXTRACTED",
+  "receipt": {
+   "merchant": "Gado-Gado",
+   "date": "2023-10-05",
+   "currency": "IDR",
+   "lineItems": [
+    {
+     "description": "Gado-Gado",
+     "quantity": 1,
+     "amount": 29090
+    }
+   ],
+   "subtotal": 29090,
+   "tax": 2909,
+   "total": 32000,
+   "paymentMethod": "cash"
+  },
+  "failureReason": null,
+  "needsReview": true,
+  "reason": "date confidence 0.073 under 1",
+  "fields": [
+   {
+    "field": "lineItems",
+    "predicted": [
+     {
+      "description": "Gado-Gado",
+      "quantity": 1,
+      "amount": 29090
+     }
+    ],
+    "label": [
+     {
+      "description": "Gado-Gado",
+      "quantity": 1,
+      "amount": 29090
+     }
+    ],
+    "correct": true,
+    "confidence": 0.523
+   },
+   {
+    "field": "subtotal",
+    "predicted": 29090,
+    "label": 29090,
+    "correct": true,
+    "confidence": 1
+   },
+   {
+    "field": "tax",
+    "predicted": 2909,
+    "label": 2909,
+    "correct": true,
+    "confidence": 1
+   },
+   {
+    "field": "total",
+    "predicted": 32000,
+    "label": 32000,
+    "correct": true,
+    "confidence": 0.96
+   }
+  ],
+  "image": {
+   "file": "v2/standard.jpg",
+   "sha256": "215a0a34d0c34f780d06c15799bbbe5cdee39aec7198ab6f8869544f9c3541f3"
+  }
+ },
+ "hard": {
+  "id": "cord-train-102",
+  "variant": "clean",
+  "status": "EXTRACTED",
+  "receipt": {
+   "merchant": "Drops",
+   "date": "2023-10-05",
+   "currency": "USD",
+   "lineItems": [
+    {
+     "description": "Nutella Cheese",
+     "quantity": 1,
+     "amount": 27.272
+    }
+   ],
+   "subtotal": 27.272,
+   "tax": 2.727,
+   "total": 29.999,
+   "paymentMethod": "cash"
+  },
+  "failureReason": null,
+  "needsReview": true,
+  "reason": "merchant confidence 0.000 under 1",
+  "fields": [
+   {
+    "field": "lineItems",
+    "predicted": [
+     {
+      "description": "Nutella Cheese",
+      "quantity": 1,
+      "amount": 27.272
+     }
+    ],
+    "label": [
+     {
+      "description": "Nutella Cheese",
+      "quantity": 1,
+      "amount": 27272
+     }
+    ],
+    "correct": false,
+    "confidence": 0.657
+   },
+   {
+    "field": "subtotal",
+    "predicted": 27.272,
+    "label": 27272,
+    "correct": false,
+    "confidence": 0.563
+   },
+   {
+    "field": "tax",
+    "predicted": 2.727,
+    "label": 2727,
+    "correct": false,
+    "confidence": 0.602
+   },
+   {
+    "field": "total",
+    "predicted": 29.999,
+    "label": 29999,
+    "correct": false,
+    "confidence": 0.748
+   }
+  ],
+  "image": {
+   "file": "v2/hard.jpg",
+   "sha256": "22da261524f850fff20c4682903220c8410518877caef1d40c5da14336738453"
+  }
+ },
+ "blurred": {
+  "id": "cord-test-10",
+  "variant": "blur-3",
+  "status": "EXTRACTED",
+  "receipt": {
+   "merchant": "Auntie Anne's",
+   "date": "2023-10-05",
+   "currency": "USD",
+   "lineItems": [
+    {
+     "description": "CINNAMON SUGAR",
+     "quantity": 1,
+     "amount": 17
+    }
+   ],
+   "subtotal": 17,
+   "tax": 0,
+   "total": 17,
+   "paymentMethod": "cash"
+  },
+  "failureReason": null,
+  "needsReview": true,
+  "reason": "tax confidence 0.000 under 1",
+  "fields": [
+   {
+    "field": "lineItems",
+    "predicted": [
+     {
+      "description": "CINNAMON SUGAR",
+      "quantity": 1,
+      "amount": 17
+     }
+    ],
+    "label": [
+     {
+      "description": "CINNAMON SUGAR",
+      "quantity": 1,
+      "amount": 17000
+     }
+    ],
+    "correct": false,
+    "confidence": 0.549
+   },
+   {
+    "field": "subtotal",
+    "predicted": 17,
+    "label": 17000,
+    "correct": false,
+    "confidence": 0.563
+   },
+   {
+    "field": "tax",
+    "predicted": 0,
+    "label": null,
+    "correct": false,
+    "confidence": 0
+   },
+   {
+    "field": "total",
+    "predicted": 17,
+    "label": 17000,
+    "correct": false,
+    "confidence": 0.856
+   }
+  ],
+  "image": {
+   "file": "v2/blurred.jpg",
+   "sha256": "6e84a7e3b972183aefde280fb689eb55a2fd8d88d06923b375a22958f8f07d16"
+  }
+ },
+ "pair": {
+  "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+  "swaps": [],
+  "items": [
+   {
+    "id": "sroie-X51006555784",
+    "variant": "clean",
+    "status": "EXTRACTED",
+    "receipt": {
+     "merchant": "MAKASSAR FRESH MARKET SDN BHD",
+     "date": "2017-08-30",
+     "currency": "MYR",
+     "lineItems": [
+      {
+       "description": "O.C. WHITE",
+       "quantity": 5,
+       "amount": 10.65
+      },
+      {
+       "description": "WHOLEMEAL",
+       "quantity": 5,
+       "amount": 13.9
+      },
+      {
+       "description": "O.C JUMBO",
+       "quantity": 5,
+       "amount": 14.85
+      },
+      {
+       "description": "CR-CHOCCLT",
+       "quantity": 18,
+       "amount": 12.96
+      }
+     ],
+     "subtotal": 39.4,
+     "tax": 0.78,
+     "total": 53.14,
+     "paymentMethod": "other"
+    },
+    "failureReason": null,
+    "needsReview": true,
+    "reason": "lineItems confidence 0.328 under 1",
+    "fields": [
+     {
+      "field": "merchant",
+      "predicted": "MAKASSAR FRESH MARKET SDN BHD",
+      "label": "GARDENIA BAKERIES (KL) SDN BHD",
+      "correct": false,
+      "confidence": 0.331
+     },
+     {
+      "field": "date",
+      "predicted": "2017-08-30",
+      "label": "2017-08-30",
+      "correct": true,
+      "confidence": 0.955
+     },
+     {
+      "field": "total",
+      "predicted": 53.14,
+      "label": 53.14,
+      "correct": true,
+      "confidence": 1
+     }
+    ],
+    "docId": "62759046b38e99ab367d07041244030cb12b133a774ca7f0aacf84f1640d0403"
+   },
+   {
+    "id": "sroie-X51006555806",
+    "variant": "clean",
+    "status": "FAILED",
+    "receipt": null,
+    "failureReason": "tax: Number must be greater than or equal to 0",
+    "needsReview": null,
+    "reason": "failed the schema gate",
+    "fields": [
+     {
+      "field": "merchant",
+      "predicted": null,
+      "label": "GARDENIA BAKERIES (KL) SDN BHD",
+      "correct": false,
+      "confidence": null
+     },
+     {
+      "field": "date",
+      "predicted": null,
+      "label": "2017-07-30",
+      "correct": false,
+      "confidence": null
+     },
+     {
+      "field": "total",
+      "predicted": null,
+      "label": 20.21,
+      "correct": false,
+      "confidence": null
+     }
+    ],
+    "docId": "b7cce161b12e701691a6d1b72f46334a26d4c25a198fddadb876fd0f70fed087"
+   }
+  ]
+ },
+ "attribution": "Receipt images from CORD v2 (Park et al., NAVER Clova), CC BY 4.0, resized; the blurred one is blurred on purpose."
+}

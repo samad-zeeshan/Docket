@@ -1,6 +1,6 @@
 /**
  * Assertions on the synthesized CloudFormation. The unit suite proves the handler
- * logic; this proves the design decisions that live in the infrastructure, so a
+ * logic. This proves the design decisions that live in the infrastructure, so a
  * rename or a loosened policy fails the build instead of shipping quietly.
  */
 import { describe, it, expect, beforeAll } from 'vitest';

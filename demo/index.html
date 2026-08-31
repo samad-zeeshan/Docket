@@ -4,6 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docket demo</title>
+<link rel="icon" href="data:," />
 <style>
   :root {
     --bg: #0E1220; --bg-2: #090C16; --card: #151A28; --card-2: #1B2233;
@@ -307,7 +308,7 @@
       <div class="chart" id="stpChart"></div>
       <div class="slider">
         <span class="t" style="font-family:var(--mono);font-size:.72rem;color:var(--faint)">threshold</span>
-        <input type="range" id="thr" min="0" max="100" step="1" value="90" aria-label="confidence threshold" />
+        <input type="range" id="thr" min="0" max="200" step="1" value="180" aria-label="confidence threshold" />
         <span id="thrVal" style="font-family:var(--mono)">0.90</span>
       </div>
       <div class="readout" id="readout"></div>
@@ -471,15 +472,15 @@
       <path d="${path(cal)}" fill="none" stroke="var(--steel-2)" stroke-width="2.2"/>
       <line id="op" stroke="var(--good)" stroke-dasharray="3 3"/>
       <circle id="dot" r="6" fill="var(--brass)" stroke="#000" stroke-opacity=".3"/>
-      <text x="${W - MR}" y="${MT + 10}" text-anchor="end" fill="var(--steel-2)">calibrated</text>
-      <text x="${W - MR}" y="${MT + 24}" text-anchor="end" fill="var(--bad)">what the model says</text>
+      <text x="${ML + 12}" y="${MT + 10}" fill="var(--steel-2)">calibrated</text>
+      <text x="${ML + 12}" y="${MT + 24}" fill="var(--bad)">what the model says</text>
       <text x="${(ML + W) / 2}" y="${H}" text-anchor="middle">share of receipts with no person</text>
     </svg>`;
     const op = (V.stp.operating || []).find((o) => o.alpha === 0.01);
     $('#stpMeta').textContent = `${V.stp.split.test} test receipts`;
     const update = () => {
-      const t = Number($('#thr').value) / 100;
-      $('#thrVal').textContent = t.toFixed(2);
+      const t = Number($('#thr').value) / 200;
+      $('#thrVal').textContent = t.toFixed(3);
       const p = cal.reduce((a, b) => (Math.abs(b.threshold - t) < Math.abs(a.threshold - t) ? b : a));
       const d = $('#dot'); d.setAttribute('cx', x(p.stpRate)); d.setAttribute('cy', y(p.fieldErrorRate));
       $('#readout').innerHTML = [
@@ -488,8 +489,8 @@
       ].map(([l, v]) => `<div class="tile"><div class="v">${v}</div><div class="l">${l}</div></div>`).join('');
     };
     if (op && op.threshold !== null) {
-      $('#thr').value = Math.round(op.threshold * 100);
-      $('#stpNote').textContent = `The pipeline threshold is ${op.threshold}, the lowest one whose field error stayed at or under 1 percent on the validation split. On the test split it lets through ${pct(op.test.stpRate)} of receipts with ${pct(op.test.fieldErrorRate)} field error.`;
+      $('#thr').value = Math.round(op.threshold * 200);
+      $('#stpNote').textContent = `This curve judges each receipt on the fields calibrated for its kind of receipt. At 1 percent field error on the validation split the threshold is ${op.threshold}, and on the test split it lets through ${pct(op.test.stpRate)} of receipts with ${pct(op.test.fieldErrorRate)} field error. The pipeline today judges all six fields at once, and under that rule ${(V.stp.pooled || []).some((o) => o.test) ? 'fewer receipts pass' : 'no threshold met the budget, so it sends every small model receipt to a person'}.`;
     } else {
       $('#stpNote').textContent = 'No threshold kept field error at or under 1 percent on the validation split, so the pipeline sends every small model receipt to a person. The curve shows what looser budgets would buy.';
     }
@@ -535,7 +536,7 @@
     $('#pertTable').innerHTML = `<table class="t"><tr><th>damage</th><th>clean</th><th>level 1</th><th>level 2</th><th>level 3</th></tr>
       ${Object.entries(kinds).map(([k, n]) => `<tr><td>${n}</td><td>${num(by.clean.fieldAccuracy)}</td>${[1, 2, 3].map((l) => `<td>${num(by[k + '-' + l] && by[k + '-' + l].fieldAccuracy)}</td>`).join('')}</tr>`).join('')}</table>`;
     const h = p.homogeneity;
-    $('#homNote').textContent = `Near identical receipts: ${h.idsDistinct} of ${h.pairs} same-merchant pairs got distinct ids, and ${h.pairsWithSwaps} pairs had a value from the other receipt show up. The id hashes the file, so the same paper photographed twice becomes two documents. That limit is known and not fixed.`;
+    $('#homNote').textContent = `Near identical receipts: of ${h.pairs} same-merchant pairs, ${h.identicalFilePairs} are the same file twice and share an id, ${h.distinctFilesSharingId} different files share an id, and in ${h.pairsWithSwaps} of the ${h.pairsCheckedForSwaps} pairs that were both run a value from the other receipt turned up. The id hashes the file, so the same paper photographed twice becomes two documents. That limit is known and not fixed.`;
   }
 
   /* upload: recorded match, else router statistics measured in the browser */
