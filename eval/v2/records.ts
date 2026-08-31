@@ -115,6 +115,10 @@ export interface HomogeneityPair {
   b: string;
   merchant: string;
   idsDiffer: boolean;
+  // SROIE ships some receipts twice as the same file. Those share an id, as they
+  // should, and are counted apart from near identical ones.
+  identicalFiles: boolean;
+  bothRun: boolean;
   swaps: string[];
 }
 
@@ -148,7 +152,15 @@ function homogeneity(labels: PreparedReceipt[], main: RunLine[]): { pairs: Homog
         if (pa && pa[f] === lb && pa[f] !== la) swaps.push(`${a.id}.${f}`);
         if (pb && pb[f] === la && pb[f] !== lb) swaps.push(`${b.id}.${f}`);
       }
-      pairs.push({ a: a.id, b: b.id, merchant: a.label.merchant!, idsDiffer: idA !== idB, swaps });
+      pairs.push({
+        a: a.id,
+        b: b.id,
+        merchant: a.label.merchant!,
+        idsDiffer: idA !== idB,
+        identicalFiles: a.sourceSha256 === b.sourceSha256,
+        bothRun: pa !== undefined && pb !== undefined,
+        swaps,
+      });
     }
   }
   // The id hashes the bytes, so the same paper photographed or re-saved twice is

@@ -1,0 +1,3344 @@
+{
+ "pairs": [
+  {
+   "a": "sroie-X51006555784",
+   "b": "sroie-X51006555806",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006555814",
+   "b": "sroie-X51006555817",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006555818",
+   "b": "sroie-X51006555819",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006555833",
+   "b": "sroie-X51006555835",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006556591",
+   "b": "sroie-X51006556596",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006556603",
+   "b": "sroie-X51006556604",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006556646",
+   "b": "sroie-X51006556648",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006556650",
+   "b": "sroie-X51006556654",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006556656",
+   "b": "sroie-X51006556657",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006556658",
+   "b": "sroie-X51006556723",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006556726",
+   "b": "sroie-X51006556728",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006556732",
+   "b": "sroie-X51006556734",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006556738",
+   "b": "sroie-X51006556740",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006556806",
+   "b": "sroie-X51006556808",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006556809",
+   "b": "sroie-X51006556810",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006556812",
+   "b": "sroie-X51006556815",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006556818",
+   "b": "sroie-X51006556821",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006556823",
+   "b": "sroie-X51006556824",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006556825",
+   "b": "sroie-X51006556826",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006556827",
+   "b": "sroie-X51006556828",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006556829",
+   "b": "sroie-X51006556838",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006556839",
+   "b": "sroie-X51006556840",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006556841",
+   "b": "sroie-X51006556851",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006556852",
+   "b": "sroie-X51006556861",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006556865",
+   "b": "sroie-X51006557115",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006557117",
+   "b": "sroie-X51006557119",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006557161",
+   "b": "sroie-X51006557164",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006557168",
+   "b": "sroie-X51006557169",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006557170",
+   "b": "sroie-X51006557173",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006557178",
+   "b": "sroie-X51006557179",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006557184",
+   "b": "sroie-X51006557185",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006557187",
+   "b": "sroie-X51006557188",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006557193",
+   "b": "sroie-X51006557194",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006557195",
+   "b": "sroie-X51006557196",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006557198",
+   "b": "sroie-X51006557199",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006557202",
+   "b": "sroie-X51006557208",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006557209",
+   "b": "sroie-X51006557210",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006557213",
+   "b": "sroie-X51006557507",
+   "merchant": "GARDENIA BAKERIES (KL) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005433492",
+   "b": "sroie-X51005433514",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005433518",
+   "b": "sroie-X51005433522",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005433538",
+   "b": "sroie-X51005433541",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005433543",
+   "b": "sroie-X51005442327",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005442333",
+   "b": "sroie-X51005442334",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005442375",
+   "b": "sroie-X51005442376",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005442379",
+   "b": "sroie-X51005442382",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005442384",
+   "b": "sroie-X51005442386",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005442392",
+   "b": "sroie-X51005442394",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006414425",
+   "b": "sroie-X51006414427",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006414429",
+   "b": "sroie-X51006414431",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006414433",
+   "b": "sroie-X51006414470",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006414483",
+   "b": "sroie-X51006414485",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006414592",
+   "b": "sroie-X51006414593",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006414631",
+   "b": "sroie-X51006414632",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006414633",
+   "b": "sroie-X51006414671",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006912972",
+   "b": "sroie-X51006912974",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006913023",
+   "b": "sroie-X51006913024",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006913028",
+   "b": "sroie-X51006913030",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006913031",
+   "b": "sroie-X51006913032",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006913059",
+   "b": "sroie-X51006913060",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006913061",
+   "b": "sroie-X51006913067",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006913070",
+   "b": "sroie-X51006913073",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007231274",
+   "b": "sroie-X51007231275",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007231276",
+   "b": "sroie-X51007231331",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007231336",
+   "b": "sroie-X51007231341",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007231343",
+   "b": "sroie-X51007231344",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007846266",
+   "b": "sroie-X51007846268",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007846269",
+   "b": "sroie-X51007846286",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007846288",
+   "b": "sroie-X51007846290",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007846301",
+   "b": "sroie-X51007846303",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007846304",
+   "b": "sroie-X51007846307",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007846309",
+   "b": "sroie-X51007846370",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007846371",
+   "b": "sroie-X51007846372",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007846388",
+   "b": "sroie-X51007846391",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007846392",
+   "b": "sroie-X51007846398",
+   "merchant": "UNIHAKKA INTERNATIONAL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007339094",
+   "b": "sroie-X51007339095",
+   "merchant": "SANYU STATIONERY SHOP",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007339097",
+   "b": "sroie-X51007339098",
+   "merchant": "SANYU STATIONERY SHOP",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007339100",
+   "b": "sroie-X51007339105",
+   "merchant": "SANYU STATIONERY SHOP",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007339106",
+   "b": "sroie-X51007339107",
+   "merchant": "SANYU STATIONERY SHOP",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007339109",
+   "b": "sroie-X51007339110",
+   "merchant": "SANYU STATIONERY SHOP",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007339111",
+   "b": "sroie-X51007339112",
+   "merchant": "SANYU STATIONERY SHOP",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007339113",
+   "b": "sroie-X51007339114",
+   "merchant": "SANYU STATIONERY SHOP",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007339115",
+   "b": "sroie-X51007339116",
+   "merchant": "SANYU STATIONERY SHOP",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007339117",
+   "b": "sroie-X51007339118",
+   "merchant": "SANYU STATIONERY SHOP",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007339119",
+   "b": "sroie-X51007339120",
+   "merchant": "SANYU STATIONERY SHOP",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007339121",
+   "b": "sroie-X51007339122",
+   "merchant": "SANYU STATIONERY SHOP",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007339125",
+   "b": "sroie-X51007339126",
+   "merchant": "SANYU STATIONERY SHOP",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007339127",
+   "b": "sroie-X51007339130",
+   "merchant": "SANYU STATIONERY SHOP",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007339131",
+   "b": "sroie-X51007339132",
+   "merchant": "SANYU STATIONERY SHOP",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007339133",
+   "b": "sroie-X51007339134",
+   "merchant": "SANYU STATIONERY SHOP",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007339135",
+   "b": "sroie-X51007339136",
+   "merchant": "SANYU STATIONERY SHOP",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007339139",
+   "b": "sroie-X51007339146",
+   "merchant": "SANYU STATIONERY SHOP",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007339150",
+   "b": "sroie-X51007339151",
+   "merchant": "SANYU STATIONERY SHOP",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007339152",
+   "b": "sroie-X51007339156",
+   "merchant": "SANYU STATIONERY SHOP",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007339157",
+   "b": "sroie-X51007339158",
+   "merchant": "SANYU STATIONERY SHOP",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007339159",
+   "b": "sroie-X51007339160",
+   "merchant": "SANYU STATIONERY SHOP",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007339161",
+   "b": "sroie-X51007339162",
+   "merchant": "SANYU STATIONERY SHOP",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007339163",
+   "b": "sroie-X51007339164",
+   "merchant": "SANYU STATIONERY SHOP",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007339165",
+   "b": "sroie-X51007339166",
+   "merchant": "SANYU STATIONERY SHOP",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005268408",
+   "b": "sroie-X51005361950",
+   "merchant": "99 SPEED MART S/B",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005444044",
+   "b": "sroie-X51005444045",
+   "merchant": "99 SPEED MART S/B",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005447852",
+   "b": "sroie-X51005447853",
+   "merchant": "99 SPEED MART S/B",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005715455",
+   "b": "sroie-X51005719862",
+   "merchant": "99 SPEED MART S/B",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005719882",
+   "b": "sroie-X51005719883",
+   "merchant": "99 SPEED MART S/B",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005745214",
+   "b": "sroie-X51005745298",
+   "merchant": "99 SPEED MART S/B",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005764161",
+   "b": "sroie-X51006387971",
+   "merchant": "99 SPEED MART S/B",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006388065",
+   "b": "sroie-X51006389884",
+   "merchant": "99 SPEED MART S/B",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006389888",
+   "b": "sroie-X51006393376",
+   "merchant": "99 SPEED MART S/B",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006393377",
+   "b": "sroie-X51006401853",
+   "merchant": "99 SPEED MART S/B",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006619338",
+   "b": "sroie-X51006619496",
+   "merchant": "99 SPEED MART S/B",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006619563",
+   "b": "sroie-X51006619564",
+   "merchant": "99 SPEED MART S/B",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006619566",
+   "b": "sroie-X51006619696",
+   "merchant": "99 SPEED MART S/B",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006619757",
+   "b": "sroie-X51006619758",
+   "merchant": "99 SPEED MART S/B",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006619777",
+   "b": "sroie-X51006619782",
+   "merchant": "99 SPEED MART S/B",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006619854",
+   "b": "sroie-X51006619863",
+   "merchant": "99 SPEED MART S/B",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006620189",
+   "b": "sroie-X51006620437",
+   "merchant": "99 SPEED MART S/B",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006733495",
+   "b": "sroie-X51006828217",
+   "merchant": "99 SPEED MART S/B",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006857137",
+   "b": "sroie-X51007135247",
+   "merchant": "99 SPEED MART S/B",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008114260",
+   "b": "sroie-X51008114262",
+   "merchant": "99 SPEED MART S/B",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008114266",
+   "b": "sroie-X51008114281",
+   "merchant": "99 SPEED MART S/B",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008114282",
+   "b": "sroie-X51008128065",
+   "merchant": "99 SPEED MART S/B",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X00016469623",
+   "b": "sroie-X51005361946",
+   "merchant": "MR D.I.Y. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005568880",
+   "b": "sroie-X51005749895",
+   "merchant": "MR.D.I.Y(M)SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005749912",
+   "b": "sroie-X51005757290",
+   "merchant": "MR. D.I.Y. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005757292",
+   "b": "sroie-X51005757294",
+   "merchant": "MR. D.I.Y. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005757308",
+   "b": "sroie-X51005757323",
+   "merchant": "MR. D.I.Y. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005757324",
+   "b": "sroie-X51005757342",
+   "merchant": "MR. D.I.Y. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005757346",
+   "b": "sroie-X51005757351",
+   "merchant": "MR. D.I.Y. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005757353",
+   "b": "sroie-X51006619341",
+   "merchant": "MR. D.I.Y. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006619346",
+   "b": "sroie-X51006619570",
+   "merchant": "MR. D.I.Y. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006619698",
+   "b": "sroie-X51006619704",
+   "merchant": "MR. D.I.Y. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006619765",
+   "b": "sroie-X51006619766",
+   "merchant": "MR. D.I.Y. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006620175",
+   "b": "sroie-X51006620186",
+   "merchant": "MR. D.I.Y. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006620190",
+   "b": "sroie-X51007103578",
+   "merchant": "MR. D.I.Y. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007103599",
+   "b": "sroie-X51007103610",
+   "merchant": "MR. D.I.Y. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007103639",
+   "b": "sroie-X51007103641",
+   "merchant": "MR. D.I.Y. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007103643",
+   "b": "sroie-X51007103649",
+   "merchant": "MR. D.I.Y. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007103668",
+   "b": "sroie-X51007103675",
+   "merchant": "MR. D.I.Y. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007103681",
+   "b": "sroie-X51007103687",
+   "merchant": "MR. D.I.Y. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007103688",
+   "b": "sroie-X51007103692",
+   "merchant": "MR. D.I.Y. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007103702",
+   "b": "sroie-X51007225442",
+   "merchant": "MR. D.I.Y. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008063849",
+   "b": "sroie-X51008064061",
+   "merchant": "MR. D.I.Y. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008123580",
+   "b": "sroie-X51008164524",
+   "merchant": "MR. D.I.Y. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005711401",
+   "b": "sroie-X51005711402",
+   "merchant": "RESTORAN WAN SHENG",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005711403",
+   "b": "sroie-X51005711404",
+   "merchant": "RESTORAN WAN SHENG",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005711441",
+   "b": "sroie-X51005711442",
+   "merchant": "RESTORAN WAN SHENG",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005711443",
+   "b": "sroie-X51005711444",
+   "merchant": "RESTORAN WAN SHENG",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005711445",
+   "b": "sroie-X51005711446",
+   "merchant": "RESTORAN WAN SHENG",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005711447",
+   "b": "sroie-X51005711449",
+   "merchant": "RESTORAN WAN SHENG",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006389865",
+   "b": "sroie-X51008030561",
+   "merchant": "RESTORAN WAN SHENG",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008030563",
+   "b": "sroie-X51008030565",
+   "merchant": "RESTORAN WAN SHENG",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008030566",
+   "b": "sroie-X51008042777",
+   "merchant": "RESTORAN WAN SHENG",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008042778",
+   "b": "sroie-X51008042779",
+   "merchant": "RESTORAN WAN SHENG",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008042780",
+   "b": "sroie-X51008042781",
+   "merchant": "RESTORAN WAN SHENG",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008042782",
+   "b": "sroie-X51008042791",
+   "merchant": "RESTORAN WAN SHENG",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008042792",
+   "b": "sroie-X51008099041",
+   "merchant": "RESTORAN WAN SHENG",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008099043",
+   "b": "sroie-X51008099044",
+   "merchant": "RESTORAN WAN SHENG",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008099046",
+   "b": "sroie-X51008099047",
+   "merchant": "RESTORAN WAN SHENG",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008099048",
+   "b": "sroie-X51008099081",
+   "merchant": "RESTORAN WAN SHENG",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008099083",
+   "b": "sroie-X51008099084",
+   "merchant": "RESTORAN WAN SHENG",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008099085",
+   "b": "sroie-X51008099086",
+   "merchant": "RESTORAN WAN SHENG",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008099087",
+   "b": "sroie-X51008099088",
+   "merchant": "RESTORAN WAN SHENG",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008099089",
+   "b": "sroie-X51008099090",
+   "merchant": "RESTORAN WAN SHENG",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005663273",
+   "b": "sroie-X51005663276",
+   "merchant": "SYARIKAT PERNIAGAAN GIN KEE",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005663277",
+   "b": "sroie-X51005663279",
+   "merchant": "SYARIKAT PERNIAGAAN GIN KEE",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005663324",
+   "b": "sroie-X51005675103",
+   "merchant": "SYARIKAT PERNIAGAAN GIN KEE",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005675104",
+   "b": "sroie-X51005676534",
+   "merchant": "SYARIKAT PERNIAGAAN GIN KEE",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005676535",
+   "b": "sroie-X51005676536",
+   "merchant": "SYARIKAT PERNIAGAAN GIN KEE",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005676537",
+   "b": "sroie-X51005676538",
+   "merchant": "SYARIKAT PERNIAGAAN GIN KEE",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005676539",
+   "b": "sroie-X51005676540",
+   "merchant": "SYARIKAT PERNIAGAAN GIN KEE",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005676541",
+   "b": "sroie-X51005676542",
+   "merchant": "SYARIKAT PERNIAGAAN GIN KEE",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005676543",
+   "b": "sroie-X51005676544",
+   "merchant": "SYARIKAT PERNIAGAAN GIN KEE",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005676545",
+   "b": "sroie-X51005676546",
+   "merchant": "SYARIKAT PERNIAGAAN GIN KEE",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005676547",
+   "b": "sroie-X51005676548",
+   "merchant": "SYARIKAT PERNIAGAAN GIN KEE",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005676549",
+   "b": "sroie-X51005677327",
+   "merchant": "SYARIKAT PERNIAGAAN GIN KEE",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005677328",
+   "b": "sroie-X51005677329",
+   "merchant": "SYARIKAT PERNIAGAAN GIN KEE",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005677331",
+   "b": "sroie-X51005677332",
+   "merchant": "SYARIKAT PERNIAGAAN GIN KEE",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005677333",
+   "b": "sroie-X51005677334",
+   "merchant": "SYARIKAT PERNIAGAAN GIN KEE",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005677335",
+   "b": "sroie-X51005677336",
+   "merchant": "SYARIKAT PERNIAGAAN GIN KEE",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005433494",
+   "b": "sroie-X51005447860",
+   "merchant": "AEON CO. (M) BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005605285",
+   "b": "sroie-X51005605286",
+   "merchant": "AEON CO. (M) BHD.",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005605287",
+   "b": "sroie-X51005757201",
+   "merchant": "AEON CO. (M) BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005757220",
+   "b": "sroie-X51005757235",
+   "merchant": "AEON CO. (M) BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005757248",
+   "b": "sroie-X51006008105",
+   "merchant": "AEON CO. (M) BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006414680",
+   "b": "sroie-X51006414703",
+   "merchant": "AEON CO. (M) BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006414717",
+   "b": "sroie-X51006414718",
+   "merchant": "AEON CO. (M) BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006414719",
+   "b": "sroie-X51006414733",
+   "merchant": "AEON CO. (M) BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006857132",
+   "b": "sroie-X51006913007",
+   "merchant": "AEON CO. (M) BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006913018",
+   "b": "sroie-X51006913019",
+   "merchant": "AEON CO. (M) BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007103691",
+   "b": "sroie-X51007846283",
+   "merchant": "AEON CO. (M) BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007846305",
+   "b": "sroie-X51007846355",
+   "merchant": "AEON CO. (M) BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007846366",
+   "b": "sroie-X51007846379",
+   "merchant": "AEON CO. (M) BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005447861",
+   "b": "sroie-X51005568855",
+   "merchant": "POPULAR BOOK CO. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005568866",
+   "b": "sroie-X51005605332",
+   "merchant": "POPULAR BOOK CO. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005605333",
+   "b": "sroie-X51005605334",
+   "merchant": "POPULAR BOOK CO. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005605335",
+   "b": "sroie-X51005715451",
+   "merchant": "POPULAR BOOK CO. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005722699",
+   "b": "sroie-X51005757199",
+   "merchant": "POPULAR BOOK CO. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005757243",
+   "b": "sroie-X51006008086",
+   "merchant": "POPULAR BOOK CO. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006008089",
+   "b": "sroie-X51006008090",
+   "merchant": "POPULAR BOOK CO. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006008091",
+   "b": "sroie-X51006008092",
+   "merchant": "POPULAR BOOK CO. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006008093",
+   "b": "sroie-X51008164420",
+   "merchant": "POPULAR BOOK CO. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005724552",
+   "b": "sroie-X51005724554",
+   "merchant": "KEDAI PAPAN YEW CHUAN",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005724611",
+   "b": "sroie-X51005724621",
+   "merchant": "KEDAI PAPAN YEW CHUAN",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005724622",
+   "b": "sroie-X51005724624",
+   "merchant": "KEDAI PAPAN YEW CHUAN",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005724625",
+   "b": "sroie-X51005724626",
+   "merchant": "KEDAI PAPAN YEW CHUAN",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005724627",
+   "b": "sroie-X51005724628",
+   "merchant": "KEDAI PAPAN YEW CHUAN",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005724629",
+   "b": "sroie-X51008142058",
+   "merchant": "KEDAI PAPAN YEW CHUAN",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008142059",
+   "b": "sroie-X51008142060",
+   "merchant": "KEDAI PAPAN YEW CHUAN",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008142061",
+   "b": "sroie-X51008142062",
+   "merchant": "KEDAI PAPAN YEW CHUAN",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008142063",
+   "b": "sroie-X51008142065",
+   "merchant": "KEDAI PAPAN YEW CHUAN",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005568911",
+   "b": "sroie-X51005719898",
+   "merchant": "MR. D.I.Y. (KUCHAI) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005719914",
+   "b": "sroie-X51005757273",
+   "merchant": "MR. D. I. Y. (KUCHAI) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006311780",
+   "b": "sroie-X51006619342",
+   "merchant": "MR. D.I.Y. (KUCHAI) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006619343",
+   "b": "sroie-X51006619569",
+   "merchant": "MR. D.I.Y. (KUCHAI) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006619700",
+   "b": "sroie-X51006619703",
+   "merchant": "MR. D.I.Y. (KUCHAI) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006619709",
+   "b": "sroie-X51006619764",
+   "merchant": "MR. D.I.Y. (KUCHAI) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006619862",
+   "b": "sroie-X51006620176",
+   "merchant": "MR. D.I.Y. (KUCHAI) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008114216",
+   "b": "sroie-X51008114217",
+   "merchant": "MR. D.I.Y. (KUCHAI) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008114283",
+   "b": "sroie-X51008114284",
+   "merchant": "MR. D.I.Y. (KUCHAI) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005230616",
+   "b": "sroie-X51005230617",
+   "merchant": "GERBANG ALAF RESTAURANTS SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005711452",
+   "b": "sroie-X51005711453",
+   "merchant": "GERBANG ALAF RESTAURANTS SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005712017",
+   "b": "sroie-X51005717526",
+   "merchant": "GERBANG ALAF RESTAURANTS SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005719903",
+   "b": "sroie-X51006387973",
+   "merchant": "GERBANG ALAF RESTAURANTS SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006502540",
+   "b": "sroie-X51006913068",
+   "merchant": "GERBANG ALAF RESTAURANTS SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007231364",
+   "b": "sroie-X51007262315",
+   "merchant": "GERBANG ALAF RESTAURANTS SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007846395",
+   "b": "sroie-X51007846396",
+   "merchant": "GERBANG ALAF RESTAURANTS SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008042783",
+   "b": "sroie-X51008042786",
+   "merchant": "GERBANG ALAF RESTAURANTS SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005268200",
+   "b": "sroie-X51007339638",
+   "merchant": "AIK HUAT HARDWARE ENTERPRISE (SETIA ALAM) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007339639",
+   "b": "sroie-X51007339642",
+   "merchant": "AIK HUAT HARDWARE ENTERPRISE (SETIA ALAM) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007339643",
+   "b": "sroie-X51007339647",
+   "merchant": "AIK HUAT HARDWARE ENTERPRISE (SETIA ALAM) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007339648",
+   "b": "sroie-X51007339650",
+   "merchant": "AIK HUAT HARDWARE ENTERPRISE (SETIA ALAM) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007339651",
+   "b": "sroie-X51007339653",
+   "merchant": "AIK HUAT HARDWARE ENTERPRISE (SETIA ALAM) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007339656",
+   "b": "sroie-X51007339657",
+   "merchant": "AIK HUAT HARDWARE ENTERPRISE (SETIA ALAM) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008142005",
+   "b": "sroie-X51008142030",
+   "merchant": "ONE ONE THREE SEAFOOD RESTAURANT SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008142031",
+   "b": "sroie-X51008142032",
+   "merchant": "ONE ONE THREE SEAFOOD RESTAURANT SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008142033",
+   "b": "sroie-X51008164969",
+   "merchant": "ONE ONE THREE SEAFOOD RESTAURANT SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008164991",
+   "b": "sroie-X51008164992",
+   "merchant": "ONE ONE THREE SEAFOOD RESTAURANT SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008164996",
+   "b": "sroie-X51008164997",
+   "merchant": "ONE ONE THREE SEAFOOD RESTAURANT SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008164998",
+   "b": "sroie-X51008164999",
+   "merchant": "ONE ONE THREE SEAFOOD RESTAURANT SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005719912",
+   "b": "sroie-X51005757233",
+   "merchant": "GUARDIAN HEALTH AND BEAUTY SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006311714",
+   "b": "sroie-X51006441473",
+   "merchant": "GUARDIAN HEALTH AND BEAUTY SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006619694",
+   "b": "sroie-X51006856981",
+   "merchant": "GUARDIAN HEALTH AND BEAUTY SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006856982",
+   "b": "sroie-X51006867435",
+   "merchant": "GUARDIAN HEALTH AND BEAUTY SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005746204",
+   "b": "sroie-X51006328913",
+   "merchant": "BEMED (SP) SDN BHD.",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006329388",
+   "b": "sroie-X51006332649",
+   "merchant": "BEMED (SP) SDN. BHD.",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006334819",
+   "b": "sroie-X51006387737",
+   "merchant": "BEMED (SP) SDN. BHD.",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006387847",
+   "b": "sroie-X51006388064",
+   "merchant": "BEMED (SP) SDN. BHD.",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005746210",
+   "b": "sroie-X51005763999",
+   "merchant": "SEGI CASH & CARRY SDN. BHD.",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006329402",
+   "b": "sroie-X51006334699",
+   "merchant": "SEGI CASH & CARRY SDN. BHD.",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006334741",
+   "b": "sroie-X51006335818",
+   "merchant": "SEGI CASH & CARRY SDN.BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006388068",
+   "b": "sroie-X51006388069",
+   "merchant": "SEGI CASH & CARRY SDN. BHD.",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005447840",
+   "b": "sroie-X51005447841",
+   "merchant": "PASARAYA BORONG PINTAR SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005447842",
+   "b": "sroie-X51005447850",
+   "merchant": "PASARAYA BORONG PINTAR SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005447851",
+   "b": "sroie-X51005447859",
+   "merchant": "PASARAYA BORONG PINTAR SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005719902",
+   "b": "sroie-X51006327960",
+   "merchant": "KING'S CONFECTIONERY S/B",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006328345",
+   "b": "sroie-X51006335547",
+   "merchant": "KING'S CONFECTIONERY S/B",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006388081",
+   "b": "sroie-X51006389894",
+   "merchant": "KING'S CONFECTIONERY S/B",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005361883",
+   "b": "sroie-X51005361897",
+   "merchant": "TEO HENG STATIONERY & BOOKS",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005361898",
+   "b": "sroie-X51005361900",
+   "merchant": "TEO HENG STATIONERY & BOOKS",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005361908",
+   "b": "sroie-X51005361912",
+   "merchant": "TEO HENG STATIONERY & BOOKS",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005568881",
+   "b": "sroie-X51005568887",
+   "merchant": "HON HWA HARDWARE TRADING",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005568889",
+   "b": "sroie-X51005568890",
+   "merchant": "HON HWA HARDWARE TRADING",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005568891",
+   "b": "sroie-X51009568881",
+   "merchant": "HON HWA HARDWARE TRADING",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005663274",
+   "b": "sroie-X51005663300",
+   "merchant": "LIM SENG THO HARDWARE TRADING",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005663301",
+   "b": "sroie-X51005663310",
+   "merchant": "LIM SENG THO HARDWARE TRADING",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005663311",
+   "b": "sroie-X51005663317",
+   "merchant": "LIM SENG THO HARDWARE TRADING",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005745190",
+   "b": "sroie-X51005746203",
+   "merchant": "SUPER SEVEN CASH & CARRY SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005746207",
+   "b": "sroie-X51005763958",
+   "merchant": "SUPER SEVEN CASH & CARRY SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005764031",
+   "b": "sroie-X51006392313",
+   "merchant": "SUPER SEVEN CASH & CARRY SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005742110",
+   "b": "sroie-X51005746140",
+   "merchant": "YONG CEN ENTERPRISE",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005763964",
+   "b": "sroie-X51006332641",
+   "merchant": "YONG CEN ENTERPRISE",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006387850",
+   "b": "sroie-X51006388089",
+   "merchant": "YONG CEN ENTERPRISE",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007846270",
+   "b": "sroie-X51007846282",
+   "merchant": "MOONLIGHT CAKE HOUSE SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007846289",
+   "b": "sroie-X51007846302",
+   "merchant": "MOONLIGHT CAKE HOUSE SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007846310",
+   "b": "sroie-X51007846393",
+   "merchant": "MOONLIGHT CAKE HOUSE SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005268275",
+   "b": "sroie-X51005301661",
+   "merchant": "LIGHTROOM GALLERY SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005301666",
+   "b": "sroie-X51005301667",
+   "merchant": "LIGHTROOM GALLERY SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005365179",
+   "b": "sroie-X51006349081",
+   "merchant": "C W KHOO HARDWARE SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006350737",
+   "b": "sroie-X51008122920",
+   "merchant": "C W KHOO HARDWARE SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005453729",
+   "b": "sroie-X51005453802",
+   "merchant": "LIAN HING STATIONERY SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005453804",
+   "b": "sroie-X51009453729",
+   "merchant": "LIAN HING STATIONERY SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005568913",
+   "b": "sroie-X51005568914",
+   "merchant": "IKANO HANDEL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005663278",
+   "b": "sroie-X51005889296",
+   "merchant": "IKANO HANDEL SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005230659",
+   "b": "sroie-X51005361923",
+   "merchant": "SWC ENTERPRISE SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005712038",
+   "b": "sroie-X51005749904",
+   "merchant": "SWC ENTERPRISE SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006008073",
+   "b": "sroie-X51006008074",
+   "merchant": "PRINT EXPERT SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006008081",
+   "b": "sroie-X51006008082",
+   "merchant": "PRINT EXPERT SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006328919",
+   "b": "sroie-X51006328920",
+   "merchant": "B & BEST RESTAURANT",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006329395",
+   "b": "sroie-X51006401977",
+   "merchant": "B & BEST RESTAURANT",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006414674",
+   "b": "sroie-X51006414675",
+   "merchant": "DOMINO'S PIZZA",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006414711",
+   "b": "sroie-X51006414712",
+   "merchant": "DOMINO'S PIZZA",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005200931",
+   "b": "sroie-X51005200938",
+   "merchant": "PERNIAGAAN ZHENG HUI",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005433533",
+   "b": "sroie-X51005442346",
+   "merchant": "PERNIAGAAN ZHENG HUI",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005605284",
+   "b": "sroie-X51005806685",
+   "merchant": "ADVANCO COMPANY",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005806698",
+   "b": "sroie-X51005806716",
+   "merchant": "ADVANCO COMPANY",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005749905",
+   "b": "sroie-X51007225398",
+   "merchant": "ENW HARDWARE CENTRE (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007225399",
+   "b": "sroie-X51007225417",
+   "merchant": "ENW HARDWARE CENTRE (M) SDN. BHD.",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006387931",
+   "b": "sroie-X51006387950",
+   "merchant": "AMANO MALAYSIA SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006387951",
+   "b": "sroie-X51006387953",
+   "merchant": "AMANO MALAYSIA SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006414714",
+   "b": "sroie-X51006912976",
+   "merchant": "THE TOAST F&B SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006913051",
+   "b": "sroie-X51007846353",
+   "merchant": "THE TOAST F&B SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X510056849111",
+   "b": "sroie-X51005684949",
+   "merchant": "WESTERN EASTERN STATIONERY SDN. BHD",
+   "idsDiffer": false,
+   "identicalFiles": true,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006466060",
+   "b": "sroie-X51006466070",
+   "merchant": "WESTERN EASTERN STATIONERY SDN. BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006619503",
+   "b": "sroie-X51006619506",
+   "merchant": "KEDAI UBAT & RUNCIT HONG NING SDN. BHD.",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006619567",
+   "b": "sroie-X51006619760",
+   "merchant": "KEDAI UBAT & RUNCIT HONG NING SDN. BHD.",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005433553",
+   "b": "sroie-X51005433556",
+   "merchant": "YHM AEON TEBRAU CITY",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005433548",
+   "b": "sroie-X51005442338",
+   "merchant": "PASAR MINI JIN SENG",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005442366",
+   "b": "sroie-X51005442397",
+   "merchant": "TRIPLE SIX POINT ENTERPRISE 666",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005444033",
+   "b": "sroie-X51005444040",
+   "merchant": "BENS INDEPENDENT GROCER SDN. BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005447839",
+   "b": "sroie-X51005447844",
+   "merchant": "RESTAURANT JIAWEI JIAWEI HOUSE",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005568884",
+   "b": "sroie-X51005568899",
+   "merchant": "MR. D.I.Y. SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005568894",
+   "b": "sroie-X51005568895",
+   "merchant": "VIVOPAC MARKETING SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005577191",
+   "b": "sroie-X51005577192",
+   "merchant": "FY EAGLE ENTERPRISE",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005587254",
+   "b": "sroie-X51005587267",
+   "merchant": "TRI SHAAS SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005663297",
+   "b": "sroie-X51005675914",
+   "merchant": "BEYOND BROTHERS HARDWARE",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005705722",
+   "b": "sroie-X51005705729",
+   "merchant": "ASO ELECTRICAL TRADING SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005711454",
+   "b": "sroie-X51008099049",
+   "merchant": "PAPPARICH BMC",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005719904",
+   "b": "sroie-X51006619779",
+   "merchant": "YAM FRESH",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006311758",
+   "b": "sroie-X51006311764",
+   "merchant": "TONYMOLY VIVA CITY",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006328967",
+   "b": "sroie-X51006332575",
+   "merchant": "TANJONGMAS BOOKCENTRE (PJ) SDN BHD",
+   "idsDiffer": false,
+   "identicalFiles": true,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006334926",
+   "b": "sroie-X51006619507",
+   "merchant": "GOLDEN ARCHES RESTAURANTS SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006327953",
+   "b": "sroie-X51006334766",
+   "merchant": "MEI LET RESTAURANT",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006334139",
+   "b": "sroie-X51006392122",
+   "merchant": "FIVE STAR CASH & CARRY",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006334770",
+   "b": "sroie-X51006401723",
+   "merchant": "S&Y STATIONERY",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006414512",
+   "b": "sroie-X51006414533",
+   "merchant": "BHPETROL PERMAS JAYA 2",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006556610",
+   "b": "sroie-X51006556830",
+   "merchant": "PINGHWAI TRADING SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008123446",
+   "b": "sroie-X51008123447",
+   "merchant": "DION REALTIES SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006619328",
+   "b": "sroie-X51006619790",
+   "merchant": "YIN MA (M) SDN.BHD.",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005268262",
+   "b": "sroie-X51005301659",
+   "merchant": "HOME MASTER HARDWARE & ELECTRICAL",
+   "idsDiffer": false,
+   "identicalFiles": true,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005361906",
+   "b": "sroie-X51005361907",
+   "merchant": "TED HENG STATIONERY & BOOKS",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005433552",
+   "b": "sroie-X51007231374",
+   "merchant": "WARAKUYA PERMAS CITY SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005441401",
+   "b": "sroie-X51005441402",
+   "merchant": "THREE STOOGES",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005442343",
+   "b": "sroie-X51005442344",
+   "merchant": "YONG TAT HARDWARE TRADING",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005453801",
+   "b": "sroie-X51009453801",
+   "merchant": "GL HANDICRAFT & TAIL ORING",
+   "idsDiffer": false,
+   "identicalFiles": true,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005711456",
+   "b": "sroie-X51008099102",
+   "merchant": "MIZU MENTAI SDN. BHD.",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005719896",
+   "b": "sroie-X51006619345",
+   "merchant": "THE STORE (MALAYSIA) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005745183",
+   "b": "sroie-X51006387932",
+   "merchant": "BILLION SIX ENTERPRISE",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005745187",
+   "b": "sroie-X51005745188",
+   "merchant": "SLF CASH & CARRY",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005745244",
+   "b": "sroie-X51005745249",
+   "merchant": "URBAN IDEA SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005757282",
+   "b": "sroie-X51005757286",
+   "merchant": "TSH POWER HARDWARE TRADING",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005757349",
+   "b": "sroie-X51007103597",
+   "merchant": "GOLDEN KEY MAKER",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005715007",
+   "b": "sroie-X51005806678",
+   "merchant": "KAISON FURNISHING SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005806702",
+   "b": "sroie-X51005806703",
+   "merchant": "SINNATHAMBY HOLDINGS SDN. BHD.",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006008095",
+   "b": "sroie-X51009008095",
+   "merchant": "BOON SENG PAPER SDN BHD",
+   "idsDiffer": false,
+   "identicalFiles": true,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006311778",
+   "b": "sroie-X51006311779",
+   "merchant": "ANZEL ADVERTISING (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005621482",
+   "b": "sroie-X51006327976",
+   "merchant": "PREMIO STATIONERY SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006328937",
+   "b": "sroie-X51006329399",
+   "merchant": "OLIVE9 PHARMACY SDN BHD",
+   "idsDiffer": false,
+   "identicalFiles": true,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006350750",
+   "b": "sroie-X51006350763",
+   "merchant": "GL HANDICRAFT & TAII ORING",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006387740",
+   "b": "sroie-X51006401940",
+   "merchant": "ARTRANGE STATIONERS & PRINT SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006388082",
+   "b": "sroie-X51006392273",
+   "merchant": "BROADVIEW MARKETING SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006414599",
+   "b": "sroie-X51007846412",
+   "merchant": "LAVENDER CONFECTIONERY & BAKERY S/B",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006414677",
+   "b": "sroie-X51006828201",
+   "merchant": "THE COFFEE BEAN & TEA LEAF (M) SDN. BHD.",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006414679",
+   "b": "sroie-X51006912960",
+   "merchant": "DE MAXIMUM THAI EXPRESS SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006414600",
+   "b": "sroie-X51006414700",
+   "merchant": "AEON CO. (M) SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006554833",
+   "b": "sroie-X51006555570",
+   "merchant": "SUBANG HEALTHCARE SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": true,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005719895",
+   "b": "sroie-X51006619561",
+   "merchant": "GREEN LANE PHARMACY SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006392167",
+   "b": "sroie-X51006620187",
+   "merchant": "ANEKA INTERTRADE MARKETING SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005337877",
+   "b": "sroie-X51006647932",
+   "merchant": "UROKO JAPANESE CUISINE SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006714065",
+   "b": "sroie-X51006714066",
+   "merchant": "ANN GIAP TRADING SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006913054",
+   "b": "sroie-X51007846325",
+   "merchant": "DE LUXE CIRCLE FRESH MART SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51007419197",
+   "b": "sroie-X51008123586",
+   "merchant": "MYNEWS RETAIL SB",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51008123599",
+   "b": "sroie-X51008123604",
+   "merchant": "OGN GROUP SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X00016469670",
+   "b": "sroie-X00016469671",
+   "merchant": "OJC MARKETING SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005230648",
+   "b": "sroie-X51005230657",
+   "merchant": "CROSS CHANNEL NETWORK SDN. BHD.",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005568885",
+   "b": "sroie-X51005568892",
+   "merchant": "EVERGREEN LIGHT SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005663309",
+   "b": "sroie-X51005663323",
+   "merchant": "KOH SENG HARDWARE",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005705727",
+   "b": "sroie-X51005705784",
+   "merchant": "KEDAI BUKU NEW ACHEIVERS",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005746206",
+   "b": "sroie-X51005764154",
+   "merchant": "PANA JAYA ENTERPRISE",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51005806719",
+   "b": "sroie-X51005806720",
+   "merchant": "SATU KAMPUNG ENTERPRISE SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006502534",
+   "b": "sroie-X51006502535",
+   "merchant": "MAXINCOME RESOURCES SDN BHD",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006619869",
+   "b": "sroie-X51006620192",
+   "merchant": "MONSIEUR ( M ) SDN. BHD.",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  },
+  {
+   "a": "sroie-X51006912959",
+   "b": "sroie-X51007846403",
+   "merchant": "ROYALTEA",
+   "idsDiffer": true,
+   "identicalFiles": false,
+   "bothRun": false,
+   "swaps": []
+  }
+ ],
+ "reencodedSameId": false
+}

@@ -14,6 +14,9 @@ export interface ScoredDoc {
   // straight through, however the threshold is set.
   extracted: boolean;
   fields: ScoredField[];
+  // The pipeline decides on every field it has a calibrator for, labelled or not.
+  // When set, this is that decision score, and fields only count the errors.
+  decision?: number;
 }
 
 export interface StpPoint {
@@ -26,7 +29,8 @@ export interface StpPoint {
 }
 
 export function passes(doc: ScoredDoc, threshold: number): boolean {
-  return doc.extracted && doc.fields.every((f) => f.confidence >= threshold);
+  if (!doc.extracted) return false;
+  return doc.decision !== undefined ? doc.decision >= threshold : doc.fields.every((f) => f.confidence >= threshold);
 }
 
 export function stpAt(docs: ScoredDoc[], threshold: number): StpPoint {

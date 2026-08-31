@@ -1,0 +1,3492 @@
+{
+ "alphaForPipeline": 0.01,
+ "split": {
+  "val": 161,
+  "test": 149
+ },
+ "schemaFailuresTest": 1,
+ "curveCalibrated": [
+  {
+   "threshold": 1,
+   "passed": 0,
+   "stpRate": 0,
+   "fields": 0,
+   "fieldErrors": 0,
+   "fieldErrorRate": 0
+  },
+  {
+   "threshold": 0.995,
+   "passed": 0,
+   "stpRate": 0,
+   "fields": 0,
+   "fieldErrors": 0,
+   "fieldErrorRate": 0
+  },
+  {
+   "threshold": 0.99,
+   "passed": 0,
+   "stpRate": 0,
+   "fields": 0,
+   "fieldErrors": 0,
+   "fieldErrorRate": 0
+  },
+  {
+   "threshold": 0.985,
+   "passed": 0,
+   "stpRate": 0,
+   "fields": 0,
+   "fieldErrors": 0,
+   "fieldErrorRate": 0
+  },
+  {
+   "threshold": 0.98,
+   "passed": 0,
+   "stpRate": 0,
+   "fields": 0,
+   "fieldErrors": 0,
+   "fieldErrorRate": 0
+  },
+  {
+   "threshold": 0.975,
+   "passed": 0,
+   "stpRate": 0,
+   "fields": 0,
+   "fieldErrors": 0,
+   "fieldErrorRate": 0
+  },
+  {
+   "threshold": 0.97,
+   "passed": 0,
+   "stpRate": 0,
+   "fields": 0,
+   "fieldErrors": 0,
+   "fieldErrorRate": 0
+  },
+  {
+   "threshold": 0.965,
+   "passed": 0,
+   "stpRate": 0,
+   "fields": 0,
+   "fieldErrors": 0,
+   "fieldErrorRate": 0
+  },
+  {
+   "threshold": 0.96,
+   "passed": 0,
+   "stpRate": 0,
+   "fields": 0,
+   "fieldErrors": 0,
+   "fieldErrorRate": 0
+  },
+  {
+   "threshold": 0.955,
+   "passed": 6,
+   "stpRate": 0.0403,
+   "fields": 17,
+   "fieldErrors": 0,
+   "fieldErrorRate": 0
+  },
+  {
+   "threshold": 0.95,
+   "passed": 10,
+   "stpRate": 0.0671,
+   "fields": 29,
+   "fieldErrors": 0,
+   "fieldErrorRate": 0
+  },
+  {
+   "threshold": 0.945,
+   "passed": 11,
+   "stpRate": 0.0738,
+   "fields": 32,
+   "fieldErrors": 0,
+   "fieldErrorRate": 0
+  },
+  {
+   "threshold": 0.94,
+   "passed": 17,
+   "stpRate": 0.1141,
+   "fields": 49,
+   "fieldErrors": 1,
+   "fieldErrorRate": 0.0204
+  },
+  {
+   "threshold": 0.935,
+   "passed": 20,
+   "stpRate": 0.1342,
+   "fields": 58,
+   "fieldErrors": 2,
+   "fieldErrorRate": 0.0345
+  },
+  {
+   "threshold": 0.93,
+   "passed": 21,
+   "stpRate": 0.1409,
+   "fields": 61,
+   "fieldErrors": 2,
+   "fieldErrorRate": 0.0328
+  },
+  {
+   "threshold": 0.925,
+   "passed": 22,
+   "stpRate": 0.1477,
+   "fields": 63,
+   "fieldErrors": 2,
+   "fieldErrorRate": 0.0317
+  },
+  {
+   "threshold": 0.92,
+   "passed": 23,
+   "stpRate": 0.1544,
+   "fields": 66,
+   "fieldErrors": 3,
+   "fieldErrorRate": 0.0455
+  },
+  {
+   "threshold": 0.915,
+   "passed": 23,
+   "stpRate": 0.1544,
+   "fields": 66,
+   "fieldErrors": 3,
+   "fieldErrorRate": 0.0455
+  },
+  {
+   "threshold": 0.91,
+   "passed": 24,
+   "stpRate": 0.1611,
+   "fields": 69,
+   "fieldErrors": 3,
+   "fieldErrorRate": 0.0435
+  },
+  {
+   "threshold": 0.905,
+   "passed": 24,
+   "stpRate": 0.1611,
+   "fields": 69,
+   "fieldErrors": 3,
+   "fieldErrorRate": 0.0435
+  },
+  {
+   "threshold": 0.9,
+   "passed": 26,
+   "stpRate": 0.1745,
+   "fields": 75,
+   "fieldErrors": 3,
+   "fieldErrorRate": 0.04
+  },
+  {
+   "threshold": 0.895,
+   "passed": 26,
+   "stpRate": 0.1745,
+   "fields": 75,
+   "fieldErrors": 3,
+   "fieldErrorRate": 0.04
+  },
+  {
+   "threshold": 0.89,
+   "passed": 26,
+   "stpRate": 0.1745,
+   "fields": 75,
+   "fieldErrors": 3,
+   "fieldErrorRate": 0.04
+  },
+  {
+   "threshold": 0.885,
+   "passed": 27,
+   "stpRate": 0.1812,
+   "fields": 78,
+   "fieldErrors": 3,
+   "fieldErrorRate": 0.0385
+  },
+  {
+   "threshold": 0.88,
+   "passed": 27,
+   "stpRate": 0.1812,
+   "fields": 78,
+   "fieldErrors": 3,
+   "fieldErrorRate": 0.0385
+  },
+  {
+   "threshold": 0.875,
+   "passed": 27,
+   "stpRate": 0.1812,
+   "fields": 78,
+   "fieldErrors": 3,
+   "fieldErrorRate": 0.0385
+  },
+  {
+   "threshold": 0.87,
+   "passed": 28,
+   "stpRate": 0.1879,
+   "fields": 81,
+   "fieldErrors": 3,
+   "fieldErrorRate": 0.037
+  },
+  {
+   "threshold": 0.865,
+   "passed": 34,
+   "stpRate": 0.2282,
+   "fields": 99,
+   "fieldErrors": 4,
+   "fieldErrorRate": 0.0404
+  },
+  {
+   "threshold": 0.86,
+   "passed": 34,
+   "stpRate": 0.2282,
+   "fields": 99,
+   "fieldErrors": 4,
+   "fieldErrorRate": 0.0404
+  },
+  {
+   "threshold": 0.855,
+   "passed": 45,
+   "stpRate": 0.302,
+   "fields": 130,
+   "fieldErrors": 6,
+   "fieldErrorRate": 0.0462
+  },
+  {
+   "threshold": 0.85,
+   "passed": 47,
+   "stpRate": 0.3154,
+   "fields": 136,
+   "fieldErrors": 6,
+   "fieldErrorRate": 0.0441
+  },
+  {
+   "threshold": 0.845,
+   "passed": 48,
+   "stpRate": 0.3221,
+   "fields": 139,
+   "fieldErrors": 6,
+   "fieldErrorRate": 0.0432
+  },
+  {
+   "threshold": 0.84,
+   "passed": 50,
+   "stpRate": 0.3356,
+   "fields": 145,
+   "fieldErrors": 6,
+   "fieldErrorRate": 0.0414
+  },
+  {
+   "threshold": 0.835,
+   "passed": 50,
+   "stpRate": 0.3356,
+   "fields": 145,
+   "fieldErrors": 6,
+   "fieldErrorRate": 0.0414
+  },
+  {
+   "threshold": 0.83,
+   "passed": 52,
+   "stpRate": 0.349,
+   "fields": 151,
+   "fieldErrors": 6,
+   "fieldErrorRate": 0.0397
+  },
+  {
+   "threshold": 0.825,
+   "passed": 53,
+   "stpRate": 0.3557,
+   "fields": 153,
+   "fieldErrors": 6,
+   "fieldErrorRate": 0.0392
+  },
+  {
+   "threshold": 0.82,
+   "passed": 53,
+   "stpRate": 0.3557,
+   "fields": 153,
+   "fieldErrors": 6,
+   "fieldErrorRate": 0.0392
+  },
+  {
+   "threshold": 0.815,
+   "passed": 55,
+   "stpRate": 0.3691,
+   "fields": 159,
+   "fieldErrors": 6,
+   "fieldErrorRate": 0.0377
+  },
+  {
+   "threshold": 0.81,
+   "passed": 55,
+   "stpRate": 0.3691,
+   "fields": 159,
+   "fieldErrors": 6,
+   "fieldErrorRate": 0.0377
+  },
+  {
+   "threshold": 0.805,
+   "passed": 57,
+   "stpRate": 0.3826,
+   "fields": 165,
+   "fieldErrors": 6,
+   "fieldErrorRate": 0.0364
+  },
+  {
+   "threshold": 0.8,
+   "passed": 57,
+   "stpRate": 0.3826,
+   "fields": 165,
+   "fieldErrors": 6,
+   "fieldErrorRate": 0.0364
+  },
+  {
+   "threshold": 0.795,
+   "passed": 58,
+   "stpRate": 0.3893,
+   "fields": 168,
+   "fieldErrors": 7,
+   "fieldErrorRate": 0.0417
+  },
+  {
+   "threshold": 0.79,
+   "passed": 58,
+   "stpRate": 0.3893,
+   "fields": 168,
+   "fieldErrors": 7,
+   "fieldErrorRate": 0.0417
+  },
+  {
+   "threshold": 0.785,
+   "passed": 58,
+   "stpRate": 0.3893,
+   "fields": 168,
+   "fieldErrors": 7,
+   "fieldErrorRate": 0.0417
+  },
+  {
+   "threshold": 0.78,
+   "passed": 58,
+   "stpRate": 0.3893,
+   "fields": 168,
+   "fieldErrors": 7,
+   "fieldErrorRate": 0.0417
+  },
+  {
+   "threshold": 0.775,
+   "passed": 58,
+   "stpRate": 0.3893,
+   "fields": 168,
+   "fieldErrors": 7,
+   "fieldErrorRate": 0.0417
+  },
+  {
+   "threshold": 0.77,
+   "passed": 58,
+   "stpRate": 0.3893,
+   "fields": 168,
+   "fieldErrors": 7,
+   "fieldErrorRate": 0.0417
+  },
+  {
+   "threshold": 0.765,
+   "passed": 60,
+   "stpRate": 0.4027,
+   "fields": 174,
+   "fieldErrors": 7,
+   "fieldErrorRate": 0.0402
+  },
+  {
+   "threshold": 0.76,
+   "passed": 61,
+   "stpRate": 0.4094,
+   "fields": 177,
+   "fieldErrors": 8,
+   "fieldErrorRate": 0.0452
+  },
+  {
+   "threshold": 0.755,
+   "passed": 62,
+   "stpRate": 0.4161,
+   "fields": 180,
+   "fieldErrors": 9,
+   "fieldErrorRate": 0.05
+  },
+  {
+   "threshold": 0.75,
+   "passed": 64,
+   "stpRate": 0.4295,
+   "fields": 185,
+   "fieldErrors": 10,
+   "fieldErrorRate": 0.0541
+  },
+  {
+   "threshold": 0.745,
+   "passed": 64,
+   "stpRate": 0.4295,
+   "fields": 185,
+   "fieldErrors": 10,
+   "fieldErrorRate": 0.0541
+  },
+  {
+   "threshold": 0.74,
+   "passed": 65,
+   "stpRate": 0.4362,
+   "fields": 188,
+   "fieldErrors": 10,
+   "fieldErrorRate": 0.0532
+  },
+  {
+   "threshold": 0.735,
+   "passed": 65,
+   "stpRate": 0.4362,
+   "fields": 188,
+   "fieldErrors": 10,
+   "fieldErrorRate": 0.0532
+  },
+  {
+   "threshold": 0.73,
+   "passed": 65,
+   "stpRate": 0.4362,
+   "fields": 188,
+   "fieldErrors": 10,
+   "fieldErrorRate": 0.0532
+  },
+  {
+   "threshold": 0.725,
+   "passed": 65,
+   "stpRate": 0.4362,
+   "fields": 188,
+   "fieldErrors": 10,
+   "fieldErrorRate": 0.0532
+  },
+  {
+   "threshold": 0.72,
+   "passed": 65,
+   "stpRate": 0.4362,
+   "fields": 188,
+   "fieldErrors": 10,
+   "fieldErrorRate": 0.0532
+  },
+  {
+   "threshold": 0.715,
+   "passed": 65,
+   "stpRate": 0.4362,
+   "fields": 188,
+   "fieldErrors": 10,
+   "fieldErrorRate": 0.0532
+  },
+  {
+   "threshold": 0.71,
+   "passed": 65,
+   "stpRate": 0.4362,
+   "fields": 188,
+   "fieldErrors": 10,
+   "fieldErrorRate": 0.0532
+  },
+  {
+   "threshold": 0.705,
+   "passed": 65,
+   "stpRate": 0.4362,
+   "fields": 188,
+   "fieldErrors": 10,
+   "fieldErrorRate": 0.0532
+  },
+  {
+   "threshold": 0.7,
+   "passed": 65,
+   "stpRate": 0.4362,
+   "fields": 188,
+   "fieldErrors": 10,
+   "fieldErrorRate": 0.0532
+  },
+  {
+   "threshold": 0.695,
+   "passed": 66,
+   "stpRate": 0.443,
+   "fields": 191,
+   "fieldErrors": 10,
+   "fieldErrorRate": 0.0524
+  },
+  {
+   "threshold": 0.69,
+   "passed": 66,
+   "stpRate": 0.443,
+   "fields": 191,
+   "fieldErrors": 10,
+   "fieldErrorRate": 0.0524
+  },
+  {
+   "threshold": 0.685,
+   "passed": 66,
+   "stpRate": 0.443,
+   "fields": 191,
+   "fieldErrors": 10,
+   "fieldErrorRate": 0.0524
+  },
+  {
+   "threshold": 0.68,
+   "passed": 66,
+   "stpRate": 0.443,
+   "fields": 191,
+   "fieldErrors": 10,
+   "fieldErrorRate": 0.0524
+  },
+  {
+   "threshold": 0.675,
+   "passed": 66,
+   "stpRate": 0.443,
+   "fields": 191,
+   "fieldErrors": 10,
+   "fieldErrorRate": 0.0524
+  },
+  {
+   "threshold": 0.67,
+   "passed": 66,
+   "stpRate": 0.443,
+   "fields": 191,
+   "fieldErrors": 10,
+   "fieldErrorRate": 0.0524
+  },
+  {
+   "threshold": 0.665,
+   "passed": 66,
+   "stpRate": 0.443,
+   "fields": 191,
+   "fieldErrors": 10,
+   "fieldErrorRate": 0.0524
+  },
+  {
+   "threshold": 0.66,
+   "passed": 66,
+   "stpRate": 0.443,
+   "fields": 191,
+   "fieldErrors": 10,
+   "fieldErrorRate": 0.0524
+  },
+  {
+   "threshold": 0.655,
+   "passed": 66,
+   "stpRate": 0.443,
+   "fields": 191,
+   "fieldErrors": 10,
+   "fieldErrorRate": 0.0524
+  },
+  {
+   "threshold": 0.65,
+   "passed": 66,
+   "stpRate": 0.443,
+   "fields": 191,
+   "fieldErrors": 10,
+   "fieldErrorRate": 0.0524
+  },
+  {
+   "threshold": 0.645,
+   "passed": 67,
+   "stpRate": 0.4497,
+   "fields": 194,
+   "fieldErrors": 11,
+   "fieldErrorRate": 0.0567
+  },
+  {
+   "threshold": 0.64,
+   "passed": 67,
+   "stpRate": 0.4497,
+   "fields": 194,
+   "fieldErrors": 11,
+   "fieldErrorRate": 0.0567
+  },
+  {
+   "threshold": 0.635,
+   "passed": 68,
+   "stpRate": 0.4564,
+   "fields": 197,
+   "fieldErrors": 12,
+   "fieldErrorRate": 0.0609
+  },
+  {
+   "threshold": 0.63,
+   "passed": 68,
+   "stpRate": 0.4564,
+   "fields": 197,
+   "fieldErrors": 12,
+   "fieldErrorRate": 0.0609
+  },
+  {
+   "threshold": 0.625,
+   "passed": 68,
+   "stpRate": 0.4564,
+   "fields": 197,
+   "fieldErrors": 12,
+   "fieldErrorRate": 0.0609
+  },
+  {
+   "threshold": 0.62,
+   "passed": 68,
+   "stpRate": 0.4564,
+   "fields": 197,
+   "fieldErrors": 12,
+   "fieldErrorRate": 0.0609
+  },
+  {
+   "threshold": 0.615,
+   "passed": 69,
+   "stpRate": 0.4631,
+   "fields": 200,
+   "fieldErrors": 13,
+   "fieldErrorRate": 0.065
+  },
+  {
+   "threshold": 0.61,
+   "passed": 70,
+   "stpRate": 0.4698,
+   "fields": 203,
+   "fieldErrors": 13,
+   "fieldErrorRate": 0.064
+  },
+  {
+   "threshold": 0.605,
+   "passed": 70,
+   "stpRate": 0.4698,
+   "fields": 203,
+   "fieldErrors": 13,
+   "fieldErrorRate": 0.064
+  },
+  {
+   "threshold": 0.6,
+   "passed": 70,
+   "stpRate": 0.4698,
+   "fields": 203,
+   "fieldErrors": 13,
+   "fieldErrorRate": 0.064
+  },
+  {
+   "threshold": 0.595,
+   "passed": 70,
+   "stpRate": 0.4698,
+   "fields": 203,
+   "fieldErrors": 13,
+   "fieldErrorRate": 0.064
+  },
+  {
+   "threshold": 0.59,
+   "passed": 71,
+   "stpRate": 0.4765,
+   "fields": 207,
+   "fieldErrors": 17,
+   "fieldErrorRate": 0.0821
+  },
+  {
+   "threshold": 0.585,
+   "passed": 71,
+   "stpRate": 0.4765,
+   "fields": 207,
+   "fieldErrors": 17,
+   "fieldErrorRate": 0.0821
+  },
+  {
+   "threshold": 0.58,
+   "passed": 71,
+   "stpRate": 0.4765,
+   "fields": 207,
+   "fieldErrors": 17,
+   "fieldErrorRate": 0.0821
+  },
+  {
+   "threshold": 0.575,
+   "passed": 72,
+   "stpRate": 0.4832,
+   "fields": 210,
+   "fieldErrors": 18,
+   "fieldErrorRate": 0.0857
+  },
+  {
+   "threshold": 0.57,
+   "passed": 73,
+   "stpRate": 0.4899,
+   "fields": 213,
+   "fieldErrors": 18,
+   "fieldErrorRate": 0.0845
+  },
+  {
+   "threshold": 0.565,
+   "passed": 73,
+   "stpRate": 0.4899,
+   "fields": 213,
+   "fieldErrors": 18,
+   "fieldErrorRate": 0.0845
+  },
+  {
+   "threshold": 0.56,
+   "passed": 74,
+   "stpRate": 0.4966,
+   "fields": 217,
+   "fieldErrors": 22,
+   "fieldErrorRate": 0.1014
+  },
+  {
+   "threshold": 0.555,
+   "passed": 75,
+   "stpRate": 0.5034,
+   "fields": 221,
+   "fieldErrors": 22,
+   "fieldErrorRate": 0.0995
+  },
+  {
+   "threshold": 0.55,
+   "passed": 76,
+   "stpRate": 0.5101,
+   "fields": 225,
+   "fieldErrors": 23,
+   "fieldErrorRate": 0.1022
+  },
+  {
+   "threshold": 0.545,
+   "passed": 76,
+   "stpRate": 0.5101,
+   "fields": 225,
+   "fieldErrors": 23,
+   "fieldErrorRate": 0.1022
+  },
+  {
+   "threshold": 0.54,
+   "passed": 77,
+   "stpRate": 0.5168,
+   "fields": 228,
+   "fieldErrors": 24,
+   "fieldErrorRate": 0.1053
+  },
+  {
+   "threshold": 0.535,
+   "passed": 77,
+   "stpRate": 0.5168,
+   "fields": 228,
+   "fieldErrors": 24,
+   "fieldErrorRate": 0.1053
+  },
+  {
+   "threshold": 0.53,
+   "passed": 78,
+   "stpRate": 0.5235,
+   "fields": 232,
+   "fieldErrors": 25,
+   "fieldErrorRate": 0.1078
+  },
+  {
+   "threshold": 0.525,
+   "passed": 79,
+   "stpRate": 0.5302,
+   "fields": 235,
+   "fieldErrors": 26,
+   "fieldErrorRate": 0.1106
+  },
+  {
+   "threshold": 0.52,
+   "passed": 80,
+   "stpRate": 0.5369,
+   "fields": 239,
+   "fieldErrors": 26,
+   "fieldErrorRate": 0.1088
+  },
+  {
+   "threshold": 0.515,
+   "passed": 80,
+   "stpRate": 0.5369,
+   "fields": 239,
+   "fieldErrors": 26,
+   "fieldErrorRate": 0.1088
+  },
+  {
+   "threshold": 0.51,
+   "passed": 83,
+   "stpRate": 0.557,
+   "fields": 251,
+   "fieldErrors": 31,
+   "fieldErrorRate": 0.1235
+  },
+  {
+   "threshold": 0.505,
+   "passed": 84,
+   "stpRate": 0.5638,
+   "fields": 254,
+   "fieldErrors": 31,
+   "fieldErrorRate": 0.122
+  },
+  {
+   "threshold": 0.5,
+   "passed": 86,
+   "stpRate": 0.5772,
+   "fields": 262,
+   "fieldErrors": 35,
+   "fieldErrorRate": 0.1336
+  },
+  {
+   "threshold": 0.495,
+   "passed": 86,
+   "stpRate": 0.5772,
+   "fields": 262,
+   "fieldErrors": 35,
+   "fieldErrorRate": 0.1336
+  },
+  {
+   "threshold": 0.49,
+   "passed": 86,
+   "stpRate": 0.5772,
+   "fields": 262,
+   "fieldErrors": 35,
+   "fieldErrorRate": 0.1336
+  },
+  {
+   "threshold": 0.485,
+   "passed": 87,
+   "stpRate": 0.5839,
+   "fields": 265,
+   "fieldErrors": 35,
+   "fieldErrorRate": 0.1321
+  },
+  {
+   "threshold": 0.48,
+   "passed": 87,
+   "stpRate": 0.5839,
+   "fields": 265,
+   "fieldErrors": 35,
+   "fieldErrorRate": 0.1321
+  },
+  {
+   "threshold": 0.475,
+   "passed": 88,
+   "stpRate": 0.5906,
+   "fields": 268,
+   "fieldErrors": 35,
+   "fieldErrorRate": 0.1306
+  },
+  {
+   "threshold": 0.47,
+   "passed": 88,
+   "stpRate": 0.5906,
+   "fields": 268,
+   "fieldErrors": 35,
+   "fieldErrorRate": 0.1306
+  },
+  {
+   "threshold": 0.465,
+   "passed": 88,
+   "stpRate": 0.5906,
+   "fields": 268,
+   "fieldErrors": 35,
+   "fieldErrorRate": 0.1306
+  },
+  {
+   "threshold": 0.46,
+   "passed": 88,
+   "stpRate": 0.5906,
+   "fields": 268,
+   "fieldErrors": 35,
+   "fieldErrorRate": 0.1306
+  },
+  {
+   "threshold": 0.455,
+   "passed": 88,
+   "stpRate": 0.5906,
+   "fields": 268,
+   "fieldErrors": 35,
+   "fieldErrorRate": 0.1306
+  },
+  {
+   "threshold": 0.45,
+   "passed": 88,
+   "stpRate": 0.5906,
+   "fields": 268,
+   "fieldErrors": 35,
+   "fieldErrorRate": 0.1306
+  },
+  {
+   "threshold": 0.445,
+   "passed": 92,
+   "stpRate": 0.6174,
+   "fields": 283,
+   "fieldErrors": 45,
+   "fieldErrorRate": 0.159
+  },
+  {
+   "threshold": 0.44,
+   "passed": 92,
+   "stpRate": 0.6174,
+   "fields": 283,
+   "fieldErrors": 45,
+   "fieldErrorRate": 0.159
+  },
+  {
+   "threshold": 0.435,
+   "passed": 92,
+   "stpRate": 0.6174,
+   "fields": 283,
+   "fieldErrors": 45,
+   "fieldErrorRate": 0.159
+  },
+  {
+   "threshold": 0.43,
+   "passed": 92,
+   "stpRate": 0.6174,
+   "fields": 283,
+   "fieldErrors": 45,
+   "fieldErrorRate": 0.159
+  },
+  {
+   "threshold": 0.425,
+   "passed": 92,
+   "stpRate": 0.6174,
+   "fields": 283,
+   "fieldErrors": 45,
+   "fieldErrorRate": 0.159
+  },
+  {
+   "threshold": 0.42,
+   "passed": 93,
+   "stpRate": 0.6242,
+   "fields": 286,
+   "fieldErrors": 46,
+   "fieldErrorRate": 0.1608
+  },
+  {
+   "threshold": 0.415,
+   "passed": 94,
+   "stpRate": 0.6309,
+   "fields": 289,
+   "fieldErrors": 46,
+   "fieldErrorRate": 0.1592
+  },
+  {
+   "threshold": 0.41,
+   "passed": 95,
+   "stpRate": 0.6376,
+   "fields": 292,
+   "fieldErrors": 46,
+   "fieldErrorRate": 0.1575
+  },
+  {
+   "threshold": 0.405,
+   "passed": 95,
+   "stpRate": 0.6376,
+   "fields": 292,
+   "fieldErrors": 46,
+   "fieldErrorRate": 0.1575
+  },
+  {
+   "threshold": 0.4,
+   "passed": 95,
+   "stpRate": 0.6376,
+   "fields": 292,
+   "fieldErrors": 46,
+   "fieldErrorRate": 0.1575
+  },
+  {
+   "threshold": 0.395,
+   "passed": 96,
+   "stpRate": 0.6443,
+   "fields": 295,
+   "fieldErrors": 47,
+   "fieldErrorRate": 0.1593
+  },
+  {
+   "threshold": 0.39,
+   "passed": 96,
+   "stpRate": 0.6443,
+   "fields": 295,
+   "fieldErrors": 47,
+   "fieldErrorRate": 0.1593
+  },
+  {
+   "threshold": 0.385,
+   "passed": 98,
+   "stpRate": 0.6577,
+   "fields": 301,
+   "fieldErrors": 48,
+   "fieldErrorRate": 0.1595
+  },
+  {
+   "threshold": 0.38,
+   "passed": 98,
+   "stpRate": 0.6577,
+   "fields": 301,
+   "fieldErrors": 48,
+   "fieldErrorRate": 0.1595
+  },
+  {
+   "threshold": 0.375,
+   "passed": 99,
+   "stpRate": 0.6644,
+   "fields": 304,
+   "fieldErrors": 49,
+   "fieldErrorRate": 0.1612
+  },
+  {
+   "threshold": 0.37,
+   "passed": 100,
+   "stpRate": 0.6711,
+   "fields": 308,
+   "fieldErrors": 53,
+   "fieldErrorRate": 0.1721
+  },
+  {
+   "threshold": 0.365,
+   "passed": 100,
+   "stpRate": 0.6711,
+   "fields": 308,
+   "fieldErrors": 53,
+   "fieldErrorRate": 0.1721
+  },
+  {
+   "threshold": 0.36,
+   "passed": 101,
+   "stpRate": 0.6779,
+   "fields": 311,
+   "fieldErrors": 53,
+   "fieldErrorRate": 0.1704
+  },
+  {
+   "threshold": 0.355,
+   "passed": 101,
+   "stpRate": 0.6779,
+   "fields": 311,
+   "fieldErrors": 53,
+   "fieldErrorRate": 0.1704
+  },
+  {
+   "threshold": 0.35,
+   "passed": 101,
+   "stpRate": 0.6779,
+   "fields": 311,
+   "fieldErrors": 53,
+   "fieldErrorRate": 0.1704
+  },
+  {
+   "threshold": 0.345,
+   "passed": 102,
+   "stpRate": 0.6846,
+   "fields": 314,
+   "fieldErrors": 53,
+   "fieldErrorRate": 0.1688
+  },
+  {
+   "threshold": 0.34,
+   "passed": 104,
+   "stpRate": 0.698,
+   "fields": 320,
+   "fieldErrors": 54,
+   "fieldErrorRate": 0.1688
+  },
+  {
+   "threshold": 0.335,
+   "passed": 105,
+   "stpRate": 0.7047,
+   "fields": 323,
+   "fieldErrors": 54,
+   "fieldErrorRate": 0.1672
+  },
+  {
+   "threshold": 0.33,
+   "passed": 106,
+   "stpRate": 0.7114,
+   "fields": 326,
+   "fieldErrors": 55,
+   "fieldErrorRate": 0.1687
+  },
+  {
+   "threshold": 0.325,
+   "passed": 106,
+   "stpRate": 0.7114,
+   "fields": 326,
+   "fieldErrors": 55,
+   "fieldErrorRate": 0.1687
+  },
+  {
+   "threshold": 0.32,
+   "passed": 109,
+   "stpRate": 0.7315,
+   "fields": 335,
+   "fieldErrors": 57,
+   "fieldErrorRate": 0.1701
+  },
+  {
+   "threshold": 0.315,
+   "passed": 109,
+   "stpRate": 0.7315,
+   "fields": 335,
+   "fieldErrors": 57,
+   "fieldErrorRate": 0.1701
+  },
+  {
+   "threshold": 0.31,
+   "passed": 109,
+   "stpRate": 0.7315,
+   "fields": 335,
+   "fieldErrors": 57,
+   "fieldErrorRate": 0.1701
+  },
+  {
+   "threshold": 0.305,
+   "passed": 109,
+   "stpRate": 0.7315,
+   "fields": 335,
+   "fieldErrors": 57,
+   "fieldErrorRate": 0.1701
+  },
+  {
+   "threshold": 0.3,
+   "passed": 109,
+   "stpRate": 0.7315,
+   "fields": 335,
+   "fieldErrors": 57,
+   "fieldErrorRate": 0.1701
+  },
+  {
+   "threshold": 0.295,
+   "passed": 109,
+   "stpRate": 0.7315,
+   "fields": 335,
+   "fieldErrors": 57,
+   "fieldErrorRate": 0.1701
+  },
+  {
+   "threshold": 0.29,
+   "passed": 109,
+   "stpRate": 0.7315,
+   "fields": 335,
+   "fieldErrors": 57,
+   "fieldErrorRate": 0.1701
+  },
+  {
+   "threshold": 0.285,
+   "passed": 109,
+   "stpRate": 0.7315,
+   "fields": 335,
+   "fieldErrors": 57,
+   "fieldErrorRate": 0.1701
+  },
+  {
+   "threshold": 0.28,
+   "passed": 109,
+   "stpRate": 0.7315,
+   "fields": 335,
+   "fieldErrors": 57,
+   "fieldErrorRate": 0.1701
+  },
+  {
+   "threshold": 0.275,
+   "passed": 110,
+   "stpRate": 0.7383,
+   "fields": 338,
+   "fieldErrors": 58,
+   "fieldErrorRate": 0.1716
+  },
+  {
+   "threshold": 0.27,
+   "passed": 110,
+   "stpRate": 0.7383,
+   "fields": 338,
+   "fieldErrors": 58,
+   "fieldErrorRate": 0.1716
+  },
+  {
+   "threshold": 0.265,
+   "passed": 111,
+   "stpRate": 0.745,
+   "fields": 341,
+   "fieldErrors": 59,
+   "fieldErrorRate": 0.173
+  },
+  {
+   "threshold": 0.26,
+   "passed": 111,
+   "stpRate": 0.745,
+   "fields": 341,
+   "fieldErrors": 59,
+   "fieldErrorRate": 0.173
+  },
+  {
+   "threshold": 0.255,
+   "passed": 111,
+   "stpRate": 0.745,
+   "fields": 341,
+   "fieldErrors": 59,
+   "fieldErrorRate": 0.173
+  },
+  {
+   "threshold": 0.25,
+   "passed": 118,
+   "stpRate": 0.7919,
+   "fields": 362,
+   "fieldErrors": 65,
+   "fieldErrorRate": 0.1796
+  },
+  {
+   "threshold": 0.245,
+   "passed": 118,
+   "stpRate": 0.7919,
+   "fields": 362,
+   "fieldErrors": 65,
+   "fieldErrorRate": 0.1796
+  },
+  {
+   "threshold": 0.24,
+   "passed": 118,
+   "stpRate": 0.7919,
+   "fields": 362,
+   "fieldErrors": 65,
+   "fieldErrorRate": 0.1796
+  },
+  {
+   "threshold": 0.235,
+   "passed": 119,
+   "stpRate": 0.7987,
+   "fields": 365,
+   "fieldErrors": 65,
+   "fieldErrorRate": 0.1781
+  },
+  {
+   "threshold": 0.23,
+   "passed": 119,
+   "stpRate": 0.7987,
+   "fields": 365,
+   "fieldErrors": 65,
+   "fieldErrorRate": 0.1781
+  },
+  {
+   "threshold": 0.225,
+   "passed": 119,
+   "stpRate": 0.7987,
+   "fields": 365,
+   "fieldErrors": 65,
+   "fieldErrorRate": 0.1781
+  },
+  {
+   "threshold": 0.22,
+   "passed": 119,
+   "stpRate": 0.7987,
+   "fields": 365,
+   "fieldErrors": 65,
+   "fieldErrorRate": 0.1781
+  },
+  {
+   "threshold": 0.215,
+   "passed": 119,
+   "stpRate": 0.7987,
+   "fields": 365,
+   "fieldErrors": 65,
+   "fieldErrorRate": 0.1781
+  },
+  {
+   "threshold": 0.21,
+   "passed": 119,
+   "stpRate": 0.7987,
+   "fields": 365,
+   "fieldErrors": 65,
+   "fieldErrorRate": 0.1781
+  },
+  {
+   "threshold": 0.205,
+   "passed": 119,
+   "stpRate": 0.7987,
+   "fields": 365,
+   "fieldErrors": 65,
+   "fieldErrorRate": 0.1781
+  },
+  {
+   "threshold": 0.2,
+   "passed": 119,
+   "stpRate": 0.7987,
+   "fields": 365,
+   "fieldErrors": 65,
+   "fieldErrorRate": 0.1781
+  },
+  {
+   "threshold": 0.195,
+   "passed": 119,
+   "stpRate": 0.7987,
+   "fields": 365,
+   "fieldErrors": 65,
+   "fieldErrorRate": 0.1781
+  },
+  {
+   "threshold": 0.19,
+   "passed": 119,
+   "stpRate": 0.7987,
+   "fields": 365,
+   "fieldErrors": 65,
+   "fieldErrorRate": 0.1781
+  },
+  {
+   "threshold": 0.185,
+   "passed": 120,
+   "stpRate": 0.8054,
+   "fields": 368,
+   "fieldErrors": 66,
+   "fieldErrorRate": 0.1793
+  },
+  {
+   "threshold": 0.18,
+   "passed": 120,
+   "stpRate": 0.8054,
+   "fields": 368,
+   "fieldErrors": 66,
+   "fieldErrorRate": 0.1793
+  },
+  {
+   "threshold": 0.175,
+   "passed": 120,
+   "stpRate": 0.8054,
+   "fields": 368,
+   "fieldErrors": 66,
+   "fieldErrorRate": 0.1793
+  },
+  {
+   "threshold": 0.17,
+   "passed": 120,
+   "stpRate": 0.8054,
+   "fields": 368,
+   "fieldErrors": 66,
+   "fieldErrorRate": 0.1793
+  },
+  {
+   "threshold": 0.165,
+   "passed": 120,
+   "stpRate": 0.8054,
+   "fields": 368,
+   "fieldErrors": 66,
+   "fieldErrorRate": 0.1793
+  },
+  {
+   "threshold": 0.16,
+   "passed": 120,
+   "stpRate": 0.8054,
+   "fields": 368,
+   "fieldErrors": 66,
+   "fieldErrorRate": 0.1793
+  },
+  {
+   "threshold": 0.155,
+   "passed": 120,
+   "stpRate": 0.8054,
+   "fields": 368,
+   "fieldErrors": 66,
+   "fieldErrorRate": 0.1793
+  },
+  {
+   "threshold": 0.15,
+   "passed": 120,
+   "stpRate": 0.8054,
+   "fields": 368,
+   "fieldErrors": 66,
+   "fieldErrorRate": 0.1793
+  },
+  {
+   "threshold": 0.145,
+   "passed": 121,
+   "stpRate": 0.8121,
+   "fields": 372,
+   "fieldErrors": 66,
+   "fieldErrorRate": 0.1774
+  },
+  {
+   "threshold": 0.14,
+   "passed": 121,
+   "stpRate": 0.8121,
+   "fields": 372,
+   "fieldErrors": 66,
+   "fieldErrorRate": 0.1774
+  },
+  {
+   "threshold": 0.135,
+   "passed": 121,
+   "stpRate": 0.8121,
+   "fields": 372,
+   "fieldErrors": 66,
+   "fieldErrorRate": 0.1774
+  },
+  {
+   "threshold": 0.13,
+   "passed": 122,
+   "stpRate": 0.8188,
+   "fields": 375,
+   "fieldErrors": 67,
+   "fieldErrorRate": 0.1787
+  },
+  {
+   "threshold": 0.125,
+   "passed": 123,
+   "stpRate": 0.8255,
+   "fields": 378,
+   "fieldErrors": 68,
+   "fieldErrorRate": 0.1799
+  },
+  {
+   "threshold": 0.12,
+   "passed": 123,
+   "stpRate": 0.8255,
+   "fields": 378,
+   "fieldErrors": 68,
+   "fieldErrorRate": 0.1799
+  },
+  {
+   "threshold": 0.115,
+   "passed": 123,
+   "stpRate": 0.8255,
+   "fields": 378,
+   "fieldErrors": 68,
+   "fieldErrorRate": 0.1799
+  },
+  {
+   "threshold": 0.11,
+   "passed": 127,
+   "stpRate": 0.8523,
+   "fields": 393,
+   "fieldErrors": 75,
+   "fieldErrorRate": 0.1908
+  },
+  {
+   "threshold": 0.105,
+   "passed": 128,
+   "stpRate": 0.8591,
+   "fields": 397,
+   "fieldErrors": 76,
+   "fieldErrorRate": 0.1914
+  },
+  {
+   "threshold": 0.1,
+   "passed": 130,
+   "stpRate": 0.8725,
+   "fields": 404,
+   "fieldErrors": 81,
+   "fieldErrorRate": 0.2005
+  },
+  {
+   "threshold": 0.095,
+   "passed": 131,
+   "stpRate": 0.8792,
+   "fields": 408,
+   "fieldErrors": 85,
+   "fieldErrorRate": 0.2083
+  },
+  {
+   "threshold": 0.09,
+   "passed": 134,
+   "stpRate": 0.8993,
+   "fields": 418,
+   "fieldErrors": 90,
+   "fieldErrorRate": 0.2153
+  },
+  {
+   "threshold": 0.085,
+   "passed": 134,
+   "stpRate": 0.8993,
+   "fields": 418,
+   "fieldErrors": 90,
+   "fieldErrorRate": 0.2153
+  },
+  {
+   "threshold": 0.08,
+   "passed": 134,
+   "stpRate": 0.8993,
+   "fields": 418,
+   "fieldErrors": 90,
+   "fieldErrorRate": 0.2153
+  },
+  {
+   "threshold": 0.075,
+   "passed": 134,
+   "stpRate": 0.8993,
+   "fields": 418,
+   "fieldErrors": 90,
+   "fieldErrorRate": 0.2153
+  },
+  {
+   "threshold": 0.07,
+   "passed": 134,
+   "stpRate": 0.8993,
+   "fields": 418,
+   "fieldErrors": 90,
+   "fieldErrorRate": 0.2153
+  },
+  {
+   "threshold": 0.065,
+   "passed": 134,
+   "stpRate": 0.8993,
+   "fields": 418,
+   "fieldErrors": 90,
+   "fieldErrorRate": 0.2153
+  },
+  {
+   "threshold": 0.06,
+   "passed": 134,
+   "stpRate": 0.8993,
+   "fields": 418,
+   "fieldErrors": 90,
+   "fieldErrorRate": 0.2153
+  },
+  {
+   "threshold": 0.055,
+   "passed": 135,
+   "stpRate": 0.906,
+   "fields": 421,
+   "fieldErrors": 92,
+   "fieldErrorRate": 0.2185
+  },
+  {
+   "threshold": 0.05,
+   "passed": 135,
+   "stpRate": 0.906,
+   "fields": 421,
+   "fieldErrors": 92,
+   "fieldErrorRate": 0.2185
+  },
+  {
+   "threshold": 0.045,
+   "passed": 135,
+   "stpRate": 0.906,
+   "fields": 421,
+   "fieldErrors": 92,
+   "fieldErrorRate": 0.2185
+  },
+  {
+   "threshold": 0.04,
+   "passed": 136,
+   "stpRate": 0.9128,
+   "fields": 425,
+   "fieldErrors": 95,
+   "fieldErrorRate": 0.2235
+  },
+  {
+   "threshold": 0.035,
+   "passed": 136,
+   "stpRate": 0.9128,
+   "fields": 425,
+   "fieldErrors": 95,
+   "fieldErrorRate": 0.2235
+  },
+  {
+   "threshold": 0.03,
+   "passed": 137,
+   "stpRate": 0.9195,
+   "fields": 428,
+   "fieldErrors": 95,
+   "fieldErrorRate": 0.222
+  },
+  {
+   "threshold": 0.025,
+   "passed": 137,
+   "stpRate": 0.9195,
+   "fields": 428,
+   "fieldErrors": 95,
+   "fieldErrorRate": 0.222
+  },
+  {
+   "threshold": 0.02,
+   "passed": 137,
+   "stpRate": 0.9195,
+   "fields": 428,
+   "fieldErrors": 95,
+   "fieldErrorRate": 0.222
+  },
+  {
+   "threshold": 0.015,
+   "passed": 137,
+   "stpRate": 0.9195,
+   "fields": 428,
+   "fieldErrors": 95,
+   "fieldErrorRate": 0.222
+  },
+  {
+   "threshold": 0.01,
+   "passed": 137,
+   "stpRate": 0.9195,
+   "fields": 428,
+   "fieldErrors": 95,
+   "fieldErrorRate": 0.222
+  },
+  {
+   "threshold": 0.005,
+   "passed": 137,
+   "stpRate": 0.9195,
+   "fields": 428,
+   "fieldErrors": 95,
+   "fieldErrorRate": 0.222
+  },
+  {
+   "threshold": 0,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  }
+ ],
+ "curveVerbalized": [
+  {
+   "threshold": 1,
+   "passed": 0,
+   "stpRate": 0,
+   "fields": 0,
+   "fieldErrors": 0,
+   "fieldErrorRate": 0
+  },
+  {
+   "threshold": 0.995,
+   "passed": 0,
+   "stpRate": 0,
+   "fields": 0,
+   "fieldErrors": 0,
+   "fieldErrorRate": 0
+  },
+  {
+   "threshold": 0.99,
+   "passed": 2,
+   "stpRate": 0.0134,
+   "fields": 6,
+   "fieldErrors": 0,
+   "fieldErrorRate": 0
+  },
+  {
+   "threshold": 0.985,
+   "passed": 2,
+   "stpRate": 0.0134,
+   "fields": 6,
+   "fieldErrors": 0,
+   "fieldErrorRate": 0
+  },
+  {
+   "threshold": 0.98,
+   "passed": 33,
+   "stpRate": 0.2215,
+   "fields": 96,
+   "fieldErrors": 8,
+   "fieldErrorRate": 0.0833
+  },
+  {
+   "threshold": 0.975,
+   "passed": 33,
+   "stpRate": 0.2215,
+   "fields": 96,
+   "fieldErrors": 8,
+   "fieldErrorRate": 0.0833
+  },
+  {
+   "threshold": 0.97,
+   "passed": 39,
+   "stpRate": 0.2617,
+   "fields": 114,
+   "fieldErrors": 8,
+   "fieldErrorRate": 0.0702
+  },
+  {
+   "threshold": 0.965,
+   "passed": 39,
+   "stpRate": 0.2617,
+   "fields": 114,
+   "fieldErrors": 8,
+   "fieldErrorRate": 0.0702
+  },
+  {
+   "threshold": 0.96,
+   "passed": 40,
+   "stpRate": 0.2685,
+   "fields": 118,
+   "fieldErrors": 8,
+   "fieldErrorRate": 0.0678
+  },
+  {
+   "threshold": 0.955,
+   "passed": 40,
+   "stpRate": 0.2685,
+   "fields": 118,
+   "fieldErrors": 8,
+   "fieldErrorRate": 0.0678
+  },
+  {
+   "threshold": 0.95,
+   "passed": 115,
+   "stpRate": 0.7718,
+   "fields": 342,
+   "fieldErrors": 42,
+   "fieldErrorRate": 0.1228
+  },
+  {
+   "threshold": 0.945,
+   "passed": 115,
+   "stpRate": 0.7718,
+   "fields": 342,
+   "fieldErrors": 42,
+   "fieldErrorRate": 0.1228
+  },
+  {
+   "threshold": 0.94,
+   "passed": 116,
+   "stpRate": 0.7785,
+   "fields": 346,
+   "fieldErrors": 42,
+   "fieldErrorRate": 0.1214
+  },
+  {
+   "threshold": 0.935,
+   "passed": 116,
+   "stpRate": 0.7785,
+   "fields": 346,
+   "fieldErrors": 42,
+   "fieldErrorRate": 0.1214
+  },
+  {
+   "threshold": 0.93,
+   "passed": 116,
+   "stpRate": 0.7785,
+   "fields": 346,
+   "fieldErrors": 42,
+   "fieldErrorRate": 0.1214
+  },
+  {
+   "threshold": 0.925,
+   "passed": 116,
+   "stpRate": 0.7785,
+   "fields": 346,
+   "fieldErrors": 42,
+   "fieldErrorRate": 0.1214
+  },
+  {
+   "threshold": 0.92,
+   "passed": 116,
+   "stpRate": 0.7785,
+   "fields": 346,
+   "fieldErrors": 42,
+   "fieldErrorRate": 0.1214
+  },
+  {
+   "threshold": 0.915,
+   "passed": 116,
+   "stpRate": 0.7785,
+   "fields": 346,
+   "fieldErrors": 42,
+   "fieldErrorRate": 0.1214
+  },
+  {
+   "threshold": 0.91,
+   "passed": 116,
+   "stpRate": 0.7785,
+   "fields": 346,
+   "fieldErrors": 42,
+   "fieldErrorRate": 0.1214
+  },
+  {
+   "threshold": 0.905,
+   "passed": 116,
+   "stpRate": 0.7785,
+   "fields": 346,
+   "fieldErrors": 42,
+   "fieldErrorRate": 0.1214
+  },
+  {
+   "threshold": 0.9,
+   "passed": 126,
+   "stpRate": 0.8456,
+   "fields": 385,
+   "fieldErrors": 69,
+   "fieldErrorRate": 0.1792
+  },
+  {
+   "threshold": 0.895,
+   "passed": 126,
+   "stpRate": 0.8456,
+   "fields": 385,
+   "fieldErrors": 69,
+   "fieldErrorRate": 0.1792
+  },
+  {
+   "threshold": 0.89,
+   "passed": 126,
+   "stpRate": 0.8456,
+   "fields": 385,
+   "fieldErrors": 69,
+   "fieldErrorRate": 0.1792
+  },
+  {
+   "threshold": 0.885,
+   "passed": 126,
+   "stpRate": 0.8456,
+   "fields": 385,
+   "fieldErrors": 69,
+   "fieldErrorRate": 0.1792
+  },
+  {
+   "threshold": 0.88,
+   "passed": 126,
+   "stpRate": 0.8456,
+   "fields": 385,
+   "fieldErrors": 69,
+   "fieldErrorRate": 0.1792
+  },
+  {
+   "threshold": 0.875,
+   "passed": 126,
+   "stpRate": 0.8456,
+   "fields": 385,
+   "fieldErrors": 69,
+   "fieldErrorRate": 0.1792
+  },
+  {
+   "threshold": 0.87,
+   "passed": 126,
+   "stpRate": 0.8456,
+   "fields": 385,
+   "fieldErrors": 69,
+   "fieldErrorRate": 0.1792
+  },
+  {
+   "threshold": 0.865,
+   "passed": 126,
+   "stpRate": 0.8456,
+   "fields": 385,
+   "fieldErrors": 69,
+   "fieldErrorRate": 0.1792
+  },
+  {
+   "threshold": 0.86,
+   "passed": 126,
+   "stpRate": 0.8456,
+   "fields": 385,
+   "fieldErrors": 69,
+   "fieldErrorRate": 0.1792
+  },
+  {
+   "threshold": 0.855,
+   "passed": 126,
+   "stpRate": 0.8456,
+   "fields": 385,
+   "fieldErrors": 69,
+   "fieldErrorRate": 0.1792
+  },
+  {
+   "threshold": 0.85,
+   "passed": 126,
+   "stpRate": 0.8456,
+   "fields": 385,
+   "fieldErrors": 69,
+   "fieldErrorRate": 0.1792
+  },
+  {
+   "threshold": 0.845,
+   "passed": 126,
+   "stpRate": 0.8456,
+   "fields": 385,
+   "fieldErrors": 69,
+   "fieldErrorRate": 0.1792
+  },
+  {
+   "threshold": 0.84,
+   "passed": 126,
+   "stpRate": 0.8456,
+   "fields": 385,
+   "fieldErrors": 69,
+   "fieldErrorRate": 0.1792
+  },
+  {
+   "threshold": 0.835,
+   "passed": 126,
+   "stpRate": 0.8456,
+   "fields": 385,
+   "fieldErrors": 69,
+   "fieldErrorRate": 0.1792
+  },
+  {
+   "threshold": 0.83,
+   "passed": 126,
+   "stpRate": 0.8456,
+   "fields": 385,
+   "fieldErrors": 69,
+   "fieldErrorRate": 0.1792
+  },
+  {
+   "threshold": 0.825,
+   "passed": 126,
+   "stpRate": 0.8456,
+   "fields": 385,
+   "fieldErrors": 69,
+   "fieldErrorRate": 0.1792
+  },
+  {
+   "threshold": 0.82,
+   "passed": 126,
+   "stpRate": 0.8456,
+   "fields": 385,
+   "fieldErrors": 69,
+   "fieldErrorRate": 0.1792
+  },
+  {
+   "threshold": 0.815,
+   "passed": 126,
+   "stpRate": 0.8456,
+   "fields": 385,
+   "fieldErrors": 69,
+   "fieldErrorRate": 0.1792
+  },
+  {
+   "threshold": 0.81,
+   "passed": 126,
+   "stpRate": 0.8456,
+   "fields": 385,
+   "fieldErrors": 69,
+   "fieldErrorRate": 0.1792
+  },
+  {
+   "threshold": 0.805,
+   "passed": 126,
+   "stpRate": 0.8456,
+   "fields": 385,
+   "fieldErrors": 69,
+   "fieldErrorRate": 0.1792
+  },
+  {
+   "threshold": 0.8,
+   "passed": 139,
+   "stpRate": 0.9329,
+   "fields": 435,
+   "fieldErrors": 102,
+   "fieldErrorRate": 0.2345
+  },
+  {
+   "threshold": 0.795,
+   "passed": 139,
+   "stpRate": 0.9329,
+   "fields": 435,
+   "fieldErrors": 102,
+   "fieldErrorRate": 0.2345
+  },
+  {
+   "threshold": 0.79,
+   "passed": 139,
+   "stpRate": 0.9329,
+   "fields": 435,
+   "fieldErrors": 102,
+   "fieldErrorRate": 0.2345
+  },
+  {
+   "threshold": 0.785,
+   "passed": 139,
+   "stpRate": 0.9329,
+   "fields": 435,
+   "fieldErrors": 102,
+   "fieldErrorRate": 0.2345
+  },
+  {
+   "threshold": 0.78,
+   "passed": 139,
+   "stpRate": 0.9329,
+   "fields": 435,
+   "fieldErrors": 102,
+   "fieldErrorRate": 0.2345
+  },
+  {
+   "threshold": 0.775,
+   "passed": 139,
+   "stpRate": 0.9329,
+   "fields": 435,
+   "fieldErrors": 102,
+   "fieldErrorRate": 0.2345
+  },
+  {
+   "threshold": 0.77,
+   "passed": 139,
+   "stpRate": 0.9329,
+   "fields": 435,
+   "fieldErrors": 102,
+   "fieldErrorRate": 0.2345
+  },
+  {
+   "threshold": 0.765,
+   "passed": 139,
+   "stpRate": 0.9329,
+   "fields": 435,
+   "fieldErrors": 102,
+   "fieldErrorRate": 0.2345
+  },
+  {
+   "threshold": 0.76,
+   "passed": 139,
+   "stpRate": 0.9329,
+   "fields": 435,
+   "fieldErrors": 102,
+   "fieldErrorRate": 0.2345
+  },
+  {
+   "threshold": 0.755,
+   "passed": 139,
+   "stpRate": 0.9329,
+   "fields": 435,
+   "fieldErrors": 102,
+   "fieldErrorRate": 0.2345
+  },
+  {
+   "threshold": 0.75,
+   "passed": 139,
+   "stpRate": 0.9329,
+   "fields": 435,
+   "fieldErrors": 102,
+   "fieldErrorRate": 0.2345
+  },
+  {
+   "threshold": 0.745,
+   "passed": 139,
+   "stpRate": 0.9329,
+   "fields": 435,
+   "fieldErrors": 102,
+   "fieldErrorRate": 0.2345
+  },
+  {
+   "threshold": 0.74,
+   "passed": 139,
+   "stpRate": 0.9329,
+   "fields": 435,
+   "fieldErrors": 102,
+   "fieldErrorRate": 0.2345
+  },
+  {
+   "threshold": 0.735,
+   "passed": 139,
+   "stpRate": 0.9329,
+   "fields": 435,
+   "fieldErrors": 102,
+   "fieldErrorRate": 0.2345
+  },
+  {
+   "threshold": 0.73,
+   "passed": 139,
+   "stpRate": 0.9329,
+   "fields": 435,
+   "fieldErrors": 102,
+   "fieldErrorRate": 0.2345
+  },
+  {
+   "threshold": 0.725,
+   "passed": 139,
+   "stpRate": 0.9329,
+   "fields": 435,
+   "fieldErrors": 102,
+   "fieldErrorRate": 0.2345
+  },
+  {
+   "threshold": 0.72,
+   "passed": 139,
+   "stpRate": 0.9329,
+   "fields": 435,
+   "fieldErrors": 102,
+   "fieldErrorRate": 0.2345
+  },
+  {
+   "threshold": 0.715,
+   "passed": 139,
+   "stpRate": 0.9329,
+   "fields": 435,
+   "fieldErrors": 102,
+   "fieldErrorRate": 0.2345
+  },
+  {
+   "threshold": 0.71,
+   "passed": 139,
+   "stpRate": 0.9329,
+   "fields": 435,
+   "fieldErrors": 102,
+   "fieldErrorRate": 0.2345
+  },
+  {
+   "threshold": 0.705,
+   "passed": 139,
+   "stpRate": 0.9329,
+   "fields": 435,
+   "fieldErrors": 102,
+   "fieldErrorRate": 0.2345
+  },
+  {
+   "threshold": 0.7,
+   "passed": 146,
+   "stpRate": 0.9799,
+   "fields": 463,
+   "fieldErrors": 115,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.695,
+   "passed": 146,
+   "stpRate": 0.9799,
+   "fields": 463,
+   "fieldErrors": 115,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.69,
+   "passed": 146,
+   "stpRate": 0.9799,
+   "fields": 463,
+   "fieldErrors": 115,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.685,
+   "passed": 146,
+   "stpRate": 0.9799,
+   "fields": 463,
+   "fieldErrors": 115,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.68,
+   "passed": 146,
+   "stpRate": 0.9799,
+   "fields": 463,
+   "fieldErrors": 115,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.675,
+   "passed": 146,
+   "stpRate": 0.9799,
+   "fields": 463,
+   "fieldErrors": 115,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.67,
+   "passed": 146,
+   "stpRate": 0.9799,
+   "fields": 463,
+   "fieldErrors": 115,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.665,
+   "passed": 146,
+   "stpRate": 0.9799,
+   "fields": 463,
+   "fieldErrors": 115,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.66,
+   "passed": 146,
+   "stpRate": 0.9799,
+   "fields": 463,
+   "fieldErrors": 115,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.655,
+   "passed": 146,
+   "stpRate": 0.9799,
+   "fields": 463,
+   "fieldErrors": 115,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.65,
+   "passed": 146,
+   "stpRate": 0.9799,
+   "fields": 463,
+   "fieldErrors": 115,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.645,
+   "passed": 146,
+   "stpRate": 0.9799,
+   "fields": 463,
+   "fieldErrors": 115,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.64,
+   "passed": 146,
+   "stpRate": 0.9799,
+   "fields": 463,
+   "fieldErrors": 115,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.635,
+   "passed": 146,
+   "stpRate": 0.9799,
+   "fields": 463,
+   "fieldErrors": 115,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.63,
+   "passed": 146,
+   "stpRate": 0.9799,
+   "fields": 463,
+   "fieldErrors": 115,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.625,
+   "passed": 146,
+   "stpRate": 0.9799,
+   "fields": 463,
+   "fieldErrors": 115,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.62,
+   "passed": 146,
+   "stpRate": 0.9799,
+   "fields": 463,
+   "fieldErrors": 115,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.615,
+   "passed": 146,
+   "stpRate": 0.9799,
+   "fields": 463,
+   "fieldErrors": 115,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.61,
+   "passed": 146,
+   "stpRate": 0.9799,
+   "fields": 463,
+   "fieldErrors": 115,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.605,
+   "passed": 146,
+   "stpRate": 0.9799,
+   "fields": 463,
+   "fieldErrors": 115,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.6,
+   "passed": 147,
+   "stpRate": 0.9866,
+   "fields": 467,
+   "fieldErrors": 116,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.595,
+   "passed": 147,
+   "stpRate": 0.9866,
+   "fields": 467,
+   "fieldErrors": 116,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.59,
+   "passed": 147,
+   "stpRate": 0.9866,
+   "fields": 467,
+   "fieldErrors": 116,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.585,
+   "passed": 147,
+   "stpRate": 0.9866,
+   "fields": 467,
+   "fieldErrors": 116,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.58,
+   "passed": 147,
+   "stpRate": 0.9866,
+   "fields": 467,
+   "fieldErrors": 116,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.575,
+   "passed": 147,
+   "stpRate": 0.9866,
+   "fields": 467,
+   "fieldErrors": 116,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.57,
+   "passed": 147,
+   "stpRate": 0.9866,
+   "fields": 467,
+   "fieldErrors": 116,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.565,
+   "passed": 147,
+   "stpRate": 0.9866,
+   "fields": 467,
+   "fieldErrors": 116,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.56,
+   "passed": 147,
+   "stpRate": 0.9866,
+   "fields": 467,
+   "fieldErrors": 116,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.555,
+   "passed": 147,
+   "stpRate": 0.9866,
+   "fields": 467,
+   "fieldErrors": 116,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.55,
+   "passed": 147,
+   "stpRate": 0.9866,
+   "fields": 467,
+   "fieldErrors": 116,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.545,
+   "passed": 147,
+   "stpRate": 0.9866,
+   "fields": 467,
+   "fieldErrors": 116,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.54,
+   "passed": 147,
+   "stpRate": 0.9866,
+   "fields": 467,
+   "fieldErrors": 116,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.535,
+   "passed": 147,
+   "stpRate": 0.9866,
+   "fields": 467,
+   "fieldErrors": 116,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.53,
+   "passed": 147,
+   "stpRate": 0.9866,
+   "fields": 467,
+   "fieldErrors": 116,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.525,
+   "passed": 147,
+   "stpRate": 0.9866,
+   "fields": 467,
+   "fieldErrors": 116,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.52,
+   "passed": 147,
+   "stpRate": 0.9866,
+   "fields": 467,
+   "fieldErrors": 116,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.515,
+   "passed": 147,
+   "stpRate": 0.9866,
+   "fields": 467,
+   "fieldErrors": 116,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.51,
+   "passed": 147,
+   "stpRate": 0.9866,
+   "fields": 467,
+   "fieldErrors": 116,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.505,
+   "passed": 147,
+   "stpRate": 0.9866,
+   "fields": 467,
+   "fieldErrors": 116,
+   "fieldErrorRate": 0.2484
+  },
+  {
+   "threshold": 0.5,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.495,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.49,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.485,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.48,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.475,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.47,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.465,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.46,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.455,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.45,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.445,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.44,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.435,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.43,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.425,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.42,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.415,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.41,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.405,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.4,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.395,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.39,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.385,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.38,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.375,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.37,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.365,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.36,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.355,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.35,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.345,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.34,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.335,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.33,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.325,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.32,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.315,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.31,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.305,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.3,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.295,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.29,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.285,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.28,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.275,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.27,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.265,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.26,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.255,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.25,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.245,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.24,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.235,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.23,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.225,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.22,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.215,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.21,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.205,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.2,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.195,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.19,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.185,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.18,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.175,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.17,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.165,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.16,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.155,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.15,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.145,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.14,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.135,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.13,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.125,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.12,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.115,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.11,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.105,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.1,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.095,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.09,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.085,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.08,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.075,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.07,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.065,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.06,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.055,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.05,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.045,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.04,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.035,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.03,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.025,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.02,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.015,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.01,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0.005,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  },
+  {
+   "threshold": 0,
+   "passed": 148,
+   "stpRate": 0.9933,
+   "fields": 471,
+   "fieldErrors": 118,
+   "fieldErrorRate": 0.2505
+  }
+ ],
+ "operating": [
+  {
+   "alpha": 0.01,
+   "threshold": 0.945,
+   "test": {
+    "threshold": 0.945,
+    "passed": 11,
+    "stpRate": 0.0738,
+    "fields": 32,
+    "fieldErrors": 0,
+    "fieldErrorRate": 0
+   },
+   "bySource": {
+    "sroie": {
+     "threshold": 0.945,
+     "passed": 11,
+     "stpRate": 0.0982,
+     "fields": 32,
+     "fieldErrors": 0,
+     "fieldErrorRate": 0
+    },
+    "cord": {
+     "threshold": 0.945,
+     "passed": 0,
+     "stpRate": 0,
+     "fields": 0,
+     "fieldErrors": 0,
+     "fieldErrorRate": 0
+    }
+   },
+   "verbalizedBaseline": {
+    "threshold": null,
+    "test": null
+   }
+  },
+  {
+   "alpha": 0.05,
+   "threshold": 0.88,
+   "test": {
+    "threshold": 0.88,
+    "passed": 27,
+    "stpRate": 0.1812,
+    "fields": 78,
+    "fieldErrors": 3,
+    "fieldErrorRate": 0.0385
+   },
+   "bySource": {
+    "sroie": {
+     "threshold": 0.88,
+     "passed": 26,
+     "stpRate": 0.2321,
+     "fields": 75,
+     "fieldErrors": 3,
+     "fieldErrorRate": 0.04
+    },
+    "cord": {
+     "threshold": 0.88,
+     "passed": 1,
+     "stpRate": 0.027,
+     "fields": 3,
+     "fieldErrors": 0,
+     "fieldErrorRate": 0
+    }
+   },
+   "verbalizedBaseline": {
+    "threshold": null,
+    "test": null
+   }
+  },
+  {
+   "alpha": 0.1,
+   "threshold": 0.615,
+   "test": {
+    "threshold": 0.615,
+    "passed": 69,
+    "stpRate": 0.4631,
+    "fields": 200,
+    "fieldErrors": 13,
+    "fieldErrorRate": 0.065
+   },
+   "bySource": {
+    "sroie": {
+     "threshold": 0.615,
+     "passed": 68,
+     "stpRate": 0.6071,
+     "fields": 197,
+     "fieldErrors": 13,
+     "fieldErrorRate": 0.066
+    },
+    "cord": {
+     "threshold": 0.615,
+     "passed": 1,
+     "stpRate": 0.027,
+     "fields": 3,
+     "fieldErrors": 0,
+     "fieldErrorRate": 0
+    }
+   },
+   "verbalizedBaseline": {
+    "threshold": null,
+    "test": null
+   }
+  }
+ ],
+ "pooled": [
+  {
+   "alpha": 0.01,
+   "threshold": null,
+   "test": null
+  },
+  {
+   "alpha": 0.05,
+   "threshold": null,
+   "test": null
+  },
+  {
+   "alpha": 0.1,
+   "threshold": null,
+   "test": null
+  }
+ ],
+ "ladder": [
+  {
+   "alpha": 0.01,
+   "delta": 0.1,
+   "rungs": [
+    {
+     "name": "in-sample",
+     "guarantee": "none: threshold chosen on the same receipts it is scored on",
+     "threshold": 0.945,
+     "testCoverage": 0.0738,
+     "testRisk": 0,
+     "holdsOnTest": true,
+     "certified": true,
+     "note": "optimistic by construction, shown for contrast"
+    },
+    {
+     "name": "fit-val split",
+     "guarantee": "expected selective risk at most alpha, on average over splits, not a certificate",
+     "threshold": 0.945,
+     "testCoverage": 0.0738,
+     "testRisk": 0,
+     "holdsOnTest": true,
+     "certified": true
+    },
+    {
+     "name": "LTT field-iid",
+     "guarantee": "field error at most alpha with probability 0.9, if fields were independent",
+     "testCoverage": 0,
+     "certified": false,
+     "note": "no threshold meets the bound, coverage is zero"
+    },
+    {
+     "name": "LTT cluster-corrected",
+     "guarantee": "as above, sample size shrunk by the measured design effect",
+     "testCoverage": 0,
+     "certified": false,
+     "note": "no threshold meets the bound, coverage is zero"
+    },
+    {
+     "name": "LTT doc-iid",
+     "guarantee": "share of passed receipts with any wrong field at most alpha, with probability 0.9",
+     "testCoverage": 0,
+     "certified": false,
+     "note": "no threshold meets the bound, coverage is zero"
+    }
+   ],
+   "reached": "fit-val split"
+  },
+  {
+   "alpha": 0.05,
+   "delta": 0.1,
+   "rungs": [
+    {
+     "name": "in-sample",
+     "guarantee": "none: threshold chosen on the same receipts it is scored on",
+     "threshold": 0.755,
+     "testCoverage": 0.4161,
+     "testRisk": 0.05,
+     "holdsOnTest": true,
+     "certified": true,
+     "note": "optimistic by construction, shown for contrast"
+    },
+    {
+     "name": "fit-val split",
+     "guarantee": "expected selective risk at most alpha, on average over splits, not a certificate",
+     "threshold": 0.88,
+     "testCoverage": 0.1812,
+     "testRisk": 0.0385,
+     "holdsOnTest": true,
+     "certified": true
+    },
+    {
+     "name": "LTT field-iid",
+     "guarantee": "field error at most alpha with probability 0.9, if fields were independent",
+     "testCoverage": 0,
+     "certified": false,
+     "note": "no threshold meets the bound, coverage is zero"
+    },
+    {
+     "name": "LTT cluster-corrected",
+     "guarantee": "as above, sample size shrunk by the measured design effect",
+     "testCoverage": 0,
+     "certified": false,
+     "note": "no threshold meets the bound, coverage is zero"
+    },
+    {
+     "name": "LTT doc-iid",
+     "guarantee": "share of passed receipts with any wrong field at most alpha, with probability 0.9",
+     "testCoverage": 0,
+     "certified": false,
+     "note": "no threshold meets the bound, coverage is zero"
+    }
+   ],
+   "reached": "fit-val split"
+  },
+  {
+   "alpha": 0.1,
+   "delta": 0.1,
+   "rungs": [
+    {
+     "name": "in-sample",
+     "guarantee": "none: threshold chosen on the same receipts it is scored on",
+     "threshold": 0.565,
+     "testCoverage": 0.4899,
+     "testRisk": 0.0845,
+     "holdsOnTest": true,
+     "certified": true,
+     "note": "optimistic by construction, shown for contrast"
+    },
+    {
+     "name": "fit-val split",
+     "guarantee": "expected selective risk at most alpha, on average over splits, not a certificate",
+     "threshold": 0.615,
+     "testCoverage": 0.4631,
+     "testRisk": 0.065,
+     "holdsOnTest": true,
+     "certified": true
+    },
+    {
+     "name": "LTT field-iid",
+     "guarantee": "field error at most alpha with probability 0.9, if fields were independent",
+     "testCoverage": 0,
+     "certified": false,
+     "note": "no threshold meets the bound, coverage is zero"
+    },
+    {
+     "name": "LTT cluster-corrected",
+     "guarantee": "as above, sample size shrunk by the measured design effect",
+     "testCoverage": 0,
+     "certified": false,
+     "note": "no threshold meets the bound, coverage is zero"
+    },
+    {
+     "name": "LTT doc-iid",
+     "guarantee": "share of passed receipts with any wrong field at most alpha, with probability 0.9",
+     "testCoverage": 0,
+     "certified": false,
+     "note": "no threshold meets the bound, coverage is zero"
+    }
+   ],
+   "reached": "fit-val split"
+  }
+ ]
+}

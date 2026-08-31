@@ -1,0 +1,368 @@
+{
+ "subsetSize": 4,
+ "threshold": 0.945,
+ "variants": [
+  {
+   "variant": "clean",
+   "n": 1,
+   "schemaFailures": 0,
+   "fieldAccuracy": 0.6667,
+   "perField": {
+    "merchant": 1,
+    "date": 0,
+    "total": 1,
+    "subtotal": null,
+    "tax": null,
+    "lineItems": null
+   },
+   "stp": {
+    "threshold": 0.945,
+    "passed": 0,
+    "stpRate": 0,
+    "fields": 0,
+    "fieldErrors": 0,
+    "fieldErrorRate": 0
+   }
+  },
+  {
+   "variant": "blur-1",
+   "n": 4,
+   "schemaFailures": 0,
+   "fieldAccuracy": 0.6429,
+   "perField": {
+    "merchant": 0.5,
+    "date": 0,
+    "total": 1,
+    "subtotal": 1,
+    "tax": 0,
+    "lineItems": 1
+   },
+   "stp": {
+    "threshold": 0.945,
+    "passed": 0,
+    "stpRate": 0,
+    "fields": 0,
+    "fieldErrors": 0,
+    "fieldErrorRate": 0
+   }
+  },
+  {
+   "variant": "blur-2",
+   "n": 4,
+   "schemaFailures": 0,
+   "fieldAccuracy": 0.7143,
+   "perField": {
+    "merchant": 0.5,
+    "date": 1,
+    "total": 1,
+    "subtotal": 1,
+    "tax": 0,
+    "lineItems": 0.5
+   },
+   "stp": {
+    "threshold": 0.945,
+    "passed": 0,
+    "stpRate": 0,
+    "fields": 0,
+    "fieldErrors": 0,
+    "fieldErrorRate": 0
+   }
+  },
+  {
+   "variant": "blur-3",
+   "n": 4,
+   "schemaFailures": 0,
+   "fieldAccuracy": 0.0714,
+   "perField": {
+    "merchant": 0,
+    "date": 0,
+    "total": 0.25,
+    "subtotal": 0,
+    "tax": 0,
+    "lineItems": 0
+   },
+   "stp": {
+    "threshold": 0.945,
+    "passed": 0,
+    "stpRate": 0,
+    "fields": 0,
+    "fieldErrors": 0,
+    "fieldErrorRate": 0
+   }
+  },
+  {
+   "variant": "rotate-1",
+   "n": 4,
+   "schemaFailures": 0,
+   "fieldAccuracy": 0.8571,
+   "perField": {
+    "merchant": 0.5,
+    "date": 1,
+    "total": 1,
+    "subtotal": 1,
+    "tax": 0.5,
+    "lineItems": 1
+   },
+   "stp": {
+    "threshold": 0.945,
+    "passed": 0,
+    "stpRate": 0,
+    "fields": 0,
+    "fieldErrors": 0,
+    "fieldErrorRate": 0
+   }
+  },
+  {
+   "variant": "rotate-2",
+   "n": 4,
+   "schemaFailures": 0,
+   "fieldAccuracy": 0.8571,
+   "perField": {
+    "merchant": 1,
+    "date": 1,
+    "total": 1,
+    "subtotal": 1,
+    "tax": 0,
+    "lineItems": 1
+   },
+   "stp": {
+    "threshold": 0.945,
+    "passed": 0,
+    "stpRate": 0,
+    "fields": 0,
+    "fieldErrors": 0,
+    "fieldErrorRate": 0
+   }
+  },
+  {
+   "variant": "rotate-3",
+   "n": 4,
+   "schemaFailures": 0,
+   "fieldAccuracy": 0.7857,
+   "perField": {
+    "merchant": 1,
+    "date": 1,
+    "total": 1,
+    "subtotal": 1,
+    "tax": 0,
+    "lineItems": 0.5
+   },
+   "stp": {
+    "threshold": 0.945,
+    "passed": 0,
+    "stpRate": 0,
+    "fields": 0,
+    "fieldErrors": 0,
+    "fieldErrorRate": 0
+   }
+  },
+  {
+   "variant": "crop-1",
+   "n": 4,
+   "schemaFailures": 0,
+   "fieldAccuracy": 0.7857,
+   "perField": {
+    "merchant": 0.5,
+    "date": 1,
+    "total": 1,
+    "subtotal": 1,
+    "tax": 0,
+    "lineItems": 1
+   },
+   "stp": {
+    "threshold": 0.945,
+    "passed": 0,
+    "stpRate": 0,
+    "fields": 0,
+    "fieldErrors": 0,
+    "fieldErrorRate": 0
+   }
+  },
+  {
+   "variant": "crop-2",
+   "n": 4,
+   "schemaFailures": 0,
+   "fieldAccuracy": 0.8571,
+   "perField": {
+    "merchant": 1,
+    "date": 1,
+    "total": 1,
+    "subtotal": 1,
+    "tax": 0,
+    "lineItems": 1
+   },
+   "stp": {
+    "threshold": 0.945,
+    "passed": 0,
+    "stpRate": 0,
+    "fields": 0,
+    "fieldErrors": 0,
+    "fieldErrorRate": 0
+   }
+  },
+  {
+   "variant": "crop-3",
+   "n": 4,
+   "schemaFailures": 0,
+   "fieldAccuracy": 0.8571,
+   "perField": {
+    "merchant": 1,
+    "date": 1,
+    "total": 1,
+    "subtotal": 1,
+    "tax": 0,
+    "lineItems": 1
+   },
+   "stp": {
+    "threshold": 0.945,
+    "passed": 0,
+    "stpRate": 0,
+    "fields": 0,
+    "fieldErrors": 0,
+    "fieldErrorRate": 0
+   }
+  },
+  {
+   "variant": "dark-1",
+   "n": 4,
+   "schemaFailures": 0,
+   "fieldAccuracy": 0.8571,
+   "perField": {
+    "merchant": 1,
+    "date": 1,
+    "total": 1,
+    "subtotal": 1,
+    "tax": 0,
+    "lineItems": 1
+   },
+   "stp": {
+    "threshold": 0.945,
+    "passed": 0,
+    "stpRate": 0,
+    "fields": 0,
+    "fieldErrors": 0,
+    "fieldErrorRate": 0
+   }
+  },
+  {
+   "variant": "dark-2",
+   "n": 4,
+   "schemaFailures": 0,
+   "fieldAccuracy": 0.8571,
+   "perField": {
+    "merchant": 1,
+    "date": 1,
+    "total": 1,
+    "subtotal": 1,
+    "tax": 0,
+    "lineItems": 1
+   },
+   "stp": {
+    "threshold": 0.945,
+    "passed": 0,
+    "stpRate": 0,
+    "fields": 0,
+    "fieldErrors": 0,
+    "fieldErrorRate": 0
+   }
+  },
+  {
+   "variant": "dark-3",
+   "n": 4,
+   "schemaFailures": 0,
+   "fieldAccuracy": 0.7857,
+   "perField": {
+    "merchant": 1,
+    "date": 0.5,
+    "total": 1,
+    "subtotal": 1,
+    "tax": 0,
+    "lineItems": 1
+   },
+   "stp": {
+    "threshold": 0.945,
+    "passed": 0,
+    "stpRate": 0,
+    "fields": 0,
+    "fieldErrors": 0,
+    "fieldErrorRate": 0
+   }
+  },
+  {
+   "variant": "jpeg-1",
+   "n": 4,
+   "schemaFailures": 0,
+   "fieldAccuracy": 0.7857,
+   "perField": {
+    "merchant": 0.5,
+    "date": 1,
+    "total": 1,
+    "subtotal": 1,
+    "tax": 0,
+    "lineItems": 1
+   },
+   "stp": {
+    "threshold": 0.945,
+    "passed": 0,
+    "stpRate": 0,
+    "fields": 0,
+    "fieldErrors": 0,
+    "fieldErrorRate": 0
+   }
+  },
+  {
+   "variant": "jpeg-2",
+   "n": 4,
+   "schemaFailures": 0,
+   "fieldAccuracy": 0.6429,
+   "perField": {
+    "merchant": 0.5,
+    "date": 0.5,
+    "total": 1,
+    "subtotal": 1,
+    "tax": 0,
+    "lineItems": 0.5
+   },
+   "stp": {
+    "threshold": 0.945,
+    "passed": 0,
+    "stpRate": 0,
+    "fields": 0,
+    "fieldErrors": 0,
+    "fieldErrorRate": 0
+   }
+  },
+  {
+   "variant": "jpeg-3",
+   "n": 4,
+   "schemaFailures": 0,
+   "fieldAccuracy": 0.6429,
+   "perField": {
+    "merchant": 0,
+    "date": 1,
+    "total": 1,
+    "subtotal": 1,
+    "tax": 0,
+    "lineItems": 0.5
+   },
+   "stp": {
+    "threshold": 0.945,
+    "passed": 0,
+    "stpRate": 0,
+    "fields": 0,
+    "fieldErrors": 0,
+    "fieldErrorRate": 0
+   }
+  }
+ ],
+ "homogeneity": {
+  "pairs": 371,
+  "identicalFilePairs": 6,
+  "idsDistinct": 365,
+  "distinctFilesSharingId": 0,
+  "pairsCheckedForSwaps": 85,
+  "pairsWithSwaps": 0,
+  "swaps": [],
+  "reencodedSamePaperGetsSameId": false
+ }
+}

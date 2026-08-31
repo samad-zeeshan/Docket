@@ -1,0 +1,86 @@
+{
+ "smallModel": "qwen/qwen3.5-9b (Q6_K, LM Studio)",
+ "router": {
+  "testN": 149,
+  "smallSufficesRate": 0.5503,
+  "accuracy": 0.6443,
+  "auroc": 0.6898,
+  "threshold": 0.64,
+  "routedSmallShare": 0.4362,
+  "fieldErrorRoutedSmall": 0.1,
+  "fieldErrorRoutedLarge": 0.3592,
+  "escalatedOnGateFailure": 0
+ },
+ "cost": {
+  "note": "Claude cost on photos is an estimate from Anthropic image token rule and v1 recorded averages. The small model has no API cost; its token counts are measured.",
+  "claudeEstimatePer1k": 2.3175,
+  "routedEstimatePer1k": 1.3065,
+  "smallApiPer1k": 0,
+  "smallAvgInputTokens": 1180,
+  "smallAvgOutputTokens": 312
+ },
+ "paths": {
+  "slice": "the 42 hand checked golden receipts, text path",
+  "claudeHaikuRecorded": {
+   "n": 42,
+   "schemaValidFirstTry": 1,
+   "schemaValidAfterRepair": 1,
+   "overall": 0.9985,
+   "perField": {
+    "merchant": 1,
+    "date": 1,
+    "currency": 1,
+    "total": 1,
+    "subtotal": 1,
+    "tax": 1,
+    "paymentMethod": 1,
+    "lineItems": 0.9881
+   }
+  },
+  "smallConstrained": {
+   "n": 42,
+   "schemaValidFirstTry": 1,
+   "schemaValidAfterRepair": 1,
+   "overall": 0.9836,
+   "perField": {
+    "merchant": 1,
+    "date": 1,
+    "currency": 1,
+    "total": 1,
+    "subtotal": 0.9524,
+    "tax": 0.9524,
+    "paymentMethod": 1,
+    "lineItems": 0.9643
+   }
+  },
+  "smallUnconstrained": {
+   "n": 42,
+   "schemaValidFirstTry": 1,
+   "schemaValidAfterRepair": 1,
+   "overall": 0.9866,
+   "perField": {
+    "merchant": 1,
+    "date": 1,
+    "currency": 1,
+    "total": 1,
+    "subtotal": 0.9524,
+    "tax": 0.9762,
+    "paymentMethod": 1,
+    "lineItems": 0.9643
+   }
+  }
+ },
+ "constrainedVsUnconstrained": {
+  "n": 20,
+  "constrained": {
+   "schemaValidFirstTry": 1,
+   "schemaValidAfterRepair": 1,
+   "contentAccuracy": 0.9091
+  },
+  "unconstrained": {
+   "schemaValidFirstTry": 0.85,
+   "schemaValidAfterRepair": 0.85,
+   "contentAccuracy": 0.5588
+  }
+ }
+}

@@ -95,18 +95,29 @@ function fitCalibrators(main: V2Record[]): { params: CalibrationParams['fields']
 
 type Scorer = (r: V2Record, f: ConfidenceField) => number;
 
-function docs(records: V2Record[], score: Scorer): ScoredDoc[] {
-  return records.map((r) => ({
-    id: r.id,
-    extracted: r.status === 'EXTRACTED' && r.signals !== undefined,
-    fields: r.status === 'EXTRACTED' && r.signals ? labelled(r).map((f) => ({ confidence: score(r, f), correct: r.correct[f]! })) : [],
-  }));
+// Two decision rules. Conditioned: a receipt is judged on the fields calibrated
+// for its document type, which needs the type to be known. Pooled: judged on every
+// calibrated field, which is what the pipeline does today. Errors are always
+// counted on the labelled fields.
+function docs(records: V2Record[], score: Scorer, pooled = false): ScoredDoc[] {
+  return records.map((r) => {
+    const ok = r.status === 'EXTRACTED' && r.signals !== undefined;
+    return {
+      id: r.id,
+      extracted: ok,
+      fields: ok ? labelled(r).map((f) => ({ confidence: score(r, f), correct: r.correct[f]! })) : [],
+      decision: ok && pooled ? Math.min(...FIELDS.map((f) => score(r, f))) : undefined,
+    };
+  });
 }
 
+// A field without a calibrator does not take part in the decision, so it scores 1
+// rather than blocking every receipt.
 function calibratedScorer(params: CalibrationParams['fields']): Scorer {
   return (r, f) => {
     const cal = params[f];
-    return cal && r.signals ? isotonicPredict(cal.isotonic, fusedScore(cal, fieldFeatures(f, r.signals))) : 0;
+    if (!cal) return 1;
+    return r.signals ? isotonicPredict(cal.isotonic, fusedScore(cal, fieldFeatures(f, r.signals))) : 0;
   };
 }
 
@@ -116,7 +127,7 @@ function stpSection(main: V2Record[], params: CalibrationParams['fields']) {
   const val = main.filter((r) => r.split === 'val');
   const test = main.filter((r) => r.split === 'test');
   const cal = calibratedScorer(params);
-  const coarse = thresholdGrid(0.01);
+  const coarse = thresholdGrid(0.005);
   const operating = ALPHAS.map((alpha) => {
     const chosen = operatingPoint(docs(val, cal), alpha);
     const baseline = operatingPoint(docs(val, verbalScorer), alpha);
@@ -130,6 +141,10 @@ function stpSection(main: V2Record[], params: CalibrationParams['fields']) {
       verbalizedBaseline: { threshold: baseline?.threshold ?? null, test: baseline ? stpAt(docs(test, verbalScorer), baseline.threshold) : null },
     };
   });
+  const pooled = ALPHAS.map((alpha) => {
+    const chosen = operatingPoint(docs(val, cal, true), alpha);
+    return { alpha, threshold: chosen?.threshold ?? null, test: chosen ? stpAt(docs(test, cal, true), chosen.threshold) : null };
+  });
   return {
     alphaForPipeline: 0.01,
     split: { val: val.length, test: test.length },
@@ -137,6 +152,7 @@ function stpSection(main: V2Record[], params: CalibrationParams['fields']) {
     curveCalibrated: stpCurve(docs(test, cal), coarse),
     curveVerbalized: stpCurve(docs(test, verbalScorer), coarse),
     operating,
+    pooled,
     ladder: ALPHAS.map((alpha) => validityLadder(docs(val, cal), docs(test, cal), alpha, DELTA)),
   };
 }
@@ -303,7 +319,7 @@ function perturbationSection(main: V2Record[], pert: V2Record[], params: Calibra
   const clean = main.filter((r) => inSubset.has(r.id));
   const variants = [summarize('clean', clean), ...allVariants().map((v) => summarize(v, pert.filter((r) => r.variant === v)))];
   const homogeneity = JSON.parse(readFileSync(path.join(DATA, 'homogeneity.json'), 'utf8')) as {
-    pairs: { idsDiffer: boolean; swaps: string[] }[];
+    pairs: { idsDiffer: boolean; identicalFiles: boolean; bothRun: boolean; swaps: string[] }[];
     reencodedSameId: boolean;
   };
   return {
@@ -312,7 +328,10 @@ function perturbationSection(main: V2Record[], pert: V2Record[], params: Calibra
     variants,
     homogeneity: {
       pairs: homogeneity.pairs.length,
+      identicalFilePairs: homogeneity.pairs.filter((p) => p.identicalFiles).length,
       idsDistinct: homogeneity.pairs.filter((p) => p.idsDiffer).length,
+      distinctFilesSharingId: homogeneity.pairs.filter((p) => !p.identicalFiles && !p.idsDiffer).length,
+      pairsCheckedForSwaps: homogeneity.pairs.filter((p) => p.bothRun).length,
       pairsWithSwaps: homogeneity.pairs.filter((p) => p.swaps.length > 0).length,
       swaps: homogeneity.pairs.flatMap((p) => p.swaps),
       reencodedSamePaperGetsSameId: homogeneity.reencodedSameId,
@@ -375,10 +394,11 @@ export async function build(): Promise<Record<string, string>> {
   const uncon = readJsonl('unconstrained.jsonl');
   const { params: fields, rows } = fitCalibrators(main);
   const stp = stpSection(main, fields);
+  // The pipeline pools every calibrated field, so its threshold comes from the
+  // pooled rule. With none meeting 1 percent on val, nothing may pass unreviewed,
+  // and the threshold is 1, above any calibrated score.
   const pipelineOp = stp.operating.find((o) => o.alpha === stp.alphaForPipeline)!;
-  // With no threshold meeting 1 percent on val, nothing may pass unreviewed, so
-  // the pipeline threshold is 1, above any calibrated score.
-  const threshold = pipelineOp.threshold ?? 1;
+  const threshold = stp.pooled.find((o) => o.alpha === stp.alphaForPipeline)!.threshold ?? 1;
   const router = fitRouter(main);
   const calibration = {
     model: SMALL_MODEL,
