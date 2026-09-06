@@ -3,6 +3,7 @@
  */
 import { existsSync, readFileSync } from 'node:fs';
 import * as path from 'node:path';
+import { PERTURBATIONS } from '../eval/public/perturb';
 
 const ROOT = path.join(__dirname, '..');
 
@@ -35,5 +36,7 @@ export function v2Data() {
     routing: read('eval/results/routing.json'),
     perturbation: read('eval/results/perturbation.json'),
     router: read('src/lib/params/router.json'),
+    // The damage sliders snap their readout to these, so the page and the suite cannot disagree on what level 2 means.
+    levels: PERTURBATIONS,
   };
 }

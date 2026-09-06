@@ -4,420 +4,489 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Docket demo</title>
-<link rel="icon" href="data:," />
+<meta name="description" content="Docket turns receipt photos into checked data and sends doubtful ones to a person. This page replays recorded results." />
+<meta property="og:title" content="Docket demo" />
+<meta property="og:description" content="Drag the confidence threshold and watch 149 recorded test receipts move between straight through and a person." />
+<meta name="theme-color" content="#c9ccc6" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#0e0f10" media="(prefers-color-scheme: dark)" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M7 3h18v24l-3-2-3 2-3-2-3 2-3-2-3 2z' fill='%23f6f6f1' stroke='%231f2224' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M11 10h10M11 15h10M11 20h6' stroke='%23b3372b' stroke-width='2'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75,800&family=Instrument+Sans:wght@400;500;600&family=Martian+Mono:wdth,wght@87.5,400;87.5,500;87.5,600&display=swap" />
 <style>
+  /* Thermal till paper prints black and one red. Blue is the stamp ink for receipts that go straight through. */
   :root {
-    --bg: #0E1220; --bg-2: #090C16; --card: #151A28; --card-2: #1B2233;
-    --line: #242C3F; --line-2: #323B52;
-    --text: #ECE8DF; --muted: #99A1B2; --faint: #6B7488;
-    --brass: #C6A968; --brass-2: #E1C793; --steel: #7089B0; --steel-2: #9AAECC;
-    --good: #84B393; --good-bg: rgba(132,179,147,.14); --good-line: rgba(132,179,147,.34);
-    --bad: #CB8168; --bad-bg: rgba(203,129,104,.14); --bad-line: rgba(203,129,104,.34);
-    --sans: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    --mono: ui-monospace, "Cascadia Code", "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
-    --r: 14px; --gx: 50%; --gy: 28%; --glow: rgba(198,169,104,.13);
+    --counter: #c9ccc6; --paper: #f6f6f1; --paper-2: #ebebe4; --paper-3: #deded6;
+    --ink: #1f2224; --ink-2: #474c50; --ink-3: #676c70; --rule: #c4c6bf;
+    --accent: #b3372b; --accent-tint: #f2dfdb;
+    --signal: #2b4c8c; --signal-tint: #dde4f1;
+    --shadow: 24 26 28;
+    --display: "Archivo", "Arial Narrow", sans-serif;
+    --text: "Instrument Sans", "Segoe UI", sans-serif;
+    --mono: "Martian Mono", ui-monospace, "Cascadia Mono", Menlo, monospace;
+    --ease-out: cubic-bezier(.23, 1, .32, 1);
+    --r: 2px;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --counter: #0e0f10; --paper: #1b1c1b; --paper-2: #242523; --paper-3: #2e2f2d;
+      --ink: #ecebe4; --ink-2: #bdbcb4; --ink-3: #94938c; --rule: #3b3c3a;
+      --accent: #ee7c6d; --accent-tint: #3c2521;
+      --signal: #97b1e8; --signal-tint: #233049;
+      --shadow: 0 0 0;
+      color-scheme: dark;
+    }
   }
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--sans); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
-  .aura { position: fixed; inset: 0; z-index: 0; pointer-events: none; transition: background .14s linear;
-    background:
-      radial-gradient(620px circle at var(--gx) var(--gy), var(--glow), transparent 64%),
-      radial-gradient(880px circle at 90% -10%, rgba(112,137,176,.09), transparent 60%),
-      radial-gradient(700px circle at -8% 112%, rgba(198,169,104,.06), transparent 55%); }
-  .grain { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .5; mix-blend-mode: overlay;
-    background-image: radial-gradient(rgba(255,255,255,.02) 1px, transparent 1px); background-size: 3px 3px; }
-  .shell { position: relative; z-index: 1; max-width: 1080px; margin: 0 auto; padding: 22px clamp(16px,4vw,36px) 84px; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--counter); color: var(--ink); font: 400 1rem/1.6 var(--text); -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--accent); color: var(--paper); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  a { color: inherit; text-underline-offset: 3px; }
+  .skip { position: absolute; left: 16px; top: -60px; background: var(--ink); color: var(--paper); padding: 8px 14px; z-index: 3; text-decoration: none; border-radius: var(--r); }
+  .skip:focus { top: 12px; }
 
-  header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 8px 0 26px; flex-wrap: wrap; }
-  .brand { display: flex; align-items: center; gap: 11px; font-weight: 680; letter-spacing: .01em; font-size: 1.05rem; }
-  .brand .mark { width: 20px; height: 20px; display: grid; place-items: center; }
-  .brand .mark i { width: 10px; height: 10px; background: linear-gradient(135deg, var(--brass), var(--brass-2)); transform: rotate(45deg); border-radius: 2px; box-shadow: 0 0 14px rgba(198,169,104,.4); }
-  .hbadges { display: flex; align-items: center; gap: 9px; }
-  .pill { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: color-mix(in srgb, var(--card) 66%, transparent); color: var(--muted); font-family: var(--mono); font-size: .71rem; letter-spacing: .02em; }
-  .pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--good); box-shadow: 0 0 8px var(--good); animation: breathe 2.8s ease-in-out infinite; }
-  @keyframes breathe { 0%,100%{opacity:.5} 50%{opacity:1} }
+  /* The page is one long till roll with torn ends. */
+  .counter { padding: clamp(24px, 6vw, 64px) clamp(0px, 3vw, 32px) clamp(40px, 8vw, 96px); }
+  .roll { position: relative; max-width: 1000px; margin: 0 auto; padding: clamp(28px, 5vw, 60px) clamp(16px, 5vw, 60px) clamp(36px, 6vw, 72px);
+    background: linear-gradient(90deg, rgb(var(--shadow) / .05), transparent 5%, transparent 95%, rgb(var(--shadow) / .05)), var(--paper);
+    box-shadow: 0 1px 2px rgb(var(--shadow) / .10), 0 18px 40px -12px rgb(var(--shadow) / .28); }
+  .roll::before, .roll::after { content: ""; position: absolute; left: 0; right: 0; height: 10px; }
+  .roll::before { bottom: 100%; background: linear-gradient(to top right, var(--paper) 50%, #0000 51%) 0 100% / 10px 10px repeat-x, linear-gradient(to top left, var(--paper) 50%, #0000 51%) 0 100% / 10px 10px repeat-x; }
+  .roll::after { top: 100%; background: linear-gradient(to bottom right, var(--paper) 50%, #0000 51%) 0 0 / 10px 10px repeat-x, linear-gradient(to bottom left, var(--paper) 50%, #0000 51%) 0 0 / 10px 10px repeat-x; }
+  .roll > section, .roll > footer { padding-top: clamp(40px, 6vw, 64px); margin-top: clamp(40px, 6vw, 64px); position: relative; }
+  .roll > section::before, .roll > footer::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: repeating-linear-gradient(90deg, var(--ink-3) 0 6px, #0000 6px 11px); opacity: .7; }
 
-  .hero { padding: 20px 0 6px; max-width: 720px; }
-  .eyebrow { font-family: var(--mono); font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; color: var(--brass); margin: 0 0 18px; display: inline-flex; gap: 10px; align-items: center; }
-  .eyebrow::before { content: ""; width: 26px; height: 1px; background: linear-gradient(90deg, var(--brass), transparent); }
-  h1 { font-size: clamp(2rem, 5vw, 3.1rem); line-height: 1.06; letter-spacing: -.025em; font-weight: 720; margin: 0 0 18px; text-wrap: balance; }
-  h1 .g { color: var(--brass-2); }
-  .sub { font-size: 1.05rem; color: var(--muted); max-width: 58ch; margin: 0; }
+  h1, h2, h3 { margin: 0; font-family: var(--display); font-weight: 800; font-stretch: 75%; text-transform: uppercase; line-height: .98; letter-spacing: -.005em; text-wrap: balance; }
+  h1 { font-size: clamp(3.4rem, 13vw, 7.5rem); letter-spacing: -.02em; }
+  h2 { font-size: clamp(1.9rem, 5vw, 2.9rem); margin-bottom: 14px; }
+  h3 { font-size: 1.25rem; }
+  p { margin: 0; }
+  .intro { color: var(--ink-2); max-width: 62ch; margin-bottom: 26px; text-wrap: pretty; }
+  .fine { color: var(--ink-2); font-size: .88rem; max-width: 70ch; margin-top: 16px; text-wrap: pretty; }
+  .mono, .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
 
-  .section-title { font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); font-weight: 600; margin: 44px 0 16px; }
+  /* header */
+  .head { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(20px, 4vw, 48px); align-items: end; }
+  .lede { font-size: clamp(1.05rem, 1.8vw, 1.2rem); line-height: 1.5; max-width: 40ch; text-wrap: pretty; }
+  .meta { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; border-top: 1.5px solid var(--ink); border-bottom: 1.5px solid var(--ink); }
+  .meta div { padding: 10px 12px 10px 0; }
+  .meta div + div { padding-left: 12px; border-left: 1px solid var(--rule); }
+  .meta dt { font-family: var(--mono); font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); }
+  .meta dd { margin: 2px 0 0; font-family: var(--mono); font-size: .86rem; font-weight: 500; }
+  .notice { grid-column: 1 / -1; max-width: 76ch; color: var(--ink-2); }
+  .notice strong { color: var(--ink); font-weight: 600; }
 
-  /* help */
-  .help { display: grid; grid-template-columns: 1.3fr 1fr; gap: 22px; background: linear-gradient(180deg, var(--card), color-mix(in srgb, var(--card) 84%, var(--bg-2))); border: 1px solid var(--line); border-radius: var(--r); padding: 22px 24px; margin-top: 8px; }
-  .help p { margin: 0 0 12px; color: var(--muted); font-size: .95rem; }
-  .help p:last-child { margin-bottom: 0; }
-  .help p b { color: var(--text); font-weight: 600; }
-  .steps { display: flex; flex-direction: column; gap: 10px; border-left: 1px solid var(--line); padding-left: 22px; }
-  .step { display: flex; align-items: center; gap: 12px; }
-  .step .num { flex: 0 0 auto; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-family: var(--mono); font-size: .72rem; color: var(--brass); border: 1px solid color-mix(in srgb, var(--brass) 40%, var(--line)); background: color-mix(in srgb, var(--brass) 8%, transparent); }
-  .step span { color: var(--text); font-size: .9rem; }
+  /* buttons */
+  .btn { font: 500 .9rem/1.2 var(--text); color: var(--ink); background: var(--paper-2); border: 1px solid var(--ink-3); border-radius: var(--r); padding: 10px 14px; cursor: pointer; min-height: 44px;
+    transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease, transform 120ms var(--ease-out); -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  @media (hover: hover) and (pointer: fine) { .btn:hover:not([disabled]):not([aria-pressed="true"]) { background: var(--paper-3); border-color: var(--ink); } }
+  .btn:active:not([disabled]) { transform: scale(.97); }
+  .btn[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .btn[disabled] { opacity: .45; cursor: not-allowed; }
+  .btn[aria-busy="true"] { cursor: progress; }
 
-  /* scenarios */
-  .scn { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 13px; }
-  .scard { text-align: left; cursor: pointer; color: var(--text); font-family: var(--sans);
-    background: linear-gradient(180deg, var(--card), var(--bg-2)); border: 1px solid var(--line); border-radius: 13px; padding: 16px 17px;
-    display: flex; flex-direction: column; gap: 9px; transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
-  .scard:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--brass) 42%, var(--line)); box-shadow: 0 12px 30px rgba(0,0,0,.34); }
-  .scard:focus-visible { outline: 2px solid var(--steel); outline-offset: 2px; }
-  .scard.sel { border-color: var(--brass); box-shadow: 0 0 0 1px var(--brass); }
-  .scard .st { display: flex; align-items: center; gap: 9px; }
-  .scard .glyph { width: 9px; height: 9px; border-radius: 2px; transform: rotate(45deg); }
-  .scard h3 { font-size: .96rem; font-weight: 640; margin: 0; letter-spacing: -.01em; }
-  .scard p { margin: 0; color: var(--muted); font-size: .85rem; line-height: 1.5; }
-  .scard .go { font-family: var(--mono); font-size: .68rem; color: var(--faint); margin-top: 2px; display: inline-flex; align-items: center; gap: 6px; }
-  .scard:hover .go { color: var(--brass); }
+  /* four receipts */
+  .picks { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-bottom: 26px; }
+  .pick { text-align: left; display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; }
+  .pick b { font-weight: 600; font-size: .95rem; }
+  .pick span { font-size: .82rem; color: var(--ink-2); line-height: 1.4; transition: color 160ms ease; }
+  .pick[aria-pressed="true"] span { color: color-mix(in srgb, var(--paper) 78%, var(--ink)); }
+  .pick:last-child { border-style: dashed; }
+  .bench { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(20px, 4vw, 44px); align-items: start; }
+  .photo { margin: 0; display: grid; justify-items: center; gap: 10px; }
+  .photo img { display: block; width: 100%; max-width: 340px; height: auto; aspect-ratio: 520 / 780; background: #fff; transform: rotate(-1.4deg);
+    box-shadow: 0 1px 1px rgb(var(--shadow) / .12), 0 10px 24px -8px rgb(var(--shadow) / .35); }
+  .photo figcaption { font-family: var(--mono); font-size: .72rem; color: var(--ink-3); }
+  .stub { width: 100%; max-width: 360px; padding: 14px 16px; background: var(--paper-2); font-family: var(--mono); font-size: .76rem; line-height: 1.7; color: var(--ink-2); }
+  .stub + .stub { margin-top: 10px; }
+  .stub b { color: var(--ink); font-weight: 600; }
+  .printout { min-width: 0; }
+  .note { color: var(--ink); font-size: .95rem; margin-bottom: 18px; max-width: 60ch; text-wrap: pretty; }
+  .note b { font-weight: 600; }
+  .stamprow { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; }
+  .stamp { display: inline-block; font-family: var(--display); font-weight: 800; font-stretch: 75%; text-transform: uppercase; font-size: 1.35rem; letter-spacing: .02em; line-height: 1;
+    padding: 7px 12px 6px; border: 2.5px solid currentColor; border-radius: 3px; transform: rotate(-3deg); }
+  .stamp.st { color: var(--signal); }
+  .stamp.pp, .stamp.fail { color: var(--accent); }
+  .why { font-family: var(--mono); font-size: .74rem; color: var(--ink-2); }
+  .lines { margin: 0 0 16px; padding: 0; list-style: none; border-top: 1.5px solid var(--ink); }
+  .lines li { display: grid; grid-template-columns: auto 1fr auto auto; align-items: baseline; gap: 0 10px; padding: 8px 0; border-bottom: 1px solid var(--rule); font-family: var(--mono); font-size: .8rem; font-variant-numeric: tabular-nums; }
+  .lines .f { color: var(--ink); font-weight: 500; }
+  .lines .v { text-align: right; overflow-wrap: anywhere; color: var(--ink-2); grid-column: 2; }
+  .lines .c { color: var(--ink-2); min-width: 3.4em; text-align: right; }
+  .lines .ok { color: var(--signal); font-weight: 600; min-width: 4.4em; text-align: right; }
+  .lines .no { color: var(--accent); font-weight: 600; min-width: 4.4em; text-align: right; }
+  .lines .lab { grid-column: 1 / -1; color: var(--accent); font-size: .72rem; }
+  .pairhead { font-family: var(--mono); font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); margin: 18px 0 8px; }
+  details.stored { font-family: var(--mono); font-size: .76rem; }
+  details.stored summary { cursor: pointer; color: var(--ink-2); padding: 6px 0; min-height: 32px; }
+  details.stored summary:hover { color: var(--ink); }
+  pre.json { margin: 6px 0 0; padding: 14px; background: var(--paper-2); overflow-x: auto; line-height: 1.7; color: var(--ink-2); font-family: var(--mono); font-size: .74rem; }
+  .json .key { color: var(--ink-3); }
+  .json .str { color: var(--ink); }
+  .json .n { color: var(--signal); }
+  .badout { padding: 12px 14px; background: var(--accent-tint); color: var(--ink); font-family: var(--mono); font-size: .76rem; }
 
-  /* panels */
-  .grid { display: grid; grid-template-columns: 1fr 1.14fr; gap: 15px; margin-top: 15px; align-items: start; }
-  .panel { background: linear-gradient(180deg, var(--card), color-mix(in srgb, var(--card) 82%, var(--bg-2))); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
-  .panel-h { display: flex; align-items: center; gap: 10px; padding: 12px 15px; border-bottom: 1px solid var(--line); }
-  .panel-h .t { font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); font-weight: 620; }
-  .panel-h .r { margin-left: auto; font-family: var(--mono); font-size: .68rem; color: var(--faint); }
+  /* threshold tape */
+  .tape { position: relative; user-select: none; -webkit-user-select: none; touch-action: none; padding-top: 40px; margin: 0 6px 6px; cursor: pointer; }
+  .track { position: relative; height: 38px; background:
+      repeating-linear-gradient(90deg, var(--ink-3) 0 1px, #0000 1px 100%) 0 0 / 5% 12px repeat-x,
+      repeating-linear-gradient(90deg, var(--ink) 0 1.5px, #0000 1.5px 100%) 0 0 / 25% 22px repeat-x,
+      var(--paper-2);
+    border-top: 1.5px solid var(--ink); }
+  .track::after { content: ""; position: absolute; right: 0; top: 0; width: 1.5px; height: 22px; background: var(--ink); }
+  .scale { position: relative; height: 1.3em; font-family: var(--mono); font-size: .72rem; color: var(--ink-3); margin-top: 6px; }
+  .scale span { position: absolute; top: 0; transform: translateX(-50%); }
+  .scale span:first-child { transform: none; }
+  .scale span:last-child { transform: translateX(-100%); }
+  .ends { display: flex; justify-content: space-between; gap: 16px; font-size: .8rem; color: var(--ink-2); margin-top: 4px; }
+  .handle { position: absolute; left: 0; top: -40px; bottom: 0; width: 44px; margin-left: -22px; display: grid; justify-items: center; align-items: start; cursor: grab; touch-action: none; outline: none; }
+  .handle::before { content: ""; position: absolute; top: 30px; bottom: -6px; width: 2px; background: var(--accent); }
+  .handle .tab { position: relative; font-family: var(--mono); font-size: .8rem; font-weight: 600; color: var(--paper); background: var(--accent); padding: 5px 8px; border-radius: var(--r); line-height: 1.2; white-space: nowrap;
+    transition: transform 140ms var(--ease-out); }
+  .handle:focus-visible .tab { outline: 2px solid var(--ink); outline-offset: 2px; }
+  .handle.drag { cursor: grabbing; }
+  .handle.drag .tab { transform: scale(1.06); }
+  .presets { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 30px; align-items: center; }
+  .presets .lbl { font-size: .85rem; color: var(--ink-2); margin-right: 4px; }
 
-  .note { padding: 12px 15px; border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--brass) 7%, transparent); color: var(--text); font-size: .86rem; display: none; }
-  .note.show { display: block; }
-  .note b { color: var(--brass-2); font-weight: 600; }
+  /* piles */
+  .piles { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(14px, 3vw, 32px); }
+  .pile header { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; border-bottom: 1.5px solid var(--ink); padding-bottom: 6px; margin-bottom: 10px; }
+  .pile h3 { font-size: clamp(1rem, 2.6vw, 1.3rem); }
+  .pile .count { font-family: var(--mono); font-size: clamp(1.1rem, 3vw, 1.5rem); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .pile.st h3, .pile.st .count { color: var(--signal); }
+  .well { position: relative; }
+  .slips { position: absolute; inset: 0; pointer-events: none; }
+  .slip { position: absolute; left: 0; top: 0; background: var(--paper-3); box-shadow: inset 0 0 0 1px var(--rule); transition: background-color 220ms ease, box-shadow 220ms ease; }
+  .slip::after { content: ""; position: absolute; left: 22%; right: 22%; top: 28%; height: 34%; background: repeating-linear-gradient(180deg, var(--ink-3) 0 1px, #0000 1px 4px); opacity: .45; }
+  .slip.st { background: var(--signal-tint); box-shadow: inset 0 0 0 1px var(--signal); }
+  .slip.st::after { background: repeating-linear-gradient(180deg, var(--signal) 0 1px, #0000 1px 4px); }
+  .totals { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 28px 0 0; border-top: 1.5px solid var(--ink); border-bottom: 1.5px solid var(--ink); }
+  .totals div { padding: 12px 12px 12px 0; min-width: 0; }
+  .totals div + div { padding-left: 12px; border-left: 1px solid var(--rule); }
+  .totals dt { font-size: .78rem; color: var(--ink-2); line-height: 1.3; }
+  .totals dd { margin: 4px 0 0; font-family: var(--mono); font-size: clamp(1.05rem, 2.6vw, 1.45rem); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .totals dd small { font-size: .62em; font-weight: 400; color: var(--ink-3); }
 
-  .receipt { font-family: var(--mono); font-size: .74rem; line-height: 1.9; color: var(--muted); padding: 15px; white-space: pre-wrap; min-height: 150px; }
-  .receipt .em { color: var(--text); }
-  .pipe { display: flex; align-items: center; gap: 3px; padding: 12px 15px; border-top: 1px solid var(--line); flex-wrap: wrap; }
-  .stage { display: inline-flex; align-items: center; gap: 7px; font-size: .67rem; font-family: var(--mono); color: var(--faint); }
-  .stage .b { width: 8px; height: 8px; border-radius: 50%; background: var(--line-2); transition: background .25s, box-shadow .25s; }
-  .stage.active .b { background: var(--brass); box-shadow: 0 0 11px var(--brass); animation: ping 1s ease-out infinite; }
-  .stage.done .b { background: var(--good); box-shadow: 0 0 7px var(--good); }
-  .stage.done { color: var(--muted); }
-  .sep { width: 12px; height: 1px; background: var(--line-2); }
-  @keyframes ping { 0%{transform:scale(1)} 50%{transform:scale(1.35)} 100%{transform:scale(1)} }
+  /* charts */
+  .chart { margin-top: 30px; }
+  .chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .chart text, .rel text { font-family: var(--mono); font-size: 11px; fill: var(--ink-3); }
+  .grid-l { stroke: var(--rule); }
+  .axis-l { stroke: var(--ink); stroke-width: 1.5; }
+  .cal { fill: none; stroke: var(--ink); stroke-width: 2.2; }
+  .ver { fill: none; stroke: var(--ink-3); stroke-width: 1.6; stroke-dasharray: 5 4; }
+  .dot { fill: var(--accent); stroke: var(--paper); stroke-width: 2; }
+  .cross { stroke: var(--accent); stroke-dasharray: 2 3; stroke-width: 1; }
+  .key { display: flex; gap: 18px; flex-wrap: wrap; font-family: var(--mono); font-size: .74rem; color: var(--ink-2); margin-top: 10px; }
+  .key i { display: inline-block; width: 22px; height: 0; border-top: 2.2px solid var(--ink); vertical-align: middle; margin-right: 6px; }
+  .key i.d { border-top: 1.6px dashed var(--ink-3); }
 
-  .result { min-height: 260px; }
-  .empty { display: grid; place-items: center; height: 100%; min-height: 260px; color: var(--faint); font-size: .88rem; text-align: center; padding: 26px; gap: 10px; }
-  .empty svg { width: 28px; height: 28px; opacity: .55; }
-  .rhead { display: flex; align-items: center; gap: 10px; padding: 13px 15px; border-bottom: 1px solid var(--line); }
-  .status { font-size: .65rem; font-weight: 680; letter-spacing: .08em; padding: 6px 11px; border-radius: 999px; display: inline-flex; align-items: center; gap: 7px; text-transform: uppercase; }
-  .status::before { content: ""; width: 6px; height: 6px; border-radius: 50%; }
-  .status.ok { color: var(--good); background: var(--good-bg); border: 1px solid var(--good-line); }
-  .status.ok::before { background: var(--good); box-shadow: 0 0 8px var(--good); }
-  .status.fail { color: var(--bad); background: var(--bad-bg); border: 1px solid var(--bad-line); }
-  .status.fail::before { background: var(--bad); }
-  .status.pop { animation: pop .42s cubic-bezier(.2,1.5,.4,1); }
-  @keyframes pop { 0%{transform:scale(.6);opacity:0} 100%{transform:scale(1);opacity:1} }
-  .rhead .doc { margin-left: auto; font-family: var(--mono); font-size: .65rem; color: var(--faint); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 46%; }
+  /* damage lab */
+  .lab { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(20px, 4vw, 44px); align-items: start; }
+  .dmg { margin: 0; display: grid; justify-items: center; gap: 10px; }
+  .frame { width: 100%; max-width: 340px; aspect-ratio: 520 / 780; overflow: hidden; background: #fff; box-shadow: 0 1px 1px rgb(var(--shadow) / .12), 0 10px 24px -8px rgb(var(--shadow) / .35); }
+  .frame img { display: block; width: 100%; height: 100%; object-fit: cover; transform-origin: 50% 50%; }
+  .dmg figcaption { font-family: var(--mono); font-size: .72rem; color: var(--ink-3); text-align: center; }
+  .dials { display: grid; gap: 22px; }
+  .resetrow { margin-top: 22px; }
+  .dial { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: baseline; }
+  .dial label { font-weight: 600; font-size: .95rem; }
+  .dial output { font-family: var(--mono); font-size: .82rem; font-variant-numeric: tabular-nums; color: var(--ink); }
+  .dial input { grid-column: 1 / -1; }
+  .dial .measured { grid-column: 1 / -1; font-family: var(--mono); font-size: .72rem; color: var(--ink-2); }
+  .dial .measured b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+  input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 32px; background: transparent; margin: 0; cursor: pointer; }
+  input[type=range]::-webkit-slider-runnable-track { height: 4px; background: linear-gradient(90deg, var(--ink) var(--p, 0%), var(--paper-3) var(--p, 0%)); border-radius: 0; }
+  input[type=range]::-moz-range-track { height: 4px; background: var(--paper-3); }
+  input[type=range]::-moz-range-progress { height: 4px; background: var(--ink); }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 26px; margin-top: -11px; background: var(--paper); border: 2px solid var(--ink); border-radius: var(--r); transition: transform 120ms var(--ease-out); }
+  input[type=range]::-moz-range-thumb { width: 12px; height: 24px; background: var(--paper); border: 2px solid var(--ink); border-radius: var(--r); }
+  input[type=range]:active::-webkit-slider-thumb { transform: scaleY(1.12); background: var(--accent-tint); }
+  input[type=range]:focus-visible { outline: none; }
+  input[type=range]:focus-visible::-webkit-slider-thumb { outline: 2px solid var(--accent); outline-offset: 2px; }
+  input[type=range]:focus-visible::-moz-range-thumb { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-  pre.json { margin: 0; padding: 15px; font-family: var(--mono); font-size: .76rem; line-height: 1.78; overflow-x: auto; color: var(--muted); }
-  .json .key { color: var(--steel-2); }
-  .json .str { color: var(--brass-2); }
-  .json .num { color: var(--good); }
-  .json .bool { color: var(--steel); }
-  .json .ln { display: block; opacity: 0; transform: translateY(3px); animation: lnin .34s ease forwards; }
-  @keyframes lnin { to { opacity: 1; transform: none; } }
+  /* tables and ledger lines */
+  .tw { overflow-x: auto; margin-top: 28px; }
+  table.t { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: .76rem; font-variant-numeric: tabular-nums; }
+  table.t caption { text-align: left; font-family: var(--text); font-size: .88rem; color: var(--ink-2); padding-bottom: 8px; }
+  table.t th, table.t td { padding: 8px 10px; text-align: right; white-space: nowrap; }
+  table.t th:first-child, table.t td:first-child { text-align: left; padding-left: 0; white-space: normal; }
+  table.t thead th { font-weight: 500; color: var(--ink-3); border-bottom: 1.5px solid var(--ink); vertical-align: bottom; }
+  table.t tbody tr + tr td { border-top: 1px solid var(--rule); }
+  table.t td.low { color: var(--accent); }
+  .ledger { margin: 0; padding: 0; list-style: none; max-width: 640px; font-family: var(--mono); font-size: .82rem; font-variant-numeric: tabular-nums; }
+  .ledger li { display: flex; align-items: baseline; gap: 8px; padding: 5px 0; }
+  .ledger li::after { content: none; }
+  .ledger .dots { flex: 1; border-bottom: 1.5px dotted var(--ink-3); transform: translateY(-4px); min-width: 16px; }
+  .ledger .v { font-weight: 600; }
+  .ledger li.total { border-top: 1.5px solid var(--ink); margin-top: 6px; padding-top: 10px; font-size: .95rem; }
+  .ledger li.total + li.total { border-top: 0; margin-top: 0; padding-top: 5px; }
 
-  .rfoot { display: flex; align-items: center; gap: 16px; padding: 12px 15px; border-top: 1px solid var(--line); flex-wrap: wrap; font-family: var(--mono); font-size: .7rem; color: var(--faint); }
-  .rfoot .mtr b { color: var(--text); font-variant-numeric: tabular-nums; }
-  .score { margin-left: auto; display: inline-flex; align-items: baseline; gap: 8px; }
-  .score .v { font-size: 1.24rem; font-weight: 700; color: var(--brass); font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
-  .score .l { text-transform: uppercase; letter-spacing: .11em; font-size: .58rem; }
+  /* reliability */
+  .rel { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 28px 32px; }
+  .cell h3 { font-family: var(--text); text-transform: none; font-stretch: 100%; font-weight: 600; font-size: 1rem; letter-spacing: 0; line-height: 1.3; }
+  .cell h3 span { font-weight: 400; color: var(--ink-2); font-size: .85rem; }
+  .pair2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+  .pair2 svg { display: block; width: 100%; height: auto; }
+  .pair2 figure { margin: 0; }
+  .pair2 figcaption { font-family: var(--mono); font-size: .72rem; color: var(--ink-3); }
+  .rb-s { fill: var(--ink-3); opacity: .55; }
+  .rb-c { fill: var(--ink); }
+  .cell p { font-family: var(--mono); font-size: .74rem; color: var(--ink-2); margin-top: 6px; }
 
-  .fields { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 15px 15px; }
-  .fchip { display: inline-flex; align-items: center; gap: 7px; font-family: var(--mono); font-size: .68rem; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--line); color: var(--muted); }
-  .fchip .ic { width: 15px; height: 15px; display: grid; place-items: center; border-radius: 50%; font-size: .62rem; font-weight: 800; }
-  .fchip.ok .ic { color: var(--good); background: var(--good-bg); }
-  .fchip.bad { border-color: var(--bad-line); }
-  .fchip.bad .ic { color: var(--bad); background: var(--bad-bg); }
-  .fchip .diff s { color: var(--bad); text-decoration: none; }
-  .fchip .diff em { color: var(--good); font-style: normal; }
+  /* upload */
+  .byo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: clamp(20px, 4vw, 44px); align-items: start; }
+  .drop { display: grid; place-items: center; text-align: center; gap: 6px; min-height: 180px; padding: 22px; border: 1.5px dashed var(--ink-3); border-radius: var(--r); background: var(--paper-2); cursor: pointer;
+    transition: background-color 160ms ease, border-color 160ms ease, transform 120ms var(--ease-out); }
+  @media (hover: hover) and (pointer: fine) { .drop:hover { border-color: var(--ink); background: var(--paper-3); } }
+  .drop:active { transform: scale(.99); }
+  .drop.drag { border-color: var(--accent); background: var(--accent-tint); }
+  .drop[aria-busy="true"] { cursor: progress; border-style: solid; }
+  .drop .dt { font-weight: 600; }
+  .drop .dt u { text-decoration-color: var(--accent); text-decoration-thickness: 2px; }
+  .drop .dh { font-family: var(--mono); font-size: .72rem; color: var(--ink-2); }
+  .byo-hint { font-size: .88rem; color: var(--ink-2); margin-top: 14px; }
+  .out { min-height: 180px; }
+  .out .empty { color: var(--ink-3); font-size: .92rem; padding-top: 6px; }
+  .out .tag { display: inline-block; font-family: var(--display); font-weight: 800; font-stretch: 75%; text-transform: uppercase; font-size: 1.15rem; color: var(--signal); border: 2px solid currentColor; padding: 5px 10px 4px; border-radius: 3px; transform: rotate(-2deg); margin-bottom: 12px; }
+  .out p { margin-bottom: 12px; max-width: 58ch; }
+  .out pre { margin: 0 0 12px; padding: 12px; background: var(--paper-2); font-family: var(--mono); font-size: .72rem; white-space: pre-wrap; color: var(--ink-2); }
+  .out .err { color: var(--accent); }
 
-  /* idempotency + failed detail */
-  .writes { padding: 15px; display: flex; flex-direction: column; gap: 10px; }
-  .wrow { display: flex; align-items: center; gap: 12px; padding: 11px 13px; border: 1px solid var(--line); border-radius: 10px; background: color-mix(in srgb, var(--card-2) 55%, transparent); }
-  .wrow .tag { font-family: var(--mono); font-size: .64rem; padding: 4px 9px; border-radius: 999px; text-transform: uppercase; letter-spacing: .05em; }
-  .wrow .tag.created { color: var(--good); background: var(--good-bg); border: 1px solid var(--good-line); }
-  .wrow .tag.dup { color: var(--steel-2); background: color-mix(in srgb, var(--steel) 15%, transparent); border: 1px solid color-mix(in srgb, var(--steel) 35%, transparent); }
-  .wrow .lbl { font-size: .85rem; color: var(--text); }
-  .wrow .lbl small { color: var(--faint); display: block; font-family: var(--mono); font-size: .66rem; margin-top: 2px; }
-  .badout { margin: 0 15px 15px; padding: 12px 14px; border: 1px solid var(--bad-line); border-radius: 10px; background: var(--bad-bg); font-family: var(--mono); font-size: .72rem; color: var(--text); }
-  .badout .why { color: var(--muted); margin-top: 8px; font-size: .68rem; }
+  /* golden set */
+  .gold { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: clamp(20px, 5vw, 56px); align-items: start; }
+  .big { font-family: var(--mono); font-size: clamp(2.8rem, 8vw, 4.4rem); font-weight: 600; line-height: 1; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+  .big + p { font-size: .85rem; color: var(--ink-2); margin-top: 8px; }
 
-  /* bring your own */
-  .byo { margin-top: 8px; }
-  .byo-b { display: grid; grid-template-columns: 1fr 1.14fr; }
-  .byo-in { padding: 18px; border-right: 1px solid var(--line); display: flex; flex-direction: column; gap: 14px; }
-  .drop { border: 1px dashed var(--line-2); border-radius: 12px; padding: 26px 18px; text-align: center; cursor: pointer;
-    background: color-mix(in srgb, var(--card-2) 40%, transparent); transition: border-color .18s ease, background .18s ease, transform .18s ease; }
-  .drop:hover, .drop:focus-visible { border-color: color-mix(in srgb, var(--brass) 50%, var(--line-2)); background: color-mix(in srgb, var(--brass) 6%, transparent); outline: none; }
-  .drop.drag { border-color: var(--brass); background: color-mix(in srgb, var(--brass) 10%, transparent); transform: translateY(-2px); }
-  .drop svg { width: 26px; height: 26px; color: var(--brass); opacity: .9; margin-bottom: 10px; }
-  .drop .dt { font-size: .9rem; color: var(--text); }
-  .drop .dt .lnk { color: var(--brass-2); text-decoration: underline; text-underline-offset: 2px; }
-  .drop .dh { font-family: var(--mono); font-size: .68rem; color: var(--faint); margin-top: 6px; }
-  .pastetog { align-self: flex-start; background: none; border: 0; color: var(--steel-2); font-family: var(--sans); font-size: .8rem; cursor: pointer; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
-  .pastetog:hover { color: var(--steel-2); filter: brightness(1.15); }
-  .paste { display: flex; flex-direction: column; gap: 10px; }
-  .paste textarea { width: 100%; min-height: 128px; resize: vertical; background: var(--bg-2); border: 1px solid var(--line); border-radius: 10px; color: var(--text); font-family: var(--mono); font-size: .74rem; line-height: 1.7; padding: 11px 12px; }
-  .paste textarea:focus-visible { outline: 2px solid var(--steel); outline-offset: 1px; border-color: var(--steel); }
-  .paste .btn { align-self: flex-start; }
-  .byo-hint { margin: 2px 0 0; font-size: .78rem; color: var(--muted); line-height: 1.55; }
-  .byo-hint code { font-family: var(--mono); font-size: .92em; color: var(--brass-2); background: color-mix(in srgb, var(--brass) 9%, transparent); padding: 1px 5px; border-radius: 4px; }
-  .byo-out { min-height: 250px; }
-  .nomodel { padding: 16px; }
-  .nomodel .head { display: flex; align-items: center; gap: 9px; margin-bottom: 12px; }
-  .nomodel .tag { font-family: var(--mono); font-size: .64rem; text-transform: uppercase; letter-spacing: .06em; color: var(--steel-2); background: color-mix(in srgb, var(--steel) 15%, transparent); border: 1px solid color-mix(in srgb, var(--steel) 34%, transparent); padding: 5px 10px; border-radius: 999px; }
-  .nomodel p { margin: 0 0 12px; font-size: .86rem; color: var(--muted); line-height: 1.6; }
-  .nomodel p code { font-family: var(--mono); font-size: .92em; color: var(--brass-2); background: color-mix(in srgb, var(--brass) 9%, transparent); padding: 1px 5px; border-radius: 4px; }
-  .nomodel .cap { font-family: var(--mono); font-size: .62rem; color: var(--faint); margin: 0 0 6px; text-transform: uppercase; letter-spacing: .08em; }
-  .nomodel .txt { font-family: var(--mono); font-size: .72rem; color: var(--muted); background: var(--bg-2); border: 1px solid var(--line); border-radius: 10px; padding: 12px; max-height: 156px; overflow: auto; white-space: pre-wrap; line-height: 1.6; }
-  .rchip { display: inline-flex; align-items: center; gap: 7px; font-family: var(--mono); font-size: .66rem; padding: 5px 10px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
-  .rchip.ok { color: var(--good); border-color: var(--good-line); background: var(--good-bg); }
-  .cats { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
-  .cats .rchip b { color: var(--text); font-variant-numeric: tabular-nums; margin-left: 2px; }
-  .cats .rchip .cn { color: var(--faint); }
+  footer { font-family: var(--mono); font-size: .74rem; color: var(--ink-2); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; }
+  footer strong { color: var(--ink); font-weight: 600; }
 
-  /* eval */
-  .evalcard { margin-top: 15px; }
-  .evalcard .panel-b { display: grid; grid-template-columns: 190px 1fr; gap: 24px; padding: 22px; align-items: center; }
-  .bignum { text-align: center; }
-  .bignum .v { font-size: 3rem; font-weight: 740; letter-spacing: -.03em; line-height: 1; color: var(--brass); font-variant-numeric: tabular-nums; }
-  .bignum .l { font-family: var(--mono); font-size: .68rem; color: var(--faint); margin-top: 9px; letter-spacing: .04em; }
-  .gate { display: inline-flex; align-items: center; gap: 7px; margin-top: 13px; font-family: var(--mono); font-size: .66rem; padding: 5px 11px; border-radius: 999px; color: var(--good); background: var(--good-bg); border: 1px solid var(--good-line); }
-  .bars { display: flex; flex-direction: column; gap: 9px; }
-  .bar { display: grid; grid-template-columns: 84px 1fr 44px; align-items: center; gap: 12px; font-family: var(--mono); font-size: .71rem; }
-  .bar .n { color: var(--muted); }
-  .bar .track { height: 7px; border-radius: 5px; background: var(--bg-2); overflow: hidden; border: 1px solid var(--line); }
-  .bar .fill { height: 100%; width: 0; border-radius: 5px; background: linear-gradient(90deg, var(--brass), var(--brass-2)); transition: width .9s cubic-bezier(.2,.8,.2,1); }
-  .bar .p { text-align: right; color: var(--text); font-variant-numeric: tabular-nums; }
-
-  .strip { display: flex; gap: 11px; overflow-x: auto; padding: 4px 2px 12px; scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; }
-  .strip::-webkit-scrollbar { height: 6px; }
-  .strip::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 4px; }
-  .rcard { flex: 0 0 auto; width: 168px; text-align: left; cursor: pointer; color: var(--text); font-family: var(--sans);
-    background: linear-gradient(180deg, var(--card), var(--bg-2)); border: 1px solid var(--line); border-radius: 11px; padding: 12px 13px;
-    transition: transform .16s ease, border-color .16s ease; }
-  .rcard:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--brass) 40%, var(--line)); }
-  .rcard:focus-visible { outline: 2px solid var(--steel); outline-offset: 2px; }
-  .rcard.sel { border-color: var(--brass); box-shadow: 0 0 0 1px var(--brass); }
-  .rcard .m { font-weight: 620; font-size: .88rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .rcard .meta { display: flex; align-items: baseline; justify-content: space-between; margin-top: 8px; }
-  .rcard .amt { font-family: var(--mono); font-weight: 620; color: var(--brass); font-variant-numeric: tabular-nums; font-size: .82rem; }
-  .rcard .it { font-family: var(--mono); font-size: .66rem; color: var(--faint); }
-
-  .btn { font-family: var(--sans); font-weight: 620; font-size: .84rem; padding: 10px 17px; border-radius: 10px; border: 0; cursor: pointer; transition: transform .16s ease, box-shadow .16s ease; }
-  .btn.brass { background: linear-gradient(135deg, var(--brass), var(--brass-2)); color: #1B160B; box-shadow: 0 8px 20px rgba(198,169,104,.2); }
-  .btn.brass:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(198,169,104,.3); }
-  .btn.ghost { background: color-mix(in srgb, var(--steel) 12%, transparent); color: var(--steel-2); border: 1px solid color-mix(in srgb, var(--steel) 36%, transparent); }
-  .btn.ghost:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(112,137,176,.2); }
-  .btn:focus-visible { outline: 2px solid var(--steel); outline-offset: 2px; }
-  .btn[disabled] { opacity: .55; cursor: default; transform: none; box-shadow: none; }
-
-  footer { margin-top: 46px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--faint); font-size: .78rem; font-family: var(--mono); display: flex; flex-wrap: wrap; gap: 6px 20px; }
-  footer b { color: var(--muted); font-weight: 500; }
-
-  .rise { opacity: 0; transform: translateY(12px); animation: rise .7s cubic-bezier(.2,.8,.2,1) forwards; }
-  .d1 { animation-delay: .04s } .d2 { animation-delay: .1s } .d3 { animation-delay: .18s } .d4 { animation-delay: .26s }
-  @keyframes rise { to { opacity: 1; transform: none; } }
-
-  @media (max-width: 780px) {
-    .grid { grid-template-columns: 1fr; }
-    .help { grid-template-columns: 1fr; }
-    .steps { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); padding-top: 18px; }
-    .evalcard .panel-b { grid-template-columns: 1fr; }
-    .bignum { display: flex; align-items: center; justify-content: center; gap: 18px; }
-    .byo-b { grid-template-columns: 1fr; }
-    .byo-in { border-right: 0; border-bottom: 1px solid var(--line); }
+  @media (max-width: 820px) {
+    .head, .bench, .lab, .byo { grid-template-columns: minmax(0, 1fr); }
+    .picks { grid-template-columns: 1fr 1fr; }
+    .totals { grid-template-columns: 1fr 1fr; }
+    .totals div:nth-child(3) { padding-left: 0; border-left: 0; }
+    .totals div:nth-child(n+3) { border-top: 1px solid var(--rule); }
+    .photo img, .frame { max-width: 280px; }
+  }
+  @media (max-width: 520px) {
+    .meta { grid-template-columns: 1fr 1fr; }
+    .meta div:nth-child(3) { grid-column: 1 / -1; padding-left: 0; border-left: 0; border-top: 1px solid var(--rule); }
+    .gold { grid-template-columns: minmax(0, 1fr); }
+    .lines li { grid-template-columns: auto 1fr auto; }
+    .lines .c { display: none; }
+    .ends span:last-child { text-align: right; }
   }
   @media (prefers-reduced-motion: reduce) {
-    * { animation: none !important; transition: none !important; scroll-behavior: auto; }
-    .rise, .json .ln { opacity: 1; transform: none; }
+    *, *::before, *::after { transition-duration: 0ms !important; animation-duration: 0ms !important; }
   }
-  /* v2 additions */
-  .banner { margin-top: 18px; padding: 12px 16px; border: 1px solid color-mix(in srgb, var(--steel) 40%, var(--line)); border-radius: 12px; background: color-mix(in srgb, var(--steel) 10%, transparent); font-size: .9rem; color: var(--text); max-width: 760px; }
-  .banner b { color: var(--steel-2); }
-  .shot { padding: 14px; display: grid; place-items: center; min-height: 260px; }
-  .shot img { max-width: 100%; max-height: 520px; border-radius: 8px; border: 1px solid var(--line); background: #fff; }
-  .status.rev { color: var(--brass-2); background: color-mix(in srgb, var(--brass) 14%, transparent); border: 1px solid color-mix(in srgb, var(--brass) 38%, transparent); }
-  .status.rev::before { background: var(--brass); }
-  .why2 { padding: 10px 15px; font-family: var(--mono); font-size: .7rem; color: var(--muted); border-bottom: 1px solid var(--line); }
-  .conf { display: inline-block; width: 46px; height: 5px; border-radius: 3px; background: var(--bg-2); border: 1px solid var(--line); vertical-align: middle; overflow: hidden; }
-  .conf i { display: block; height: 100%; background: var(--steel-2); }
-  .idcard { margin: 14px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; font-family: var(--mono); font-size: .72rem; color: var(--muted); }
-  .idcard b { color: var(--text); }
-  .chart { padding: 16px; }
-  .chart svg { width: 100%; height: auto; display: block; }
-  .chart .axis { stroke: var(--line-2); }
-  .chart text { fill: var(--faint); font-family: var(--mono); font-size: 10px; }
-  .slider { display: flex; align-items: center; gap: 14px; padding: 0 16px 16px; flex-wrap: wrap; }
-  .slider input[type=range] { flex: 1 1 260px; accent-color: var(--brass); }
-  .readout { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; padding: 0 16px 16px; }
-  .tile { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: color-mix(in srgb, var(--card-2) 55%, transparent); }
-  .tile .v { font-size: 1.4rem; font-weight: 700; color: var(--brass); font-variant-numeric: tabular-nums; }
-  .tile .l { font-family: var(--mono); font-size: .66rem; color: var(--faint); }
-  .rel { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; padding: 16px; }
-  .rel .cell { border: 1px solid var(--line); border-radius: 10px; padding: 10px; }
-  .rel .cell h4 { margin: 0 0 6px; font-size: .8rem; font-weight: 620; }
-  .rel .cell p { margin: 6px 0 0; font-family: var(--mono); font-size: .66rem; color: var(--faint); }
-  table.t { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: .72rem; }
-  table.t th, table.t td { padding: 7px 10px; border-bottom: 1px solid var(--line); text-align: right; }
-  table.t th:first-child, table.t td:first-child { text-align: left; }
-  table.t th { color: var(--faint); font-weight: 500; }
-  .tw { padding: 6px 16px 16px; overflow-x: auto; }
-  .fine { padding: 0 16px 14px; font-size: .8rem; color: var(--muted); }
 </style>
 </head>
 <body>
-  <div class="aura" id="aura"></div>
-  <div class="grain"></div>
+<a class="skip" href="#main">Skip to the demo</a>
+<div class="counter">
+<main class="roll" id="main">
+  <header class="head">
+    <h1>Docket</h1>
+    <p class="lede">Docket reads a receipt photo and stores it as checked data. Every field gets a confidence score, and a receipt goes to a person when any field looks doubtful.</p>
+    <dl class="meta">
+      <div><dt>Source</dt><dd>recorded results</dd></div>
+      <div><dt>Model on this page</dt><dd>none</dd></div>
+      <div><dt>Test receipts</dt><dd id="metaTest">-</dd></div>
+    </dl>
+    <p class="notice"><strong>This page replays recorded results.</strong> Every number and receipt below came from an earlier model run and was saved. Nothing here calls a model. The small model is Qwen 3.5 9B on a local GPU. The Claude numbers come from saved Bedrock responses.</p>
+  </header>
 
-  <div class="shell">
-    <header class="rise d1">
-      <div class="brand"><span class="mark"><i></i></span> Docket</div>
-      <div class="hbadges">
-        <span class="pill"><span class="dot"></span> recorded results</span>
-        <span class="pill">no backend, no model on this page</span>
-      </div>
-    </header>
-
-    <section class="hero">
-      <p class="eyebrow rise d1">Receipts to checked data</p>
-      <h1 class="rise d2">Which receipts can skip a person, <span class="g">and how sure are we?</span></h1>
-      <p class="sub rise d3">Docket reads a receipt and stores it as clean data, but only after a strict format check. Each field also gets a confidence score, and a receipt goes to a person when any field looks doubtful.</p>
-      <div class="banner rise d4"><b>This page runs on recorded results.</b> Every number and every receipt below was produced earlier by a real model run and saved. Nothing here calls a model. The small model is Qwen 3.5 9B running locally; the results for Claude come from the saved Bedrock responses.</div>
-    </section>
-
-    <p class="section-title">Four receipts</p>
-    <div class="scn" id="scn"></div>
-
-    <div class="grid">
-      <div class="panel">
-        <div class="panel-h"><span class="t">Receipt</span><span class="r" id="inMeta">pick one above</span></div>
-        <div id="left"><div class="empty"><span>Pick a receipt above.</span></div></div>
-      </div>
-      <div class="panel">
-        <div class="panel-h"><span class="t">What Docket did</span><span class="r" id="resMeta"></span></div>
-        <div class="note" id="note"></div>
-        <div class="result" id="result"><div class="empty"><span>The stored result, each field's confidence, and whether a person is needed show up here.</span></div></div>
+  <section aria-labelledby="h-rec">
+    <h2 id="h-rec">Four receipts</h2>
+    <p class="intro">Pick one to see what Docket stored, how sure it was of each field, and where the receipt went.</p>
+    <div class="picks" id="scn"></div>
+    <div class="bench">
+      <div class="photo" id="left"></div>
+      <div class="printout">
+        <p class="note" id="note"></p>
+        <div class="result" id="result" aria-live="polite"></div>
       </div>
     </div>
     <p class="fine" id="attrib"></p>
+  </section>
 
-    <p class="section-title">Straight through or review</p>
-    <div class="panel">
-      <div class="panel-h"><span class="t">Drag the threshold</span><span class="r" id="stpMeta"></span></div>
-      <div class="chart" id="stpChart"></div>
-      <div class="slider">
-        <span class="t" style="font-family:var(--mono);font-size:.72rem;color:var(--faint)">threshold</span>
-        <input type="range" id="thr" min="0" max="200" step="1" value="180" aria-label="confidence threshold" />
-        <span id="thrVal" style="font-family:var(--mono)">0.90</span>
+  <section aria-labelledby="h-stp">
+    <h2 id="h-stp">Straight through, or to a person</h2>
+    <p class="intro">Drag the red line. A receipt skips the person only when its least confident field clears the line. Each slip below is one of the <span id="stpN">-</span> test receipts, judged on calibrated confidence.</p>
+    <div class="tape" id="tape">
+      <div class="track" id="track">
+        <div class="handle" id="thr" role="slider" tabindex="0" aria-label="Confidence threshold" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0.945"><span class="tab" id="thrVal">0.945</span></div>
       </div>
-      <div class="readout" id="readout"></div>
-      <p class="fine" id="stpNote"></p>
+      <div class="scale" aria-hidden="true"><span style="left:0">0</span><span style="left:25%">0.25</span><span style="left:50%">0.50</span><span style="left:75%">0.75</span><span style="left:100%">1</span></div>
+      <div class="ends" aria-hidden="true"><span>lower: more go straight through</span><span>higher: more go to a person</span></div>
     </div>
-
-    <p class="section-title">Is the confidence honest?</p>
-    <div class="panel">
-      <div class="panel-h"><span class="t">Reliability per field, test split</span><span class="r">bar height is how often fields in that bin were right</span></div>
-      <div class="rel" id="rel"></div>
-      <p class="fine">A score that tells the truth puts each bar on the dashed line. Red is the confidence the model writes down itself. Blue is the same field after calibration on receipts the model had not been scored on.</p>
+    <div class="presets" id="presets"><span class="lbl">Thresholds set on the validation receipts for a field error budget of</span></div>
+    <div class="piles" id="piles">
+      <div class="pile st"><header><h3>Straight through</h3><span class="count" id="nSt">0</span></header><div class="well" id="wellSt"></div></div>
+      <div class="pile pp"><header><h3>To a person</h3><span class="count" id="nPp">0</span></header><div class="well" id="wellPp"></div></div>
+      <div class="slips" id="slips" aria-hidden="true"></div>
     </div>
+    <dl class="totals" id="readout">
+      <div><dt>Straight through</dt><dd id="rStp">-</dd></div>
+      <div><dt>Field error among them</dt><dd id="rErr">-</dd></div>
+      <div><dt>Receipts passed</dt><dd id="rPass">-</dd></div>
+      <div><dt>Wrong fields passed</dt><dd id="rWrong">-</dd></div>
+    </dl>
+    <div class="chart" id="stpChart"></div>
+    <div class="key"><span><i></i>calibrated confidence</span><span><i class="d"></i>confidence the model states</span></div>
+    <p class="fine" id="stpNote"></p>
+  </section>
 
-    <p class="section-title">Which model reads it</p>
-    <div class="panel">
-      <div class="panel-h"><span class="t">Router and cost</span><span class="r">decided from the image, before any model call</span></div>
-      <div class="readout" id="routeTiles" style="padding-top:16px"></div>
-      <div class="tw" id="pathTable"></div>
-      <p class="fine" id="costNote"></p>
+  <section aria-labelledby="h-dmg">
+    <h2 id="h-dmg">When the photo is bad</h2>
+    <p class="intro">Damage the real receipt photo the way the robustness suite did. Next to each slider is the field accuracy recorded at the nearest level the suite measured.</p>
+    <div class="lab">
+      <figure class="dmg">
+        <div class="frame"><img id="dmgImg" src="v2/standard.jpg" loading="lazy" decoding="async" alt="The selected receipt photo with the chosen damage applied" width="520" height="780" /></div>
+        <figcaption id="dmgCap"></figcaption>
+      </figure>
+      <div>
+        <div class="dials" id="dials"></div>
+        <p class="resetrow"><button class="btn" id="dmgReset" type="button" disabled>Undo all damage</button></p>
+      </div>
     </div>
+    <p class="fine" id="dmgNote"></p>
+    <div class="tw" id="pertTable"></div>
+    <p class="fine" id="homNote"></p>
+  </section>
 
-    <p class="section-title">When the photo is bad</p>
-    <div class="panel">
-      <div class="panel-h"><span class="t">Field accuracy under damage</span><span class="r" id="pertMeta"></span></div>
-      <div class="tw" id="pertTable" style="padding-top:14px"></div>
-      <p class="fine" id="homNote"></p>
-    </div>
+  <section aria-labelledby="h-rel">
+    <h2 id="h-rel">Is the confidence honest?</h2>
+    <p class="intro">Each bar is how often fields in that confidence bin were right on the test split. A score that tells the truth puts every bar on the dashed line. Grey is the confidence the model writes down. Black is the same field after calibration on receipts it had not been scored on.</p>
+    <div class="rel" id="rel"></div>
+  </section>
 
-    <p class="section-title">Check your own photo</p>
-    <div class="panel byo">
-      <div class="panel-h"><span class="t">Upload</span><span class="r">recorded results only</span></div>
-      <div class="byo-b">
-        <div class="byo-in">
-          <div class="drop" id="drop" tabindex="0" role="button" aria-label="Upload a receipt photo">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 15V4m0 0L8 8m4-4l4 4"/><path d="M4 15v3a2 2 0 002 2h12a2 2 0 002-2v-3"/></svg>
-            <div class="dt">Drop a JPEG or PNG here, or <span class="lnk">choose a file</span></div>
-            <div class="dh">It stays in your browser. Nothing is uploaded anywhere.</div>
-            <input type="file" id="file" accept="image/png,image/jpeg,.png,.jpg,.jpeg" hidden />
-          </div>
-          <p class="byo-hint">If the photo is one of the recorded receipts above, you get its saved result. For any other photo this page measures the image the way the router does and tells you which model it would go to. Reading the fields needs a model, which this page does not have.</p>
+  <section aria-labelledby="h-route">
+    <h2 id="h-route">Which model reads it</h2>
+    <p class="intro">Before any model call, a router looks at the photo and picks the small local model or Claude.</p>
+    <ul class="ledger" id="routeTiles"></ul>
+    <div class="tw" id="pathTable"></div>
+    <p class="fine" id="costNote"></p>
+  </section>
+
+  <section aria-labelledby="h-byo">
+    <h2 id="h-byo">Check your own photo</h2>
+    <div class="byo">
+      <div>
+        <div class="drop" id="drop" tabindex="0" role="button" aria-label="Choose a receipt photo">
+          <span class="dt">Drop a JPEG or PNG, or <u>choose a file</u></span>
+          <span class="dh">It stays in your browser. Nothing is uploaded.</span>
+          <input type="file" id="file" accept="image/png,image/jpeg,.png,.jpg,.jpeg" hidden />
         </div>
-        <div class="byo-out" id="byoOut"><div class="empty"><span>Your photo's route shows up here.</span></div></div>
+        <p class="byo-hint">If the photo is one of the recorded receipts, you get its saved result. For any other photo this page measures the image the way the router does and says which model it would go to. Reading the fields needs a model, and this page has none.</p>
       </div>
+      <div class="out" id="byoOut" aria-live="polite"><p class="empty">Your photo's route shows up here.</p></div>
     </div>
+  </section>
 
-    <p class="section-title" id="evalTitle">The 42 hand checked receipts</p>
-    <div class="panel evalcard">
-      <div class="panel-h"><span class="t">Claude Haiku 4.5, saved Bedrock responses</span><span class="r">replayed on every change</span></div>
-      <div class="panel-b">
-        <div class="bignum"><div><div class="v" id="evalOverall">-</div><div class="l">field accuracy</div></div></div>
-        <div><div class="bars" id="bars"></div></div>
-      </div>
+  <section aria-labelledby="evalTitle">
+    <h2 id="evalTitle">The 42 hand checked receipts</h2>
+    <p class="intro">Claude Haiku 4.5 on the text of 42 receipts labelled by hand, replayed from saved Bedrock responses.</p>
+    <div class="gold">
+      <div><div class="big" id="evalOverall">-</div><p>field accuracy</p></div>
+      <ul class="ledger" id="bars"></ul>
     </div>
+  </section>
 
-    <footer>
-      <span><b>Recorded results.</b> No model runs on this page.</span>
-      <span>Receipt images: CORD v2, CC BY 4.0.</span>
-    </footer>
-  </div>
+  <footer>
+    <span><strong>Recorded results.</strong> No model runs on this page.</span>
+    <span>Receipt images: CORD v2, CC BY 4.0.</span>
+  </footer>
+</main>
+</div>
+<noscript><p style="text-align:center;padding:16px">This demo draws its receipts and charts with JavaScript.</p></noscript>
 
 <script>
   const $ = (s) => document.querySelector(s);
   const D = window.__DOCKET__;
   const V = D.v2;
-  const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  const RM = matchMedia('(prefers-reduced-motion: reduce)');
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const pct = (x) => (x === null || x === undefined ? 'n/a' : (x * 100).toFixed(1) + '%');
   const num = (x, d = 3) => (x === null || x === undefined ? 'n/a' : Number(x).toFixed(d));
   const LAB = { lineItems: 'items', paymentMethod: 'payment' };
   const lab = (f) => LAB[f] || f;
+  const leader = (l, v, cls = '') => `<li class="${cls}"><span>${l}</span><span class="dots"></span><span class="v">${v}</span></li>`;
+
+  // Numbers count to their new value so a change reads as a change. Each element
+  // keeps its own frame handle, so a new target mid-count starts from where it is.
+  function tick(el, to, fmt) {
+    if (!el) return;
+    const from = el._v;
+    el._v = to;
+    cancelAnimationFrame(el._raf);
+    if (from === undefined || from === to || RM.matches || !Number.isFinite(from) || !Number.isFinite(to)) { el.textContent = fmt(to); return; }
+    const t0 = performance.now(), dur = 260;
+    const step = (now) => {
+      const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+      el.textContent = fmt(from + (to - from) * e);
+      if (k < 1) el._raf = requestAnimationFrame(step);
+    };
+    el._raf = requestAnimationFrame(step);
+  }
 
   function highlight(obj) {
     const raw = esc(JSON.stringify(obj, null, 2));
-    return raw.split('\n').map((line) => {
-      const h = line.replace(/("(?:[^"\\]|\\.)*"\s*:)|("(?:[^"\\]|\\.)*")|(-?\d+(?:\.\d+)?)|(true|false|null)/g,
-        (m, key, str, n, b) => key ? `<span class="key">${key}</span>` : str ? `<span class="str">${str}</span>` : n ? `<span class="num">${n}</span>` : `<span class="bool">${b}</span>`);
-      return `<span class="ln">${h}</span>`;
-    }).join('');
+    return raw.replace(/("(?:[^"\\]|\\.)*"\s*:)|("(?:[^"\\]|\\.)*")|(-?\d+(?:\.\d+)?)|(true|false|null)/g,
+      (m, key, str, n, b) => key ? `<span class="key">${key}</span>` : str ? `<span class="str">${str}</span>` : n ? `<span class="n">${n}</span>` : `<span class="key">${b}</span>`);
   }
 
   /* the four receipts */
   const EX = V.examples || {};
   const SCN = [
-    { key: 'standard', color: 'var(--good)', title: 'A standard receipt', desc: 'Clean photo, every field read right.' },
-    { key: 'hard', color: 'var(--bad)', title: 'A hard receipt', desc: 'The model gets a field wrong. Does the confidence notice?' },
-    { key: 'blurred', color: 'var(--steel)', title: 'A blurred receipt', desc: 'The same kind of photo, blurred on purpose.' },
-    { key: 'pair', color: 'var(--brass)', title: 'Two near identical receipts', desc: 'Same shop, same layout. Can they be told apart?' },
+    { key: 'standard', title: 'A standard receipt', desc: 'Clean photo, every labelled field read right.' },
+    { key: 'hard', title: 'A hard receipt', desc: 'The model gets fields wrong. Does the confidence notice?' },
+    { key: 'blurred', title: 'A blurred receipt', desc: 'The same kind of photo, blurred on purpose.' },
+    { key: 'pair', title: 'Two near identical receipts', desc: 'Same shop, same layout. Can they be told apart?' },
   ];
+  let current = 'standard';
 
-  function statusOf(e) {
-    if (e.status === 'FAILED') return '<span class="status fail pop">failed the format check</span>';
-    return e.needsReview ? '<span class="status rev pop">needs a person</span>' : '<span class="status ok pop">straight through</span>';
+  function stampOf(e) {
+    if (e.status === 'FAILED') return '<span class="stamp fail">Failed the format check</span>';
+    return e.needsReview ? '<span class="stamp pp">To a person</span>' : '<span class="stamp st">Straight through</span>';
   }
 
-  function fieldRow(f) {
-    const bar = f.confidence === null ? '' : `<span class="conf" title="confidence ${f.confidence}"><i style="width:${(f.confidence * 100).toFixed(0)}%"></i></span> ${num(f.confidence, 2)}`;
-    const show = (v) => v === null ? 'empty' : typeof v === 'object' ? (Array.isArray(v) ? v.length + ' lines' : '...') : String(v);
-    const diff = f.correct ? '' : ` <span class="diff"><s>${esc(show(f.predicted))}</s> to <em>${esc(show(f.label))}</em></span>`;
-    return `<span class="fchip ${f.correct ? 'ok' : 'bad'}"><span class="ic">${f.correct ? '✓' : '✕'}</span>${lab(f.field)} ${bar}${diff}</span>`;
+  function fieldLine(f) {
+    const show = (v) => v === null ? 'empty' : typeof v === 'object' ? (Array.isArray(v) ? v.length + (v.length === 1 ? ' line' : ' lines') : '…') : String(v);
+    const conf = f.confidence === null ? 'n/a' : num(f.confidence, 2);
+    const labelRow = f.correct ? '' : `<span class="lab">label says ${esc(show(f.label))}</span>`;
+    return `<li><span class="f">${lab(f.field)}</span><span class="v">${esc(show(f.predicted))}</span><span class="c" title="confidence">${conf}</span><span class="${f.correct ? 'ok' : 'no'}">${f.correct ? 'right' : 'wrong'}</span>${labelRow}</li>`;
   }
 
-  function showOne(e, note) {
-    $('#left').innerHTML = `<div class="shot"><img src="${e.image.file}" alt="receipt photo ${esc(e.id)}" /></div>`;
-    $('#inMeta').textContent = e.id + (e.variant !== 'clean' ? ', ' + e.variant : '');
-    $('#resMeta').textContent = 'route: small model';
-    $('#note').className = 'note show'; $('#note').innerHTML = `<b>What this shows.</b> ${note}`;
-    $('#result').innerHTML = `<div class="rhead">${statusOf(e)}</div>
-      <div class="why2">${esc(e.reason)}</div>
-      <div class="fields" style="padding-top:12px">${e.fields.map(fieldRow).join('')}</div>
-      ${e.receipt ? `<pre class="json">${highlight(e.receipt)}</pre>` : `<div class="badout">${esc(e.failureReason || '')}</div>`}`;
+  function lineHead() {
+    return '<li style="color:var(--ink-3);font-size:.72rem"><span>field</span><span class="v" style="color:inherit">read as</span><span class="c" style="color:inherit">conf.</span><span style="min-width:4.4em;text-align:right">check</span></li>';
+  }
+
+  // One authored moment: the result feeds out of the printer top first, and the
+  // stamp lands once the paper is out. Reduced motion keeps only a short fade.
+  function printIn(el) {
+    if (!el.animate) return;
+    el.getAnimations().forEach((a) => a.cancel());
+    if (RM.matches) { el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 150, easing: 'ease' }); return; }
+    el.animate([{ clipPath: 'inset(0 0 100% 0)', transform: 'translateY(-10px)' }, { clipPath: 'inset(0 0 0% 0)', transform: 'none' }], { duration: 420, easing: 'cubic-bezier(.23,1,.32,1)' });
+    el.querySelectorAll('.stamp').forEach((s, i) => s.animate(
+      [{ opacity: 0, transform: 'rotate(-3deg) scale(1.12)' }, { opacity: 1, transform: 'rotate(-3deg) scale(1)' }],
+      { duration: 200, delay: 300 + i * 80, easing: 'cubic-bezier(.23,1,.32,1)', fill: 'backwards' }));
+  }
+
+  function showOne(e, note, animate) {
+    $('#left').innerHTML = `<img src="${esc(e.image.file)}" alt="Receipt photo ${esc(e.id)}${e.variant !== 'clean' ? ', ' + esc(e.variant) : ''}" width="520" height="780" /><figcaption>${esc(e.id)}${e.variant !== 'clean' ? ', ' + esc(e.variant) : ''}, read by the small model</figcaption>`;
+    $('#note').innerHTML = `<b>What this shows.</b> ${note}`;
+    $('#result').innerHTML = `<div class="stamprow">${stampOf(e)}<span class="why">${esc(e.reason)}</span></div>
+      <ul class="lines">${lineHead()}${e.fields.map(fieldLine).join('')}</ul>
+      ${e.receipt ? `<details class="stored"><summary>What was stored</summary><pre class="json">${highlight(e.receipt)}</pre></details>` : `<div class="badout">${esc(e.failureReason || '')}</div>`}`;
+    if (animate) printIn($('#result'));
   }
 
   function notes(e, kind) {
@@ -428,17 +497,22 @@
     return what + (e.needsReview ? 'The confidence was low enough to send it to a person, so the mistake does not go through unseen.' : 'The confidence did not catch it, so this one would have gone through wrong. It is shown because it happened.');
   }
 
-  function showPair() {
+  function showPair(animate) {
     const p = EX.pair;
-    $('#left').innerHTML = p.items.map((it, i) => `<div class="idcard"><b>Receipt ${i + 1}</b>, ${esc(p.merchant)}<br/>document id ${esc(it.docId.slice(0, 24))}...</div>`).join('') +
-      '<p class="fine">These two come from SROIE, which is shown as values rather than pictures.</p>';
-    $('#inMeta').textContent = 'same merchant, same template';
-    $('#resMeta').textContent = '';
+    $('#left').innerHTML = p.items.map((it, i) => `<div class="stub"><b>Receipt ${i + 1}</b><br/>${esc(p.merchant)}<br/>document id ${esc(it.docId.slice(0, 20))}…</div>`).join('') +
+      '<p class="fine" style="max-width:360px">These two come from SROIE, which is shown as values rather than pictures.</p>';
     const same = p.items[0].docId === p.items[1].docId;
-    $('#note').className = 'note show';
     $('#note').innerHTML = `<b>What this shows.</b> The document id is a hash of the file, so two receipts that look alike still get ${same ? 'the same id, which is a bug' : 'different ids'}. ${p.swaps.length ? 'Here a value from one receipt turned up in the other: ' + esc(p.swaps.join(', ')) + '.' : 'No value from one receipt turned up in the other.'}`;
-    $('#result').innerHTML = p.items.map((it, i) => `<div class="rhead">${statusOf(it)}<span class="doc">receipt ${i + 1}</span></div>
-      <div class="fields" style="padding-top:12px">${it.fields.map(fieldRow).join('')}</div>`).join('');
+    $('#result').innerHTML = p.items.map((it, i) => `<p class="pairhead">Receipt ${i + 1}</p><div class="stamprow">${stampOf(it)}<span class="why">${esc(it.reason)}</span></div>
+      <ul class="lines">${lineHead()}${it.fields.map(fieldLine).join('')}</ul>`).join('');
+    if (animate) printIn($('#result'));
+  }
+
+  function select(key, animate) {
+    current = key;
+    document.querySelectorAll('.pick').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.key === key)));
+    if (key === 'pair') showPair(animate); else showOne(EX[key], notes(EX[key], key), animate);
+    loadDamageImage();
   }
 
   function renderScn() {
@@ -446,97 +520,361 @@
     SCN.forEach((s) => {
       if (!EX[s.key]) return;
       const b = document.createElement('button');
-      b.className = 'scard';
-      b.innerHTML = `<div class="st"><span class="glyph" style="background:${s.color}"></span><h3>${s.title}</h3></div><p>${s.desc}</p><span class="go">show &rarr;</span>`;
-      b.addEventListener('click', () => {
-        document.querySelectorAll('.scard').forEach((c) => c.classList.remove('sel')); b.classList.add('sel');
-        if (s.key === 'pair') showPair(); else showOne(EX[s.key], notes(EX[s.key], s.key));
-      });
+      b.type = 'button';
+      b.className = 'btn pick';
+      b.dataset.key = s.key;
+      b.setAttribute('aria-pressed', 'false');
+      b.innerHTML = `<b>${s.title}</b><span>${s.desc}</span>`;
+      b.addEventListener('click', () => select(s.key, true));
       box.appendChild(b);
     });
     if (EX.attribution) $('#attrib').textContent = EX.attribution;
+    if (EX.standard) select('standard', false);
   }
 
-  /* STP curve with a draggable threshold */
-  const W = 560, H = 260, ML = 48, MB = 32, MT = 12, MR = 16;
+  /* threshold, piles and the STP curve */
+  let W = 640, H = 250;
+  const ML = 48, MB = 34, MT = 24, MR = 12;
+  let cal = [], thr = 0.945, N = 0;
+  const pointAt = (t) => cal.reduce((a, b) => (Math.abs(b.threshold - t) < Math.abs(a.threshold - t) ? b : a));
+  const snap = (t) => Math.round(Math.min(1, Math.max(0, t)) * 200) / 200;
+  let xS, yS;
+
+  function renderChart() {
+    W = Math.max(300, Math.round($('#stpChart').getBoundingClientRect().width)); H = W < 520 ? 220 : 260;
+    const ver = V.stp.curveVerbalized;
+    const yMax = Math.max(0.02, ...cal.map((p) => p.fieldErrorRate), ...ver.map((p) => p.fieldErrorRate));
+    xS = (v) => ML + v * (W - ML - MR); yS = (v) => H - MB - (v / yMax) * (H - MB - MT);
+    const path = (pts) => pts.map((p, i) => `${i ? 'L' : 'M'}${xS(p.stpRate).toFixed(1)},${yS(p.fieldErrorRate).toFixed(1)}`).join('');
+    const ticks = [0, 0.25, 0.5, 0.75, 1];
+    $('#stpChart').innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Share of receipts sent straight through against the field error among them, for calibrated and stated confidence">
+      ${ticks.map((t) => `<line class="grid-l" x1="${xS(0)}" x2="${xS(1)}" y1="${yS(t * yMax)}" y2="${yS(t * yMax)}"/><text x="${xS(0) - 8}" y="${yS(t * yMax) + 3}" text-anchor="end">${(t * yMax * 100).toFixed(1)}%</text><text x="${xS(t)}" y="${H - 16}" text-anchor="middle">${t * 100}%</text>`).join('')}
+      <line class="axis-l" x1="${xS(0)}" x2="${xS(1)}" y1="${yS(0)}" y2="${yS(0)}"/>
+      <path class="ver" d="${path(ver)}"/>
+      <path class="cal" d="${path(cal)}"/>
+      <line class="cross" id="crossX"/><line class="cross" id="crossY"/>
+      <circle class="dot" id="dot" r="6"/>
+      <text x="${(ML + W) / 2}" y="${H}" text-anchor="middle">share of receipts that skip the person</text>
+      <text x="${ML}" y="${MT - 12}">field error among them</text>
+    </svg>`;
+  }
+
+  /* slips: one per test receipt, sprung between the two piles */
+  const slips = [];
+  let geo = null, raf = 0, dealt = false;
+  // Slightly under damped: the drag carries momentum, so a small settle reads as weight.
+  const RESP = 0.42, ZETA = 0.8, K = Math.pow(2 * Math.PI / RESP, 2), C = 4 * Math.PI * ZETA / RESP;
+
+  function buildSlips() {
+    const layer = $('#slips');
+    let seed = 7;
+    const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+    for (let i = 0; i < N; i++) {
+      const el = document.createElement('div');
+      el.className = 'slip';
+      layer.appendChild(el);
+      slips.push({ el, i, x: 0, y: 0, vx: 0, vy: 0, tx: 0, ty: 0, rot: (rnd() - 0.5) * 7, start: 0, st: false });
+    }
+  }
+
+  // Measure once per resize, never during the animation.
+  function measure() {
+    const host = $('#piles').getBoundingClientRect();
+    const wSt = $('#wellSt'), wPp = $('#wellPp');
+    const width = wSt.getBoundingClientRect().width;
+    const sw = width < 220 ? 10 : 14, sh = Math.round(sw * 1.45), gap = width < 220 ? 3 : 4;
+    const cols = Math.max(4, Math.floor((width + gap) / (sw + gap)));
+    const rows = Math.ceil(N / cols);
+    const h = rows * (sh + gap) + 8;
+    wSt.style.height = wPp.style.height = h + 'px';
+    const a = wSt.getBoundingClientRect(), b = wPp.getBoundingClientRect();
+    geo = { sw, sh, gap, cols, st: { x: a.left - host.left, y: a.top - host.top, h }, pp: { x: b.left - host.left, y: b.top - host.top, h } };
+    slips.forEach((s) => { s.el.style.width = sw + 'px'; s.el.style.height = sh + 'px'; });
+  }
+
+  // Straight through fills from the lowest index and to a person from the highest,
+  // so a threshold change moves only the slips that actually change pile.
+  function targetOf(s, passed) {
+    const inSt = s.i < passed, k = inSt ? s.i : N - 1 - s.i, p = inSt ? geo.st : geo.pp;
+    const col = k % geo.cols, row = Math.floor(k / geo.cols);
+    return { inSt, x: p.x + col * (geo.sw + geo.gap), y: p.y + p.h - (row + 1) * (geo.sh + geo.gap) };
+  }
+
+  function place(s) { s.el.style.transform = `translate(${s.x.toFixed(1)}px,${s.y.toFixed(1)}px) rotate(${s.rot.toFixed(1)}deg)`; }
+
+  function retarget(passed, animate) {
+    if (!geo) return;
+    const now = performance.now();
+    let order = 0;
+    for (const s of slips) {
+      const t = targetOf(s, passed);
+      const moving = t.inSt !== s.st;
+      s.tx = t.x; s.ty = t.y;
+      if (moving) { s.st = t.inSt; s.el.classList.toggle('st', t.inSt); }
+      if (!animate || RM.matches) { s.x = s.tx; s.y = s.ty; s.vx = s.vy = 0; place(s); continue; }
+      // Deal the movers one after another, capped so a big jump still lands fast.
+      if (moving) s.start = now + Math.min(order++ * 7, 260);
+    }
+    if (animate && !RM.matches && !raf) { last = performance.now(); raf = requestAnimationFrame(frame); }
+  }
+
+  let last = 0;
+  function frame(now) {
+    const dt = Math.min(0.032, (now - last) / 1000);
+    last = now;
+    let busy = false;
+    for (const s of slips) {
+      if (now < s.start) { busy = true; continue; }
+      const dx = s.x - s.tx, dy = s.y - s.ty;
+      if (Math.abs(dx) < 0.3 && Math.abs(dy) < 0.3 && Math.abs(s.vx) < 4 && Math.abs(s.vy) < 4) {
+        if (dx || dy) { s.x = s.tx; s.y = s.ty; s.vx = s.vy = 0; place(s); }
+        continue;
+      }
+      s.vx += (-K * dx - C * s.vx) * dt; s.vy += (-K * dy - C * s.vy) * dt;
+      s.x += s.vx * dt; s.y += s.vy * dt;
+      place(s);
+      busy = true;
+    }
+    raf = busy ? requestAnimationFrame(frame) : 0;
+  }
+
+  let trackW = 0;
+  function setThreshold(t, animate = true) {
+    thr = snap(t);
+    const p = pointAt(thr);
+    const h = $('#thr');
+    h.style.transform = `translateX(${(thr * trackW).toFixed(1)}px)`;
+    h.setAttribute('aria-valuenow', thr.toFixed(3));
+    h.setAttribute('aria-valuetext', `${thr.toFixed(3)}, ${p.passed} of ${N} receipts straight through`);
+    $('#thrVal').textContent = thr.toFixed(3);
+    const d = $('#dot'), cx = xS(p.stpRate), cy = yS(p.fieldErrorRate);
+    d.setAttribute('cx', cx); d.setAttribute('cy', cy);
+    const X = $('#crossX'), Y = $('#crossY');
+    X.setAttribute('x1', cx); X.setAttribute('x2', cx); X.setAttribute('y1', cy); X.setAttribute('y2', yS(0));
+    Y.setAttribute('x1', xS(0)); Y.setAttribute('x2', cx); Y.setAttribute('y1', cy); Y.setAttribute('y2', cy);
+    tick($('#nSt'), p.passed, (v) => String(Math.round(v)));
+    tick($('#nPp'), N - p.passed, (v) => String(Math.round(v)));
+    tick($('#rStp'), p.stpRate, (v) => pct(v));
+    tick($('#rErr'), p.fieldErrorRate, (v) => pct(v));
+    $('#rPass').innerHTML = `${p.passed} <small>of ${N}</small>`;
+    $('#rWrong').innerHTML = `${p.fieldErrors} <small>of ${p.fields}</small>`;
+    document.querySelectorAll('#presets .btn').forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.t) === thr)));
+    if (dealt) retarget(p.passed, animate);
+  }
+
+  function wireTape() {
+    const track = $('#track'), tape = $('#tape'), h = $('#thr');
+    let drag = null;
+    const fromX = (x) => (x - drag.left - drag.offset) / drag.width;
+    tape.addEventListener('pointerdown', (e) => {
+      if (drag || (e.pointerType === 'mouse' && e.button !== 0)) return;
+      const r = track.getBoundingClientRect();
+      const onHandle = h.contains(e.target);
+      // Keep the grab offset on the handle, so it does not jump under the finger.
+      drag = { id: e.pointerId, left: r.left, width: r.width, offset: onHandle ? e.clientX - (r.left + thr * r.width) : 0 };
+      tape.setPointerCapture(e.pointerId);
+      h.classList.add('drag');
+      h.focus({ preventScroll: true });
+      setThreshold(fromX(e.clientX));
+      e.preventDefault();
+    });
+    tape.addEventListener('pointermove', (e) => { if (drag && e.pointerId === drag.id) setThreshold(fromX(e.clientX)); });
+    const end = (e) => { if (drag && e.pointerId === drag.id) { drag = null; h.classList.remove('drag'); } };
+    tape.addEventListener('pointerup', end);
+    tape.addEventListener('pointercancel', end);
+    h.addEventListener('keydown', (e) => {
+      const big = e.shiftKey ? 0.05 : 0.005;
+      const map = { ArrowRight: thr + big, ArrowUp: thr + big, ArrowLeft: thr - big, ArrowDown: thr - big, PageUp: thr + 0.05, PageDown: thr - 0.05, Home: 0, End: 1 };
+      if (e.key in map) { e.preventDefault(); setThreshold(map[e.key]); }
+    });
+  }
+
   function renderStp() {
     if (!V.stp) return;
-    const cal = V.stp.curveCalibrated, ver = V.stp.curveVerbalized;
-    const yMax = Math.max(0.02, ...cal.map((p) => p.fieldErrorRate), ...ver.map((p) => p.fieldErrorRate));
-    const x = (v) => ML + v * (W - ML - MR), y = (v) => H - MB - (v / yMax) * (H - MB - MT);
-    const path = (pts) => pts.map((p, i) => `${i ? 'L' : 'M'}${x(p.stpRate).toFixed(1)},${y(p.fieldErrorRate).toFixed(1)}`).join('');
-    const ticks = [0, 0.25, 0.5, 0.75, 1];
-    $('#stpChart').innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="share straight through against field error">
-      ${ticks.map((t) => `<line class="axis" x1="${x(0)}" x2="${x(1)}" y1="${y(t * yMax)}" y2="${y(t * yMax)}" stroke-opacity=".4"/><text x="${x(0) - 6}" y="${y(t * yMax) + 3}" text-anchor="end">${(t * yMax * 100).toFixed(1)}%</text><text x="${x(t)}" y="${H - 12}" text-anchor="middle">${t * 100}%</text>`).join('')}
-      <path d="${path(ver)}" fill="none" stroke="var(--bad)" stroke-width="2" stroke-dasharray="5 4"/>
-      <path d="${path(cal)}" fill="none" stroke="var(--steel-2)" stroke-width="2.2"/>
-      <line id="op" stroke="var(--good)" stroke-dasharray="3 3"/>
-      <circle id="dot" r="6" fill="var(--brass)" stroke="#000" stroke-opacity=".3"/>
-      <text x="${ML + 12}" y="${MT + 10}" fill="var(--steel-2)">calibrated</text>
-      <text x="${ML + 12}" y="${MT + 24}" fill="var(--bad)">what the model says</text>
-      <text x="${(ML + W) / 2}" y="${H}" text-anchor="middle">share of receipts with no person</text>
-    </svg>`;
-    const op = (V.stp.operating || []).find((o) => o.alpha === 0.01);
-    $('#stpMeta').textContent = `${V.stp.split.test} test receipts`;
-    const update = () => {
-      const t = Number($('#thr').value) / 200;
-      $('#thrVal').textContent = t.toFixed(3);
-      const p = cal.reduce((a, b) => (Math.abs(b.threshold - t) < Math.abs(a.threshold - t) ? b : a));
-      const d = $('#dot'); d.setAttribute('cx', x(p.stpRate)); d.setAttribute('cy', y(p.fieldErrorRate));
-      $('#readout').innerHTML = [
-        ['straight through', pct(p.stpRate)], ['field error among them', pct(p.fieldErrorRate)],
-        ['receipts passed', p.passed + ' of ' + V.stp.split.test], ['wrong fields passed', p.fieldErrors + ' of ' + p.fields],
-      ].map(([l, v]) => `<div class="tile"><div class="v">${v}</div><div class="l">${l}</div></div>`).join('');
-    };
+    cal = V.stp.curveCalibrated; N = V.stp.split.test;
+    $('#stpN').textContent = N; $('#metaTest').textContent = String(N);
+    renderChart();
+    const ops = V.stp.operating || [];
+    ops.forEach((o) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'btn';
+      b.textContent = `${(o.alpha * 100).toFixed(0)}%` + (o.threshold === null ? ', none found' : `, ${o.threshold}`);
+      b.setAttribute('aria-pressed', 'false');
+      if (o.threshold === null) b.disabled = true; else { b.dataset.t = String(snap(o.threshold)); b.addEventListener('click', () => setThreshold(o.threshold)); }
+      $('#presets').appendChild(b);
+    });
+    const op = ops.find((o) => o.alpha === 0.01);
     if (op && op.threshold !== null) {
-      $('#thr').value = Math.round(op.threshold * 200);
+      thr = op.threshold;
       $('#stpNote').textContent = `This curve judges each receipt on the fields calibrated for its kind of receipt. At 1 percent field error on the validation split the threshold is ${op.threshold}, and on the test split it lets through ${pct(op.test.stpRate)} of receipts with ${pct(op.test.fieldErrorRate)} field error. The pipeline today judges all six fields at once, and under that rule ${(V.stp.pooled || []).some((o) => o.test) ? 'fewer receipts pass' : 'no threshold met the budget, so it sends every small model receipt to a person'}.`;
     } else {
       $('#stpNote').textContent = 'No threshold kept field error at or under 1 percent on the validation split, so the pipeline sends every small model receipt to a person. The curve shows what looser budgets would buy.';
     }
-    $('#thr').addEventListener('input', update); update();
+    buildSlips();
+    wireTape();
+    const layout = () => {
+      trackW = $('#track').getBoundingClientRect().width;
+      renderChart();
+      measure();
+      if (!dealt) { for (const s of slips) { const t = targetOf(s, 0); s.x = s.tx = t.x; s.y = s.ty = t.y; place(s); } }
+      else retarget(pointAt(thr).passed, false);
+      setThreshold(thr, false);
+    };
+    layout();
+    new ResizeObserver(() => layout()).observe($('#piles'));
+    // The slips start in the person pile and are dealt out the first time the piles
+    // come into view, so the opening move shows what the threshold does.
+    const io = new IntersectionObserver((entries) => {
+      if (!entries.some((e) => e.isIntersecting)) return;
+      io.disconnect(); dealt = true; retarget(pointAt(thr).passed, true);
+    }, { threshold: 0.35 });
+    io.observe($('#piles'));
+  }
+
+  /* damage bench */
+  const LV = V.levels || { blur: [1, 2, 4], rotate: [5, 10, 20], dark: [0.6, 0.4, 0.25], jpeg: [30, 15, 5] };
+  const DIALS = [
+    { kind: 'blur', label: 'Blur', min: 0, max: 4, step: 0.1, clean: 0, fmt: (v) => v === 0 ? 'none' : `sigma ${v.toFixed(1)}`, lvl: (l) => `blur sigma ${l}` },
+    { kind: 'rotate', label: 'Tilt', min: 0, max: 20, step: 0.5, clean: 0, fmt: (v) => v === 0 ? 'none' : `${v.toFixed(1)} degrees`, lvl: (l) => `${l} degree tilt` },
+    { kind: 'dark', label: 'Darkness', min: 0.25, max: 1, step: 0.01, clean: 1, invert: true, fmt: (v) => v === 1 ? 'none' : `${Math.round(v * 100)}% brightness`, lvl: (l) => `${Math.round(l * 100)}% brightness` },
+    { kind: 'jpeg', label: 'Compression', min: 5, max: 90, step: 1, clean: 90, invert: true, fmt: (v) => v >= 90 ? 'none' : `JPEG quality ${v}`, lvl: (l) => `JPEG quality ${l}` },
+  ];
+  const dmg = { blur: 0, rotate: 0, dark: 1, jpeg: 90 };
+  const src = new Image();
+  let blobUrl = null, encoding = false, encodeAgain = false;
+  const byVariant = () => Object.fromEntries(((V.perturbation || {}).variants || []).map((v) => [v.variant, v]));
+
+  function nearestLevel(d, v) {
+    const opts = [{ level: 0, at: d.clean }, ...LV[d.kind].map((at, i) => ({ level: i + 1, at }))];
+    return opts.reduce((a, b) => (Math.abs(b.at - v) < Math.abs(a.at - v) ? b : a));
+  }
+
+  function renderDials() {
+    const box = $('#dials'), vars = byVariant();
+    DIALS.forEach((d) => {
+      const div = document.createElement('div');
+      div.className = 'dial';
+      // Darkness and compression get worse as their raw value falls, so the slider runs reversed.
+      const toSlider = (v) => (d.invert ? d.max + d.min - v : v);
+      div.innerHTML = `<label for="d-${d.kind}">${d.label}</label><output id="o-${d.kind}" for="d-${d.kind}">${d.fmt(d.clean)}</output>
+        <input type="range" id="d-${d.kind}" min="${d.min}" max="${d.max}" step="${d.step}" value="${toSlider(d.clean)}" aria-describedby="m-${d.kind}" />
+        <p class="measured" id="m-${d.kind}"></p>`;
+      box.appendChild(div);
+      const input = div.querySelector('input');
+      const update = () => {
+        const v = toSlider(Number(input.value));
+        dmg[d.kind] = v;
+        input.style.setProperty('--p', ((Number(input.value) - d.min) / (d.max - d.min) * 100) + '%');
+        document.getElementById('o-' + d.kind).textContent = d.fmt(v);
+        const n = nearestLevel(d, v), rec = n.level === 0 ? vars.clean : vars[d.kind + '-' + n.level];
+        const m = document.getElementById('m-' + d.kind);
+        if (!rec) { m.textContent = 'Not measured.'; }
+        else {
+          if (!m.querySelector('b')) m.innerHTML = '<span class="w"></span>: field accuracy <b></b> on <span class="c"></span>';
+          m.querySelector('.w').textContent = n.level === 0 ? 'Clean photos' : `Level ${n.level}, ${d.lvl(n.at)}`;
+          m.querySelector('.c').textContent = `${rec.n} receipt${rec.n === 1 ? '' : 's'}`;
+          tick(m.querySelector('b'), rec.fieldAccuracy, (x) => num(x));
+        }
+        applyDamage(d.kind === 'jpeg');
+      };
+      input.addEventListener('input', update);
+      input._update = update;
+      update();
+    });
+    $('#dmgReset').addEventListener('click', () => {
+      DIALS.forEach((d) => { const i = document.getElementById('d-' + d.kind); i.value = d.invert ? d.max + d.min - d.clean : d.clean; i._update(); });
+    });
+    const clean = (byVariant().clean || {});
+    $('#dmgNote').textContent = `The picture is an approximate preview made in your browser. The accuracy figures are the recorded ones: each kind of damage was measured on its own, on ${V.perturbation ? V.perturbation.subsetSize : 'a few'} receipts, so combined damage was not measured. The clean figure comes from ${clean.n || 0} receipt${clean.n === 1 ? '' : 's'}, which is too few to compare closely.`;
+  }
+
+  function applyDamage(reencode) {
+    const img = $('#dmgImg');
+    // Blur is in pixels of the stored image, so scale it to the size it is drawn at.
+    const scale = img.clientWidth && src.naturalWidth ? img.clientWidth / src.naturalWidth : 0.6;
+    img.style.filter = `blur(${(dmg.blur * scale).toFixed(2)}px) brightness(${dmg.dark})`;
+    // The suite's rotate grows the canvas with white corners, so the turned photo shrinks to fit the frame.
+    const a = dmg.rotate * Math.PI / 180, r = 780 / 520, fit = Math.min(1 / (Math.cos(a) + r * Math.sin(a)), 1 / (Math.sin(a) / r + Math.cos(a)));
+    img.style.transform = dmg.rotate ? `rotate(${dmg.rotate}deg) scale(${fit.toFixed(3)})` : '';
+    const dirty = dmg.blur !== 0 || dmg.rotate !== 0 || dmg.dark !== 1 || dmg.jpeg < 90;
+    $('#dmgReset').disabled = !dirty;
+    if (reencode) encode();
+  }
+
+  // Compression is real: the photo is re-encoded as a JPEG at the chosen quality.
+  // Only one encode runs at a time, and a slider move during it queues one more.
+  function encode() {
+    if (!src.complete || !src.naturalWidth) return;
+    const img = $('#dmgImg');
+    if (dmg.jpeg >= 90) { img.src = src.src; return; }
+    if (encoding) { encodeAgain = true; return; }
+    encoding = true;
+    const cv = document.createElement('canvas');
+    cv.width = src.naturalWidth; cv.height = src.naturalHeight;
+    cv.getContext('2d').drawImage(src, 0, 0);
+    cv.toBlob((blob) => {
+      encoding = false;
+      if (blob && dmg.jpeg < 90) {
+        if (blobUrl) URL.revokeObjectURL(blobUrl);
+        blobUrl = URL.createObjectURL(blob);
+        img.src = blobUrl;
+      }
+      if (encodeAgain) { encodeAgain = false; encode(); }
+    }, 'image/jpeg', dmg.jpeg / 100);
+  }
+
+  function loadDamageImage() {
+    const e = current !== 'pair' && EX[current] && EX[current].image ? EX[current] : EX.standard;
+    if (!e || !e.image) return;
+    if (src.dataset.file === e.image.file) return;
+    src.dataset.file = e.image.file;
+    src.onload = () => { $('#dmgImg').src = src.src; applyDamage(true); };
+    src.src = e.image.file;
+    $('#dmgCap').textContent = `${e.id}${e.variant !== 'clean' ? ', already ' + e.variant : ''}. Pick another receipt above to damage it instead.`;
+  }
+
+  function renderPert() {
+    const p = V.perturbation; if (!p) return;
+    const by = byVariant();
+    const kinds = { blur: 'blur', rotate: 'rotation', crop: 'crop', dark: 'darker', jpeg: 'JPEG compression' };
+    const cell = (v) => { const a = v && v.fieldAccuracy; return `<td class="${a !== undefined && by.clean && a < by.clean.fieldAccuracy - 0.1 ? 'low' : ''}">${num(a)}</td>`; };
+    $('#pertTable').innerHTML = `<table class="t"><caption>Field accuracy under each kind of damage, ${p.subsetSize} receipts chosen before any run</caption>
+      <thead><tr><th>damage</th><th>clean</th><th>level 1</th><th>level 2</th><th>level 3</th></tr></thead><tbody>
+      ${Object.entries(kinds).map(([k, n]) => `<tr><td>${n}</td><td>${num(by.clean && by.clean.fieldAccuracy)}</td>${[1, 2, 3].map((l) => cell(by[k + '-' + l])).join('')}</tr>`).join('')}</tbody></table>`;
+    const h = p.homogeneity;
+    if (h) $('#homNote').textContent = `Near identical receipts: of ${h.pairs} same-merchant pairs, ${h.identicalFilePairs} are the same file twice and share an id, ${h.distinctFilesSharingId} different files share an id, and in ${h.pairsWithSwaps} of the ${h.pairsCheckedForSwaps} pairs that were both run a value from the other receipt turned up. The id hashes the file, so the same paper photographed twice becomes two documents. That limit is known and not fixed.`;
   }
 
   /* reliability diagrams */
-  function mini(bins, color) {
-    const w = 200, h = 130, m = 18, xx = (v) => m + v * (w - 2 * m), yy = (v) => h - m - v * (h - 2 * m);
-    return `<svg viewBox="0 0 ${w} ${h}"><line x1="${xx(0)}" y1="${yy(0)}" x2="${xx(1)}" y2="${yy(1)}" stroke="var(--faint)" stroke-dasharray="3 3"/>
-      ${bins.filter((b) => b.n > 0).map((b) => `<rect x="${xx(b.lo) + 1}" y="${yy(b.accuracy)}" width="${xx(b.hi) - xx(b.lo) - 2}" height="${yy(0) - yy(b.accuracy)}" fill="${color}" fill-opacity=".75"><title>n=${b.n}, right ${(b.accuracy * 100).toFixed(0)}%</title></rect>`).join('')}
-      <line x1="${xx(0)}" x2="${xx(1)}" y1="${yy(0)}" y2="${yy(0)}" stroke="var(--line-2)"/></svg>`;
+  function mini(bins, cls) {
+    const w = 200, h = 130, m = 16, xx = (v) => m + v * (w - 2 * m), yy = (v) => h - m - v * (h - 2 * m);
+    return `<svg viewBox="0 0 ${w} ${h}" aria-hidden="true"><line x1="${xx(0)}" y1="${yy(0)}" x2="${xx(1)}" y2="${yy(1)}" stroke="var(--ink-3)" stroke-dasharray="3 3"/>
+      ${bins.filter((b) => b.n > 0).map((b) => `<rect class="${cls}" x="${xx(b.lo) + 1}" y="${yy(b.accuracy)}" width="${Math.max(1, xx(b.hi) - xx(b.lo) - 2)}" height="${yy(0) - yy(b.accuracy)}"><title>${b.n} fields, right ${(b.accuracy * 100).toFixed(0)}%</title></rect>`).join('')}
+      <line x1="${xx(0)}" x2="${xx(1)}" y1="${yy(0)}" y2="${yy(0)}" stroke="var(--ink)" stroke-width="1.5"/></svg>`;
   }
   function renderRel() {
     if (!V.calibration) return;
-    $('#rel').innerHTML = V.calibration.fields.map((f) => `<div class="cell"><h4>${lab(f.field)} <span style="color:var(--faint);font-weight:400">right ${pct(f.testAccuracy)} of ${f.n.test}</span></h4>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">${mini(f.reliabilityVerbalized, 'var(--bad)')}${mini(f.reliabilityCalibrated, 'var(--steel-2)')}</div>
-      <p>ECE ${num(f.verbalized.ece)} said, ${num(f.calibrated.ece)} calibrated. AUROC ${num(f.verbalized.auroc)} to ${num(f.calibrated.auroc)}.</p></div>`).join('');
+    $('#rel').innerHTML = V.calibration.fields.map((f) => `<div class="cell"><h3>${lab(f.field)} <span>right ${pct(f.testAccuracy)} of ${f.n.test}</span></h3>
+      <div class="pair2"><figure>${mini(f.reliabilityVerbalized, 'rb-s')}<figcaption>stated</figcaption></figure><figure>${mini(f.reliabilityCalibrated, 'rb-c')}<figcaption>calibrated</figcaption></figure></div>
+      <p>ECE ${num(f.verbalized.ece)} stated, ${num(f.calibrated.ece)} calibrated. AUROC ${num(f.verbalized.auroc)} to ${num(f.calibrated.auroc)}.</p></div>`).join('');
   }
 
   /* routing */
   function renderRouting() {
     const r = V.routing; if (!r) return;
     $('#routeTiles').innerHTML = [
-      ['small model was enough', pct(r.router.smallSufficesRate)], ['router accuracy', pct(r.router.accuracy)],
-      ['sent to the small model', pct(r.router.routedSmallShare)], ['Claude only, per 1,000', '$' + num(r.cost.claudeEstimatePer1k, 2)],
-      ['with the router, per 1,000', '$' + num(r.cost.routedEstimatePer1k, 2)],
-    ].map(([l, v]) => `<div class="tile"><div class="v">${v}</div><div class="l">${l}</div></div>`).join('');
+      leader('Small model got every field right', pct(r.router.smallSufficesRate)),
+      leader('Router predicted that correctly', pct(r.router.accuracy)),
+      leader('Sent to the small model', pct(r.router.routedSmallShare)),
+      leader('Claude on every photo, per 1,000', '$' + num(r.cost.claudeEstimatePer1k, 2), 'total'),
+      leader('With the router, per 1,000', '$' + num(r.cost.routedEstimatePer1k, 2), 'total'),
+    ].join('');
     const p = r.paths, c = r.constrainedVsUnconstrained;
     const row = (name, s) => `<tr><td>${name}</td><td>${pct(s.schemaValidFirstTry)}</td><td>${pct(s.schemaValidAfterRepair)}</td><td>${num(s.overall ?? s.contentAccuracy)}</td></tr>`;
-    $('#pathTable').innerHTML = `<table class="t"><tr><th>path</th><th>valid first try</th><th>valid after repair</th><th>field accuracy</th></tr>
+    $('#pathTable').innerHTML = `<table class="t"><thead><tr><th>path</th><th>valid first try</th><th>valid after repair</th><th>field accuracy</th></tr></thead><tbody>
       ${row('Claude Haiku 4.5, 42 hand checked', p.claudeHaikuRecorded)}${row('Qwen 3.5 9B with grammar, 42 hand checked', p.smallConstrained)}${row('Qwen 3.5 9B no grammar, 42 hand checked', p.smallUnconstrained)}
-      ${row('Qwen 3.5 9B with grammar, ' + c.n + ' photos', c.constrained)}${row('Qwen 3.5 9B no grammar, ' + c.n + ' photos', c.unconstrained)}</table>`;
+      ${row('Qwen 3.5 9B with grammar, ' + c.n + ' photos', c.constrained)}${row('Qwen 3.5 9B no grammar, ' + c.n + ' photos', c.unconstrained)}</tbody></table>`;
     $('#costNote').textContent = 'Claude cost on photos is an estimate from Anthropic\'s image token rule, not a measured bill: no Bedrock credentials were available for the public receipts. The small model runs locally and has no API cost.';
-  }
-
-  /* robustness */
-  function renderPert() {
-    const p = V.perturbation; if (!p) return;
-    $('#pertMeta').textContent = `${p.subsetSize} receipts, chosen before any run`;
-    const by = Object.fromEntries(p.variants.map((v) => [v.variant, v]));
-    const kinds = { blur: 'blur', rotate: 'rotation', crop: 'crop', dark: 'darker', jpeg: 'JPEG compression' };
-    $('#pertTable').innerHTML = `<table class="t"><tr><th>damage</th><th>clean</th><th>level 1</th><th>level 2</th><th>level 3</th></tr>
-      ${Object.entries(kinds).map(([k, n]) => `<tr><td>${n}</td><td>${num(by.clean.fieldAccuracy)}</td>${[1, 2, 3].map((l) => `<td>${num(by[k + '-' + l] && by[k + '-' + l].fieldAccuracy)}</td>`).join('')}</tr>`).join('')}</table>`;
-    const h = p.homogeneity;
-    $('#homNote').textContent = `Near identical receipts: of ${h.pairs} same-merchant pairs, ${h.identicalFilePairs} are the same file twice and share an id, ${h.distinctFilesSharingId} different files share an id, and in ${h.pairsWithSwaps} of the ${h.pairsCheckedForSwaps} pairs that were both run a value from the other receipt turned up. The id hashes the file, so the same paper photographed twice becomes two documents. That limit is known and not fixed.`;
   }
 
   /* upload: recorded match, else router statistics measured in the browser */
@@ -562,28 +900,39 @@
     const z = f.reduce((a, x, i) => a + ((x - p.mean[i]) / (p.std[i] || 1)) * p.weights[i + 1], p.weights[0]);
     return 1 / (1 + Math.exp(-z));
   }
+  const drop = $('#drop'), fileInput = $('#file');
+  function busy(on) { drop.setAttribute('aria-busy', String(on)); drop.querySelector('.dt').innerHTML = on ? 'Measuring the photo…' : 'Drop a JPEG or PNG, or <u>choose a file</u>'; }
   async function onFile(file) {
     const out = $('#byoOut');
-    if (!/^image\/(png|jpeg)$/.test(file.type)) { out.innerHTML = '<div class="empty"><span>Use a JPEG or PNG photo.</span></div>'; return; }
-    const buf = await file.arrayBuffer(), hash = await sha256(buf);
-    const match = ['standard', 'hard', 'blurred'].find((k) => EX[k] && EX[k].image.sha256 === hash);
-    if (match) { out.innerHTML = `<div class="nomodel"><div class="head"><span class="tag">recorded receipt</span></div><p>This photo is the ${match} example, so here is its saved result.</p></div>`; showOne(EX[match], notes(EX[match], match)); return; }
-    const url = URL.createObjectURL(file), img = new Image();
-    img.onload = () => {
-      const s = statsFromImage(img, file.size); URL.revokeObjectURL(url);
-      const r = V.router;
-      if (!r || !r.weights || !r.weights.length) { out.innerHTML = '<div class="empty"><span>The router has not been fitted yet.</span></div>'; return; }
-      const p = routerScore(r, s), small = p >= r.threshold;
-      out.innerHTML = `<div class="nomodel"><div class="head"><span class="tag">${small ? 'would go to the small model' : 'would go to Claude'}</span></div>
-        <p>The router gives this photo a ${(p * 100).toFixed(0)} percent chance that the small model reads every field right. Its cut is ${(r.threshold * 100).toFixed(0)} percent, so it ${small ? 'goes to the small model first, and to Claude only if that answer fails the format check' : 'goes straight to Claude'}.</p>
-        <p class="cap">measured in your browser</p>
-        <div class="txt">sharpness ${s.sharpness.toFixed(5)}\nbrightness ${s.brightness.toFixed(2)}, contrast ${s.contrast.toFixed(2)}\nink ${s.inkDensity.toFixed(3)}, printed lines ${s.textLines}\n${s.width} x ${s.height} px</div>
-        <p>No fields were read. That needs a model, and this page has none.</p></div>`;
-    };
-    img.src = url;
+    if (!/^image\/(png|jpeg)$/.test(file.type)) { out.innerHTML = '<p class="err">That file is not a JPEG or PNG. Try a photo in one of those formats.</p>'; return; }
+    busy(true);
+    try {
+      const buf = await file.arrayBuffer(), hash = await sha256(buf);
+      const match = ['standard', 'hard', 'blurred'].find((k) => EX[k] && EX[k].image.sha256 === hash);
+      if (match) {
+        busy(false);
+        out.innerHTML = `<span class="tag">Recorded receipt</span><p>This photo is the ${match} example, so its saved result is now shown under Four receipts.</p>`;
+        select(match, true); return;
+      }
+      const url = URL.createObjectURL(file), img = new Image();
+      img.onerror = () => { busy(false); URL.revokeObjectURL(url); out.innerHTML = '<p class="err">The browser could not open that image. Try another photo.</p>'; };
+      img.onload = () => {
+        const s = statsFromImage(img, file.size); URL.revokeObjectURL(url); busy(false);
+        const r = V.router;
+        if (!r || !r.weights || !r.weights.length) { out.innerHTML = '<p class="empty">The router has not been fitted yet.</p>'; return; }
+        const p = routerScore(r, s), small = p >= r.threshold;
+        out.innerHTML = `<span class="tag">${small ? 'Small model' : 'Claude'}</span>
+          <p>The router gives this photo a ${(p * 100).toFixed(0)} percent chance that the small model reads every field right. Its cut is ${(r.threshold * 100).toFixed(0)} percent, so it ${small ? 'goes to the small model first, and to Claude only if that answer fails the format check' : 'goes straight to Claude'}.</p>
+          <pre>measured in your browser\nsharpness ${s.sharpness.toFixed(5)}\nbrightness ${s.brightness.toFixed(2)}, contrast ${s.contrast.toFixed(2)}\nink ${s.inkDensity.toFixed(3)}, printed lines ${s.textLines}\n${s.width} x ${s.height} px</pre>
+          <p>No fields were read. That needs a model, and this page has none.</p>`;
+      };
+      img.src = url;
+    } catch (err) {
+      busy(false);
+      out.innerHTML = '<p class="err">This browser could not read the file. Try another photo.</p>';
+    }
   }
-  const drop = $('#drop'), fileInput = $('#file');
-  drop.addEventListener('click', () => fileInput.click());
+  drop.addEventListener('click', () => { if (drop.getAttribute('aria-busy') !== 'true') fileInput.click(); });
   drop.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); } });
   ['dragenter', 'dragover'].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add('drag'); }));
   drop.addEventListener('dragleave', () => drop.classList.remove('drag'));
@@ -593,11 +942,20 @@
   /* golden set */
   function renderEval() {
     const e = D.eval, FIELDS = ['merchant', 'date', 'currency', 'total', 'subtotal', 'tax', 'paymentMethod', 'lineItems'];
-    $('#evalOverall').textContent = e.overall.toFixed(3);
-    $('#bars').innerHTML = FIELDS.map((f) => `<div class="bar"><span class="n">${lab(f)}</span><span class="track"><span class="fill" style="width:${(e.perField[f] * 100).toFixed(1)}%"></span></span><span class="p">${e.perField[f].toFixed(3)}</span></div>`).join('');
+    $('#bars').innerHTML = FIELDS.map((f) => leader(lab(f), `<span data-v="${e.perField[f]}">${e.perField[f].toFixed(3)}</span>`)).join('');
+    const big = $('#evalOverall');
+    big.textContent = e.overall.toFixed(3);
+    // Count up once when the section is reached, the only entrance on the page.
+    const io = new IntersectionObserver((en) => {
+      if (!en.some((x) => x.isIntersecting)) return;
+      io.disconnect();
+      big._v = 0; tick(big, e.overall, (v) => v.toFixed(3));
+      document.querySelectorAll('#bars [data-v]').forEach((s) => { s._v = 0; tick(s, Number(s.dataset.v), (v) => v.toFixed(3)); });
+    }, { threshold: 0.5 });
+    io.observe(big);
   }
 
-  renderScn(); renderStp(); renderRel(); renderRouting(); renderPert(); renderEval();
+  renderStp(); renderDials(); renderScn(); renderRel(); renderRouting(); renderPert(); renderEval();
 </script>
 </body>
 </html>

@@ -31,7 +31,7 @@ The threshold is set on one group of receipts and judged on another, and the lea
 The small model read 606 of the 1,987 downloaded receipts before its time budget ran out, 149 of them in the test split.
 <!-- /results -->
 
-The run stopped at a time limit because the GPU is shared. The order was fixed first (SROIE, then CORD), so results did not pick the cut, and it falls short of the thousand receipts planned. SROIE company, date and total map to merchant, date and total. CORD menu lines, subtotal, tax and total map to the same fields. Neither set labels currency, so it is not scored, and no field is scored where a set does not label it. `npm run data:fetch` downloads both against pinned sha256 sums. The repo keeps only ids, splits and image hashes, plus four CORD images for the demo.
+The run stopped at a time limit because the GPU is shared. The order was fixed first (SROIE, then CORD), so results did not pick the cut, and it falls short of the thousand receipts planned. SROIE company, date and total map to merchant, date and total. CORD menu lines, subtotal, tax and total map to the same fields. Neither set labels currency, so it is not scored, and no field is scored where a set does not label it. `npm run data:fetch` downloads both against pinned sha256 sums. The repo keeps only ids, splits and image hashes, plus three CORD images for the demo.
 
 ## Straight-through processing
 
