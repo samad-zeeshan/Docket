@@ -123,7 +123,7 @@ export function renderRobustness(): string {
     worst.map((w) => `- ${w.name}: ${p2(w.acc)}`).join('\n') +
     `\n\n${harm.name} does the most harm. With only ${p.subsetSize} receipts, all of these figures are rough.`;
   const pairs =
-    `Some receipts look almost the same. Of ${h.pairs} SROIE pairs from the same shop, ${h.identicalFilePairs} pairs are one file saved twice. ` +
+    `Some receipts look almost the same. Of ${h.pairs} SROIE pairs from the same shop, ${h.identicalFilePairs} pairs are the same file twice. ` +
     'These pairs share an id, which is correct. ' +
     (h.distinctFilesSharingId === 0
       ? 'No two different files share an id, which is good. '

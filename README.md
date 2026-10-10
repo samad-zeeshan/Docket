@@ -31,7 +31,7 @@ Docket sets the threshold on one group of receipts and tests it on another. The 
 The small model read 606 of the 1,987 downloaded receipts before its time ran out. The test set holds 149 of these receipts.
 <!-- /results -->
 
-The run stopped at a time limit because other jobs share the GPU. The order of receipts was fixed first, SROIE and then CORD, so the results did not pick the cut. The run read fewer than the thousand receipts in the plan, which is a gap. SROIE company, date and total map to merchant, date and total. CORD menu lines, subtotal, tax and total map to the same fields.
+The run stopped at a time limit because other jobs share the GPU. The plan set the order of receipts before the run, SROIE and then CORD, so the results did not pick the cut. The run read fewer than the thousand receipts in the plan, which is a gap. SROIE company, date and total map to merchant, date and total. CORD menu lines, subtotal, tax and total map to the same fields.
 
 Docket scores a field only where a set labels it. Neither set labels currency, so Docket does not score currency. `npm run data:fetch` downloads both sets and checks pinned sha256 sums. The repo keeps only ids, splits and image hashes, plus three CORD images for the demo.
 
@@ -49,7 +49,7 @@ At the tightest target of 1% wrong fields, 11 of 149 test receipts go straight t
 Docket itself checks all six fields at once. Under that rule, no threshold meets any of the 3 targets. So every receipt from the small model goes to a person. This is safe, but it saves no work yet.
 <!-- /results -->
 
-The table checks each receipt only on the fields calibrated for its set. This assumes that Docket knows the document type, but Docket does not know it yet. With the model's own confidence, no threshold met any target. The fit and tuning step of the validity ladder (arXiv 2608.14639) holds. That step limits the average error but gives no guarantee. The stricter exact binomial steps give no guarantee yet, because the tuning set is small.
+The table checks each receipt only on the fields that Docket calibrated for its set. This assumes that Docket knows the document type, but Docket does not know it yet. With the model's own confidence, no threshold met any target. The fit and tuning step of the validity ladder (arXiv 2608.14639) holds. That step limits the average error but gives no guarantee. The stricter exact binomial steps give no guarantee yet, because the tuning set is small.
 
 <!-- results:calibration -->
 | Field | Test fields | Correct | Error, own `ECE` | Error, calibrated | Ranking, own `AUROC` | Ranking, calibrated |
@@ -97,21 +97,21 @@ The damage test used 4 receipts. With no damage, the small model read 67% of fie
 
 Blur does the most harm. With only 4 receipts, all of these figures are rough.
 
-Some receipts look almost the same. Of 371 SROIE pairs from the same shop, 6 pairs are one file saved twice. These pairs share an id, which is correct. No two different files share an id, which is good. The small model read both receipts in 85 pairs. No date or total from one receipt went into the other, which is good.
+Some receipts look almost the same. Of 371 SROIE pairs from the same shop, 6 pairs are the same file twice. These pairs share an id, which is correct. No two different files share an id, which is good. The small model read both receipts in 85 pairs. No date or total from one receipt went into the other, which is good.
 <!-- /results -->
 
 ## What this does not show
 
 - Claude's accuracy on the public photos. Every public number comes from the small model.
 - Small differences. The test set is small, so a change of a few points can be noise. The damage test is a quick check, not a full curve.
-- Production use. The only deployment went to a test account, and it is now deleted. Docket serves no one. The review queue is a table with no screen.
+- Production use. The only deployment went to a test account, and that account no longer exists. Docket serves no one. The review queue is a table with no screen.
 - Duplicate photos. Docket makes the id from the file, so two photos of one receipt get two ids.
 
 ## Design choices
 
 - **Ids come from content.** Each id is a hash of bucket, key and ETag. A conditional write stores it once, so a second delivery or a replay from the dead letter queue never makes a second record.
 - **Bad data becomes FAILED.** Only broken infrastructure gets a retry, so the dead letter queue alarm means an outage. Every answer gets one format check with Zod and one repair.
-- **Confidence decides review, never correctness.** The confidence step runs after the format check. It applies only to the model path that it was fitted on. It writes the record and its review queue item in one transaction. Claude gives no token probabilities, so on the Claude path only the arithmetic checks can send a receipt to review.
+- **Confidence decides review, never correctness.** The confidence step runs after the format check. Docket fits it on one model path, and it applies only to that path. It writes the record and its review queue item in one transaction. Claude gives no token probabilities, so on the Claude path only the arithmetic checks can send a receipt to review.
 - **The alarm topic gives CloudWatch the right to publish, in writing.** The TLS rule silently removed the default grant, and then no alarm could send a message. To test an alarm, force it with `aws cloudwatch set-alarm-state` and read its history. Docket removes card numbers, emails and phone numbers before storage. Uploads expire after a month.
 
 ## Run it
