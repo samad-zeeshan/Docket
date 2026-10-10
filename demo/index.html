@@ -40,7 +40,10 @@
   }
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
-  body { margin: 0; background: var(--counter); color: var(--ink); font: 400 1rem/1.6 var(--text); -webkit-font-smoothing: antialiased; }
+  body { margin: 0; background: var(--counter); color: var(--ink); font: 400 1rem/1.6 var(--text); -webkit-font-smoothing: antialiased;
+    transition: background-color 700ms var(--ease-out), color 700ms var(--ease-out); }
+  /* The counter under the roll goes to ink once the hand checked numbers come up. */
+  body.flip { background: var(--ink); color: var(--paper); }
   ::selection { background: var(--accent); color: var(--paper); }
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
   a { color: inherit; text-underline-offset: 3px; }
@@ -49,14 +52,14 @@
 
   /* The page is one long till roll with torn ends. */
   .counter { padding: clamp(24px, 6vw, 64px) clamp(0px, 3vw, 32px) clamp(40px, 8vw, 96px); }
-  .roll { position: relative; max-width: 1000px; margin: 0 auto; padding: clamp(28px, 5vw, 60px) clamp(16px, 5vw, 60px) clamp(36px, 6vw, 72px);
+  .roll { position: relative; color: var(--ink); max-width: 1000px; margin: 0 auto; padding: clamp(28px, 5vw, 60px) clamp(16px, 5vw, 60px) clamp(36px, 6vw, 72px);
     background: linear-gradient(90deg, rgb(var(--shadow) / .05), transparent 5%, transparent 95%, rgb(var(--shadow) / .05)), var(--paper);
     box-shadow: 0 1px 2px rgb(var(--shadow) / .10), 0 18px 40px -12px rgb(var(--shadow) / .28); }
   .roll::before, .roll::after { content: ""; position: absolute; left: 0; right: 0; height: 10px; }
   .roll::before { bottom: 100%; background: linear-gradient(to top right, var(--paper) 50%, #0000 51%) 0 100% / 10px 10px repeat-x, linear-gradient(to top left, var(--paper) 50%, #0000 51%) 0 100% / 10px 10px repeat-x; }
   .roll::after { top: 100%; background: linear-gradient(to bottom right, var(--paper) 50%, #0000 51%) 0 0 / 10px 10px repeat-x, linear-gradient(to bottom left, var(--paper) 50%, #0000 51%) 0 0 / 10px 10px repeat-x; }
-  .roll > section, .roll > footer { padding-top: clamp(40px, 6vw, 64px); margin-top: clamp(40px, 6vw, 64px); position: relative; }
-  .roll > section::before, .roll > footer::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: repeating-linear-gradient(90deg, var(--ink-3) 0 6px, #0000 6px 11px); opacity: .7; }
+  .roll > section { padding-top: clamp(40px, 6vw, 64px); margin-top: clamp(40px, 6vw, 64px); position: relative; }
+  .roll > section::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: repeating-linear-gradient(90deg, var(--ink-3) 0 6px, #0000 6px 11px); opacity: .7; }
 
   h1, h2, h3 { margin: 0; font-family: var(--display); font-weight: 800; font-stretch: 75%; text-transform: uppercase; line-height: .98; letter-spacing: -.005em; text-wrap: balance; }
   h1 { font-size: clamp(3.4rem, 13vw, 7.5rem); letter-spacing: -.02em; }
@@ -66,6 +69,13 @@
   .intro { color: var(--ink-2); max-width: 62ch; margin-bottom: 26px; text-wrap: pretty; }
   .fine { color: var(--ink-2); font-size: .88rem; max-width: 70ch; margin-top: 16px; text-wrap: pretty; }
   .mono, .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .eyebrow { display: block; font-family: var(--mono); font-size: .7rem; font-weight: 500; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); margin: 0 0 10px; }
+  .mtag { display: inline-block; font-family: var(--mono); font-size: .66rem; font-weight: 400; line-height: 1.5; color: var(--ink-3); background: var(--paper-2); padding: 0 5px; border-radius: var(--r); overflow-wrap: anywhere; vertical-align: 1px; }
+  .source { position: fixed; top: 14px; right: 14px; z-index: 4; display: inline-flex; align-items: center; min-height: 40px; padding: 0 18px; border-radius: 999px;
+    font: 600 .72rem/1 var(--mono); text-transform: uppercase; letter-spacing: .08em; text-decoration: none; color: var(--paper); background: var(--accent);
+    box-shadow: 0 8px 18px -8px rgb(var(--shadow) / .45); transition: background-color 160ms ease, transform 120ms var(--ease-out); }
+  @media (hover: hover) and (pointer: fine) { .source:hover { background: var(--ink); } }
+  .source:active { transform: scale(.97); }
 
   /* header */
   .head { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(20px, 4vw, 48px); align-items: end; }
@@ -98,7 +108,7 @@
   .photo { margin: 0; display: grid; justify-items: center; gap: 10px; }
   .photo img { display: block; width: 100%; max-width: 340px; height: auto; aspect-ratio: 520 / 780; background: #fff; transform: rotate(-1.4deg);
     box-shadow: 0 1px 1px rgb(var(--shadow) / .12), 0 10px 24px -8px rgb(var(--shadow) / .35); }
-  .photo figcaption { font-family: var(--mono); font-size: .72rem; color: var(--ink-3); }
+  .photo figcaption { font-size: .8rem; color: var(--ink-2); text-align: center; max-width: 340px; }
   .stub { width: 100%; max-width: 360px; padding: 14px 16px; background: var(--paper-2); font-family: var(--mono); font-size: .76rem; line-height: 1.7; color: var(--ink-2); }
   .stub + .stub { margin-top: 10px; }
   .stub b { color: var(--ink); font-weight: 600; }
@@ -110,7 +120,7 @@
     padding: 7px 12px 6px; border: 2.5px solid currentColor; border-radius: 3px; transform: rotate(-3deg); }
   .stamp.st { color: var(--signal); }
   .stamp.pp, .stamp.fail { color: var(--accent); }
-  .why { font-family: var(--mono); font-size: .74rem; color: var(--ink-2); }
+  .why { font-size: .88rem; line-height: 1.45; color: var(--ink-2); flex: 1 1 220px; }
   .lines { margin: 0 0 16px; padding: 0; list-style: none; border-top: 1.5px solid var(--ink); }
   .lines li { display: grid; grid-template-columns: auto 1fr auto auto; align-items: baseline; gap: 0 10px; padding: 8px 0; border-bottom: 1px solid var(--rule); font-family: var(--mono); font-size: .8rem; font-variant-numeric: tabular-nums; }
   .lines .f { color: var(--ink); font-weight: 500; }
@@ -190,7 +200,8 @@
   .dmg { margin: 0; display: grid; justify-items: center; gap: 10px; }
   .frame { width: 100%; max-width: 340px; aspect-ratio: 520 / 780; overflow: hidden; background: #fff; box-shadow: 0 1px 1px rgb(var(--shadow) / .12), 0 10px 24px -8px rgb(var(--shadow) / .35); }
   .frame img { display: block; width: 100%; height: 100%; object-fit: cover; transform-origin: 50% 50%; }
-  .dmg figcaption { font-family: var(--mono); font-size: .72rem; color: var(--ink-3); text-align: center; }
+  .dmg figcaption { font-size: .8rem; color: var(--ink-2); text-align: center; max-width: 340px; }
+  .dmgbase { font-size: .9rem; color: var(--ink); margin-bottom: 20px; max-width: 52ch; text-wrap: pretty; }
   .dials { display: grid; gap: 22px; }
   .resetrow { margin-top: 22px; }
   .dial { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: baseline; }
@@ -226,6 +237,7 @@
   .ledger .v { font-weight: 600; }
   .ledger li.total { border-top: 1.5px solid var(--ink); margin-top: 6px; padding-top: 10px; font-size: .95rem; }
   .ledger li.total + li.total { border-top: 0; margin-top: 0; padding-top: 5px; }
+  .ledger li.verdict { font-family: var(--text); font-size: .85rem; color: var(--ink-2); padding-top: 0; }
 
   /* reliability */
   .rel { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 28px 32px; }
@@ -237,7 +249,8 @@
   .pair2 figcaption { font-family: var(--mono); font-size: .72rem; color: var(--ink-3); }
   .rb-s { fill: var(--ink-3); opacity: .55; }
   .rb-c { fill: var(--ink); }
-  .cell p { font-family: var(--mono); font-size: .74rem; color: var(--ink-2); margin-top: 6px; }
+  .cell p { font-size: .86rem; line-height: 1.45; color: var(--ink-2); margin-top: 8px; }
+  .cell p .mtag { margin-top: 4px; }
 
   /* upload */
   .byo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: clamp(20px, 4vw, 44px); align-items: start; }
@@ -263,8 +276,13 @@
   .big { font-family: var(--mono); font-size: clamp(2.8rem, 8vw, 4.4rem); font-weight: 600; line-height: 1; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
   .big + p { font-size: .85rem; color: var(--ink-2); margin-top: 8px; }
 
-  footer { font-family: var(--mono); font-size: .74rem; color: var(--ink-2); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; }
-  footer strong { color: var(--ink); font-weight: 600; }
+  /* The footer sits on the counter, off the roll, so it takes the flipped colours. */
+  .end { max-width: 1400px; margin: clamp(56px, 10vw, 120px) auto 0; padding: 0 16px; color: inherit; }
+  .end .eyebrow { color: inherit; opacity: .7; }
+  .word { margin: 0; font-family: var(--display); font-weight: 800; font-stretch: 75%; text-transform: uppercase; line-height: .8; letter-spacing: -.03em; font-size: clamp(5.5rem, 27vw, 24rem); }
+  .voice { font-size: clamp(1.1rem, 2.2vw, 1.5rem); line-height: 1.35; max-width: 34ch; margin-top: clamp(18px, 3vw, 32px); text-wrap: pretty; }
+  .endrow { display: flex; flex-wrap: wrap; gap: 8px 28px; margin-top: 28px; padding-top: 14px; border-top: 1.5px solid currentColor; font-family: var(--mono); font-size: .74rem; opacity: .85; }
+  .endrow a { font-weight: 600; }
 
   @media (max-width: 820px) {
     .head, .bench, .lab, .byo { grid-template-columns: minmax(0, 1fr); }
@@ -289,20 +307,22 @@
 </head>
 <body>
 <a class="skip" href="#main">Skip to the demo</a>
+<a class="source" href="https://github.com/samad-zeeshan/Docket">Source</a>
 <div class="counter">
 <main class="roll" id="main">
   <header class="head">
-    <h1>Docket</h1>
+    <div><p class="eyebrow">Receipts to checked data</p><h1>Docket</h1></div>
     <p class="lede">Docket reads a receipt photo and stores it as checked data. Every field gets a confidence score, and a receipt goes to a person when any field looks doubtful.</p>
     <dl class="meta">
-      <div><dt>Source</dt><dd>recorded results</dd></div>
+      <div><dt>Numbers from</dt><dd>recorded results</dd></div>
       <div><dt>Model on this page</dt><dd>none</dd></div>
       <div><dt>Test receipts</dt><dd id="metaTest">-</dd></div>
     </dl>
-    <p class="notice"><strong>This page replays recorded results.</strong> Every number and receipt below came from an earlier model run and was saved. Nothing here calls a model. The small model is Qwen 3.5 9B on a local GPU. The Claude numbers come from saved Bedrock responses.</p>
+    <p class="notice"><strong>This page replays recorded results.</strong> Every number and receipt below came from an earlier model run and was saved. Nothing here calls a model. The small model is Qwen 3.5 9B, running on a graphics card in a local computer. The Claude numbers are saved answers from Claude, run on Amazon's cloud.</p>
   </header>
 
   <section aria-labelledby="h-rec">
+    <p class="eyebrow">01 The receipts</p>
     <h2 id="h-rec">Four receipts</h2>
     <p class="intro">Pick one to see what Docket stored, how sure it was of each field, and where the receipt went.</p>
     <div class="picks" id="scn"></div>
@@ -317,41 +337,44 @@
   </section>
 
   <section aria-labelledby="h-stp">
+    <p class="eyebrow">02 The line</p>
     <h2 id="h-stp">Straight through, or to a person</h2>
-    <p class="intro">Drag the red line. A receipt skips the person only when its least confident field clears the line. Each slip below is one of the <span id="stpN">-</span> test receipts, judged on calibrated confidence.</p>
+    <p class="intro">Drag the red line. A receipt skips the person only when its least sure field clears the line. Each slip below is one of the <span id="stpN">-</span> test receipts, which were kept out of everything used to pick the line. Each one is judged on calibrated confidence, which is the model's own score corrected on receipts with known answers.</p>
     <div class="tape" id="tape">
       <div class="track" id="track">
-        <div class="handle" id="thr" role="slider" tabindex="0" aria-label="Confidence threshold" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0.945"><span class="tab" id="thrVal">0.945</span></div>
+        <div class="handle" id="thr" role="slider" tabindex="0" aria-label="Confidence line" data-demo="threshold" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0.945"><span class="tab" id="thrVal">0.945</span></div>
       </div>
       <div class="scale" aria-hidden="true"><span style="left:0">0</span><span style="left:25%">0.25</span><span style="left:50%">0.50</span><span style="left:75%">0.75</span><span style="left:100%">1</span></div>
       <div class="ends" aria-hidden="true"><span>lower: more go straight through</span><span>higher: more go to a person</span></div>
     </div>
-    <div class="presets" id="presets"><span class="lbl">Thresholds set on the validation receipts for a field error budget of</span></div>
+    <div class="presets" id="presets"><span class="lbl">Lines picked on separate receipts to keep wrong fields at or under</span></div>
     <div class="piles" id="piles">
       <div class="pile st"><header><h3>Straight through</h3><span class="count" id="nSt">0</span></header><div class="well" id="wellSt"></div></div>
       <div class="pile pp"><header><h3>To a person</h3><span class="count" id="nPp">0</span></header><div class="well" id="wellPp"></div></div>
       <div class="slips" id="slips" aria-hidden="true"></div>
     </div>
     <dl class="totals" id="readout">
-      <div><dt>Straight through</dt><dd id="rStp">-</dd></div>
-      <div><dt>Field error among them</dt><dd id="rErr">-</dd></div>
-      <div><dt>Receipts passed</dt><dd id="rPass">-</dd></div>
-      <div><dt>Wrong fields passed</dt><dd id="rWrong">-</dd></div>
+      <div><dt>Share that skip the person</dt><dd id="rStp">-</dd></div>
+      <div><dt>Share of their fields that were wrong</dt><dd id="rErr">-</dd></div>
+      <div><dt>Receipts that skip the person</dt><dd id="rPass">-</dd></div>
+      <div><dt>Wrong fields that got through</dt><dd id="rWrong">-</dd></div>
     </dl>
     <div class="chart" id="stpChart"></div>
-    <div class="key"><span><i></i>calibrated confidence</span><span><i class="d"></i>confidence the model states</span></div>
+    <div class="key"><span><i></i>calibrated confidence</span><span><i class="d"></i>the model's own confidence</span></div>
     <p class="fine" id="stpNote"></p>
   </section>
 
   <section aria-labelledby="h-dmg">
+    <p class="eyebrow">03 Bad photos</p>
     <h2 id="h-dmg">When the photo is bad</h2>
-    <p class="intro">Damage the real receipt photo the way the robustness suite did. Next to each slider is the field accuracy recorded at the nearest level the suite measured.</p>
+    <p class="intro">Blur, tilt, darken or squash the receipt photo, the same ways the tests did. Under each slider is the share of fields the small model read right at the nearest damage level that was tested.</p>
     <div class="lab">
       <figure class="dmg">
         <div class="frame"><img id="dmgImg" src="v2/standard.jpg" loading="lazy" decoding="async" alt="The selected receipt photo with the chosen damage applied" width="520" height="780" /></div>
         <figcaption id="dmgCap"></figcaption>
       </figure>
       <div>
+        <p class="dmgbase" id="dmgBase"></p>
         <div class="dials" id="dials"></div>
         <p class="resetrow"><button class="btn" id="dmgReset" type="button" disabled>Undo all damage</button></p>
       </div>
@@ -362,20 +385,23 @@
   </section>
 
   <section aria-labelledby="h-rel">
+    <p class="eyebrow">04 Honest scores</p>
     <h2 id="h-rel">Is the confidence honest?</h2>
-    <p class="intro">Each bar is how often fields in that confidence bin were right on the test split. A score that tells the truth puts every bar on the dashed line. Grey is the confidence the model writes down. Black is the same field after calibration on receipts it had not been scored on.</p>
+    <p class="intro">When the model says it is 80 percent sure, it should be right about 80 percent of the time. Each bar shows how often fields were right at one level of confidence, on the test receipts. Honest confidence puts every bar on the dashed line. Grey is the confidence the model gives itself. Black is the same field after calibration.</p>
     <div class="rel" id="rel"></div>
   </section>
 
   <section aria-labelledby="h-route">
+    <p class="eyebrow">05 Picking a reader</p>
     <h2 id="h-route">Which model reads it</h2>
-    <p class="intro">Before any model call, a router looks at the photo and picks the small local model or Claude.</p>
+    <p class="intro">Before any model reads the receipt, a quick check of the photo picks one of two readers. One is the small model on a local computer, which costs nothing per photo. The other is Claude, which is paid per photo.</p>
     <ul class="ledger" id="routeTiles"></ul>
     <div class="tw" id="pathTable"></div>
     <p class="fine" id="costNote"></p>
   </section>
 
   <section aria-labelledby="h-byo">
+    <p class="eyebrow">06 Your photo</p>
     <h2 id="h-byo">Check your own photo</h2>
     <div class="byo">
       <div>
@@ -384,26 +410,34 @@
           <span class="dh">It stays in your browser. Nothing is uploaded.</span>
           <input type="file" id="file" accept="image/png,image/jpeg,.png,.jpg,.jpeg" hidden />
         </div>
-        <p class="byo-hint">If the photo is one of the recorded receipts, you get its saved result. For any other photo this page measures the image the way the router does and says which model it would go to. Reading the fields needs a model, and this page has none.</p>
+        <p class="byo-hint">If the photo is one of the recorded receipts, you get its saved result. For any other photo, this page measures the image the way the photo check does and says which model it would go to. Reading the fields needs a model, and this page has none.</p>
       </div>
       <div class="out" id="byoOut" aria-live="polite"><p class="empty">Your photo's route shows up here.</p></div>
     </div>
   </section>
 
   <section aria-labelledby="evalTitle">
+    <p class="eyebrow">07 Hand checked</p>
     <h2 id="evalTitle">The 42 hand checked receipts</h2>
-    <p class="intro">Claude Haiku 4.5 on the text of 42 receipts labelled by hand, replayed from saved Bedrock responses.</p>
+    <p class="intro">Claude Haiku 4.5 read the text of 42 receipts that a person had labelled by hand. These are its saved answers.</p>
     <div class="gold">
-      <div><div class="big" id="evalOverall">-</div><p>field accuracy</p></div>
+      <div><div class="big" id="evalOverall">-</div><p>Share of fields Claude read right, where 1 means every field. <span id="evalVerdict"></span></p></div>
       <ul class="ledger" id="bars"></ul>
     </div>
   </section>
 
-  <footer>
-    <span><strong>Recorded results.</strong> No model runs on this page.</span>
-    <span>Receipt images: CORD v2, CC BY 4.0.</span>
-  </footer>
 </main>
+<footer class="end">
+  <p class="eyebrow">End of the roll</p>
+  <p class="word" aria-hidden="true">Docket</p>
+  <p class="voice">A model will happily invent a field. Docket checks every one and hands the doubtful receipts to a person.</p>
+  <div class="endrow">
+    <a href="https://github.com/samad-zeeshan/Docket">github.com/samad-zeeshan/Docket</a>
+    <span>Recorded results. No model runs on this page.</span>
+    <span>Receipt images from CORD v2, pair values from SROIE, both CC BY 4.0.</span>
+    <span>Code under the MIT licence.</span>
+  </div>
+</footer>
 </div>
 <noscript><p style="text-align:center;padding:16px">This demo draws its receipts and charts with JavaScript.</p></noscript>
 
@@ -417,6 +451,14 @@
   const num = (x, d = 3) => (x === null || x === undefined ? 'n/a' : Number(x).toFixed(d));
   const LAB = { lineItems: 'items', paymentMethod: 'payment' };
   const lab = (f) => LAB[f] || f;
+  // Prose rounds to two significant figures. Exact values stay in the tables and tags.
+  const sig2 = (x) => String(Number(Number(x).toPrecision(2)));
+  // Public CORD ids look like cord-train-105. A reader can hold on to the number, so the id becomes a tag.
+  const plainId = (id) => { const m = /^cord-(?:train|dev|test)-(\d+)$/.exec(id); return m ? `Receipt ${m[1]} from the public CORD set` : `Receipt ${id}`; };
+  const DAMAGE = { blur: 'blurred', rotate: 'tilted', dark: 'darkened', jpeg: 'squashed by compression', crop: 'cropped' };
+  const plainVariant = (v) => { const m = /^(\w+)-(\d)$/.exec(v); return m && DAMAGE[m[1]] ? `${DAMAGE[m[1]]} on purpose, level ${m[2]}` : v; };
+  const FIELD = { lineItems: 'item lines', paymentMethod: 'payment method' };
+  const owner = (f) => { const n = FIELD[f] || f; return `The ${n}${n.endsWith('s') ? "'" : "'s"}`; };
   const leader = (l, v, cls = '') => `<li class="${cls}"><span>${l}</span><span class="dots"></span><span class="v">${v}</span></li>`;
 
   // Numbers count to their new value so a change reads as a change. Each element
@@ -457,15 +499,31 @@
     return e.needsReview ? '<span class="stamp pp">To a person</span>' : '<span class="stamp st">Straight through</span>';
   }
 
+  // The pipeline writes reasons like "date confidence 0.073 under 1". Say it in words and keep the original as a tag.
+  function plainReason(r) {
+    let m = /^(\w+) confidence ([\d.]+) under ([\d.]+)$/.exec(r);
+    if (m) { const c = Number(m[2]), t = Number(m[3]); return `${owner(m[1])} confidence was ${Number(c.toFixed(2))}, ${t - c > 0.3 ? 'far ' : ''}under the line, so a person checks it.`; }
+    m = /^lowest field (\w+) at ([\d.]+)$/.exec(r);
+    if (m) return `Every field cleared the line. ${owner(m[1])} confidence was the lowest, at ${Number(Number(m[2]).toFixed(2))}.`;
+    const fixed = {
+      'failed the schema gate': 'The answer was not in the right format, even after one repair, so nothing was stored.',
+      'totals do not reconcile': 'The totals do not add up, so a person checks it.',
+      'line items do not sum to the subtotal': 'The item lines do not add up to the subtotal, so a person checks it.',
+      'implausible date': 'The date cannot be right, so a person checks it.',
+    };
+    return fixed[r] || r;
+  }
+  const why = (r) => `<span class="why">${esc(plainReason(r))} <span class="mtag">${esc(r)}</span></span>`;
+
   function fieldLine(f) {
     const show = (v) => v === null ? 'empty' : typeof v === 'object' ? (Array.isArray(v) ? v.length + (v.length === 1 ? ' line' : ' lines') : '…') : String(v);
     const conf = f.confidence === null ? 'n/a' : num(f.confidence, 2);
-    const labelRow = f.correct ? '' : `<span class="lab">label says ${esc(show(f.label))}</span>`;
+    const labelRow = f.correct ? '' : `<span class="lab">the right answer is ${esc(show(f.label))}</span>`;
     return `<li><span class="f">${lab(f.field)}</span><span class="v">${esc(show(f.predicted))}</span><span class="c" title="confidence">${conf}</span><span class="${f.correct ? 'ok' : 'no'}">${f.correct ? 'right' : 'wrong'}</span>${labelRow}</li>`;
   }
 
   function lineHead() {
-    return '<li style="color:var(--ink-3);font-size:.72rem"><span>field</span><span class="v" style="color:inherit">read as</span><span class="c" style="color:inherit">conf.</span><span style="min-width:4.4em;text-align:right">check</span></li>';
+    return '<li style="color:var(--ink-3);font-size:.72rem"><span>field</span><span class="v" style="color:inherit">read as</span><span class="c" style="color:inherit">sure</span><span style="min-width:4.4em;text-align:right">check</span></li>';
   }
 
   // One authored moment: the result feeds out of the printer top first, and the
@@ -481,9 +539,10 @@
   }
 
   function showOne(e, note, animate) {
-    $('#left').innerHTML = `<img src="${esc(e.image.file)}" alt="Receipt photo ${esc(e.id)}${e.variant !== 'clean' ? ', ' + esc(e.variant) : ''}" width="520" height="780" /><figcaption>${esc(e.id)}${e.variant !== 'clean' ? ', ' + esc(e.variant) : ''}, read by the small model</figcaption>`;
+    const extra = e.variant !== 'clean' ? ', ' + esc(plainVariant(e.variant)) : '';
+    $('#left').innerHTML = `<img src="${esc(e.image.file)}" alt="Photo of ${esc(plainId(e.id))}${extra}" width="520" height="780" /><figcaption>${esc(plainId(e.id))}${extra}, read by the small model <span class="mtag">${esc(e.id)}</span></figcaption>`;
     $('#note').innerHTML = `<b>What this shows.</b> ${note}`;
-    $('#result').innerHTML = `<div class="stamprow">${stampOf(e)}<span class="why">${esc(e.reason)}</span></div>
+    $('#result').innerHTML = `<div class="stamprow">${stampOf(e)}${why(e.reason)}</div>
       <ul class="lines">${lineHead()}${e.fields.map(fieldLine).join('')}</ul>
       ${e.receipt ? `<details class="stored"><summary>What was stored</summary><pre class="json">${highlight(e.receipt)}</pre></details>` : `<div class="badout">${esc(e.failureReason || '')}</div>`}`;
     if (animate) printIn($('#result'));
@@ -491,19 +550,20 @@
 
   function notes(e, kind) {
     const wrong = e.fields.filter((f) => !f.correct).map((f) => lab(f.field));
-    if (kind === 'standard') return e.needsReview ? 'Every labelled field is right, and still the confidence sends it to a person. That is the cost of a strict threshold.' : 'Every labelled field is right, every confidence clears the threshold, and it is stored with no person involved.';
-    const what = wrong.length ? `The ${wrong.join(' and ')} ${wrong.length > 1 ? 'are' : 'is'} wrong. ` : 'Every labelled field happens to be right. ';
+    if (kind === 'standard') return e.needsReview ? 'Every labelled field is right, and still the low confidence sends it to a person. That is the price of a strict line.' : 'Every labelled field is right, every confidence clears the line, and it is stored with no person involved.';
+    const list = wrong.length > 1 ? wrong.slice(0, -1).join(', ') + ' and ' + wrong[wrong.length - 1] : wrong.join('');
+    const what = wrong.length ? `The ${list} ${wrong.length > 1 ? 'are' : 'is'} wrong. ` : 'Every labelled field happens to be right. ';
     if (e.status === 'FAILED') return what + 'The answer did not fit the format even after one repair, so nothing was stored.';
     return what + (e.needsReview ? 'The confidence was low enough to send it to a person, so the mistake does not go through unseen.' : 'The confidence did not catch it, so this one would have gone through wrong. It is shown because it happened.');
   }
 
   function showPair(animate) {
     const p = EX.pair;
-    $('#left').innerHTML = p.items.map((it, i) => `<div class="stub"><b>Receipt ${i + 1}</b><br/>${esc(p.merchant)}<br/>document id ${esc(it.docId.slice(0, 20))}…</div>`).join('') +
-      '<p class="fine" style="max-width:360px">These two come from SROIE, which is shown as values rather than pictures.</p>';
+    $('#left').innerHTML = p.items.map((it, i) => `<div class="stub"><b>Receipt ${i + 1}</b><br/>${esc(p.merchant)}<br/>record id ${esc(it.docId.slice(0, 20))}…</div>`).join('') +
+      '<p class="fine" style="max-width:360px">These two come from SROIE, a public set of shop receipts. The page shows their values, not pictures.</p>';
     const same = p.items[0].docId === p.items[1].docId;
-    $('#note').innerHTML = `<b>What this shows.</b> The document id is a hash of the file, so two receipts that look alike still get ${same ? 'the same id, which is a bug' : 'different ids'}. ${p.swaps.length ? 'Here a value from one receipt turned up in the other: ' + esc(p.swaps.join(', ')) + '.' : 'No value from one receipt turned up in the other.'}`;
-    $('#result').innerHTML = p.items.map((it, i) => `<p class="pairhead">Receipt ${i + 1}</p><div class="stamprow">${stampOf(it)}<span class="why">${esc(it.reason)}</span></div>
+    $('#note').innerHTML = `<b>What this shows.</b> Each record gets an id made from the photo file itself. These two look alike, and they still get ${same ? 'the same id, which is a bug' : 'different ids'}. ${p.swaps.length ? 'Here a value from one receipt turned up in the other: ' + esc(p.swaps.join(', ')) + '.' : 'No value from one receipt turned up in the other.'}`;
+    $('#result').innerHTML = p.items.map((it, i) => `<p class="pairhead">Receipt ${i + 1}</p><div class="stamprow">${stampOf(it)}${why(it.reason)}</div>
       <ul class="lines">${lineHead()}${it.fields.map(fieldLine).join('')}</ul>`).join('');
     if (animate) printIn($('#result'));
   }
@@ -523,6 +583,7 @@
       b.type = 'button';
       b.className = 'btn pick';
       b.dataset.key = s.key;
+      b.dataset.demo = s.key;
       b.setAttribute('aria-pressed', 'false');
       b.innerHTML = `<b>${s.title}</b><span>${s.desc}</span>`;
       b.addEventListener('click', () => select(s.key, true));
@@ -547,7 +608,7 @@
     xS = (v) => ML + v * (W - ML - MR); yS = (v) => H - MB - (v / yMax) * (H - MB - MT);
     const path = (pts) => pts.map((p, i) => `${i ? 'L' : 'M'}${xS(p.stpRate).toFixed(1)},${yS(p.fieldErrorRate).toFixed(1)}`).join('');
     const ticks = [0, 0.25, 0.5, 0.75, 1];
-    $('#stpChart').innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Share of receipts sent straight through against the field error among them, for calibrated and stated confidence">
+    $('#stpChart').innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Share of receipts that skip the person against the share of their fields that were wrong, for calibrated and the model's own confidence">
       ${ticks.map((t) => `<line class="grid-l" x1="${xS(0)}" x2="${xS(1)}" y1="${yS(t * yMax)}" y2="${yS(t * yMax)}"/><text x="${xS(0) - 8}" y="${yS(t * yMax) + 3}" text-anchor="end">${(t * yMax * 100).toFixed(1)}%</text><text x="${xS(t)}" y="${H - 16}" text-anchor="middle">${t * 100}%</text>`).join('')}
       <line class="axis-l" x1="${xS(0)}" x2="${xS(1)}" y1="${yS(0)}" y2="${yS(0)}"/>
       <path class="ver" d="${path(ver)}"/>
@@ -555,7 +616,7 @@
       <line class="cross" id="crossX"/><line class="cross" id="crossY"/>
       <circle class="dot" id="dot" r="6"/>
       <text x="${(ML + W) / 2}" y="${H}" text-anchor="middle">share of receipts that skip the person</text>
-      <text x="${ML}" y="${MT - 12}">field error among them</text>
+      <text x="${ML}" y="${MT - 12}">share of their fields that were wrong</text>
     </svg>`;
   }
 
@@ -706,9 +767,10 @@
     const op = ops.find((o) => o.alpha === 0.01);
     if (op && op.threshold !== null) {
       thr = op.threshold;
-      $('#stpNote').textContent = `This curve judges each receipt on the fields calibrated for its kind of receipt. At 1 percent field error on the validation split the threshold is ${op.threshold}, and on the test split it lets through ${pct(op.test.stpRate)} of receipts with ${pct(op.test.fieldErrorRate)} field error. The pipeline today judges all six fields at once, and under that rule ${(V.stp.pooled || []).some((o) => o.test) ? 'fewer receipts pass' : 'no threshold met the budget, so it sends every small model receipt to a person'}.`;
+      const t = op.test;
+      $('#stpNote').textContent = `${t.stpRate < 0.25 ? 'Only a few' : 'Many'} receipts skip the person at the strictest line, ${op.threshold}: ${sig2(t.stpRate * 100)} percent of the test set. ${t.fieldErrors === 0 ? 'None of their fields were wrong, so the line is safe, but it saves little work.' : `${sig2(t.fieldErrorRate * 100)} percent of their fields were wrong, against a target of 1.`} That line was picked on separate receipts to keep wrong fields at 1 in 100 or fewer. This curve checks each receipt only on the fields calibrated for its kind of receipt. The pipeline in the code checks all six fields together, and under that rule ${(V.stp.pooled || []).some((o) => o.test) ? 'fewer receipts pass' : 'no line kept wrong fields that low, so every receipt the small model reads goes to a person'}.`;
     } else {
-      $('#stpNote').textContent = 'No threshold kept field error at or under 1 percent on the validation split, so the pipeline sends every small model receipt to a person. The curve shows what looser budgets would buy.';
+      $('#stpNote').textContent = 'No line kept wrong fields at 1 in 100 or fewer on the separate receipts, so the pipeline sends every receipt the small model reads to a person. The curve shows what looser targets would buy.';
     }
     buildSlips();
     wireTape();
@@ -734,10 +796,10 @@
   /* damage bench */
   const LV = V.levels || { blur: [1, 2, 4], rotate: [5, 10, 20], dark: [0.6, 0.4, 0.25], jpeg: [30, 15, 5] };
   const DIALS = [
-    { kind: 'blur', label: 'Blur', min: 0, max: 4, step: 0.1, clean: 0, fmt: (v) => v === 0 ? 'none' : `sigma ${v.toFixed(1)}`, lvl: (l) => `blur sigma ${l}` },
+    { kind: 'blur', label: 'Blur', min: 0, max: 4, step: 0.1, clean: 0, fmt: (v) => v === 0 ? 'none' : `strength ${v.toFixed(1)}`, lvl: (l) => `blur strength ${l}` },
     { kind: 'rotate', label: 'Tilt', min: 0, max: 20, step: 0.5, clean: 0, fmt: (v) => v === 0 ? 'none' : `${v.toFixed(1)} degrees`, lvl: (l) => `${l} degree tilt` },
     { kind: 'dark', label: 'Darkness', min: 0.25, max: 1, step: 0.01, clean: 1, invert: true, fmt: (v) => v === 1 ? 'none' : `${Math.round(v * 100)}% brightness`, lvl: (l) => `${Math.round(l * 100)}% brightness` },
-    { kind: 'jpeg', label: 'Compression', min: 5, max: 90, step: 1, clean: 90, invert: true, fmt: (v) => v >= 90 ? 'none' : `JPEG quality ${v}`, lvl: (l) => `JPEG quality ${l}` },
+    { kind: 'jpeg', label: 'Compression', min: 5, max: 90, step: 1, clean: 90, invert: true, fmt: (v) => v >= 90 ? 'none' : `JPEG quality ${v} of 100`, lvl: (l) => `JPEG quality ${l} of 100` },
   ];
   const dmg = { blur: 0, rotate: 0, dark: 1, jpeg: 90 };
   const src = new Image();
@@ -757,7 +819,7 @@
       // Darkness and compression get worse as their raw value falls, so the slider runs reversed.
       const toSlider = (v) => (d.invert ? d.max + d.min - v : v);
       div.innerHTML = `<label for="d-${d.kind}">${d.label}</label><output id="o-${d.kind}" for="d-${d.kind}">${d.fmt(d.clean)}</output>
-        <input type="range" id="d-${d.kind}" min="${d.min}" max="${d.max}" step="${d.step}" value="${toSlider(d.clean)}" aria-describedby="m-${d.kind}" />
+        <input type="range" id="d-${d.kind}" data-demo="${d.kind}" min="${d.min}" max="${d.max}" step="${d.step}" value="${toSlider(d.clean)}" aria-describedby="m-${d.kind}" />
         <p class="measured" id="m-${d.kind}"></p>`;
       box.appendChild(div);
       const input = div.querySelector('input');
@@ -768,12 +830,13 @@
         document.getElementById('o-' + d.kind).textContent = d.fmt(v);
         const n = nearestLevel(d, v), rec = n.level === 0 ? vars.clean : vars[d.kind + '-' + n.level];
         const m = document.getElementById('m-' + d.kind);
-        if (!rec) { m.textContent = 'Not measured.'; }
+        // The no damage figure is said once above the sliders, so each slider only speaks for its own level.
+        if (n.level === 0) { m.textContent = 'No damage yet.'; }
+        else if (!rec) { m.textContent = 'Not tested at this level.'; }
         else {
-          if (!m.querySelector('b')) m.innerHTML = '<span class="w"></span>: field accuracy <b></b> on <span class="c"></span>';
-          m.querySelector('.w').textContent = n.level === 0 ? 'Clean photos' : `Level ${n.level}, ${d.lvl(n.at)}`;
-          m.querySelector('.c').textContent = `${rec.n} receipt${rec.n === 1 ? '' : 's'}`;
-          tick(m.querySelector('b'), rec.fieldAccuracy, (x) => num(x));
+          if (!m.querySelector('b')) m.innerHTML = '<span class="w"></span>: <b></b> of fields right';
+          m.querySelector('.w').textContent = `Level ${n.level}, ${d.lvl(n.at)}`;
+          tick(m.querySelector('b'), rec.fieldAccuracy, (x) => pct(x));
         }
         applyDamage(d.kind === 'jpeg');
       };
@@ -785,7 +848,10 @@
       DIALS.forEach((d) => { const i = document.getElementById('d-' + d.kind); i.value = d.invert ? d.max + d.min - d.clean : d.clean; i._update(); });
     });
     const clean = (byVariant().clean || {});
-    $('#dmgNote').textContent = `The picture is an approximate preview made in your browser. The accuracy figures are the recorded ones: each kind of damage was measured on its own, on ${V.perturbation ? V.perturbation.subsetSize : 'a few'} receipts, so combined damage was not measured. The clean figure comes from ${clean.n || 0} receipt${clean.n === 1 ? '' : 's'}, which is too few to compare closely.`;
+    const few = V.perturbation ? V.perturbation.subsetSize : 'a few';
+    $('#dmgBase').textContent = clean.fieldAccuracy === undefined ? 'The undamaged photo was not tested.' :
+      `With no damage, the small model read ${sig2(clean.fieldAccuracy * 100)} percent of fields right. That was measured on only ${clean.n} receipt${clean.n === 1 ? '' : 's'}, so treat it as rough.`;
+    $('#dmgNote').textContent = `The picture is a rough preview made in your browser. The figures are the recorded ones. Each kind of damage was tested on its own, on ${few} receipts, so damage combined was never measured.`;
   }
 
   function applyDamage(reencode) {
@@ -830,19 +896,19 @@
     src.dataset.file = e.image.file;
     src.onload = () => { $('#dmgImg').src = src.src; applyDamage(true); };
     src.src = e.image.file;
-    $('#dmgCap').textContent = `${e.id}${e.variant !== 'clean' ? ', already ' + e.variant : ''}. Pick another receipt above to damage it instead.`;
+    $('#dmgCap').innerHTML = `${esc(plainId(e.id))}${e.variant !== 'clean' ? ', already ' + esc(plainVariant(e.variant)) : ''}. Pick another receipt above to damage it instead. <span class="mtag">${esc(e.id)}</span>`;
   }
 
   function renderPert() {
     const p = V.perturbation; if (!p) return;
     const by = byVariant();
-    const kinds = { blur: 'blur', rotate: 'rotation', crop: 'crop', dark: 'darker', jpeg: 'JPEG compression' };
+    const kinds = { blur: 'blur', rotate: 'tilt', crop: 'crop', dark: 'darker', jpeg: 'JPEG compression' };
     const cell = (v) => { const a = v && v.fieldAccuracy; return `<td class="${a !== undefined && by.clean && a < by.clean.fieldAccuracy - 0.1 ? 'low' : ''}">${num(a)}</td>`; };
-    $('#pertTable').innerHTML = `<table class="t"><caption>Field accuracy under each kind of damage, ${p.subsetSize} receipts chosen before any run</caption>
-      <thead><tr><th>damage</th><th>clean</th><th>level 1</th><th>level 2</th><th>level 3</th></tr></thead><tbody>
+    $('#pertTable').innerHTML = `<table class="t"><caption>Share of fields read right under each kind of damage, on ${p.subsetSize} receipts picked before any test ran. Red marks a drop of more than 10 points from no damage.</caption>
+      <thead><tr><th>damage</th><th>no damage</th><th>level 1</th><th>level 2</th><th>level 3</th></tr></thead><tbody>
       ${Object.entries(kinds).map(([k, n]) => `<tr><td>${n}</td><td>${num(by.clean && by.clean.fieldAccuracy)}</td>${[1, 2, 3].map((l) => cell(by[k + '-' + l])).join('')}</tr>`).join('')}</tbody></table>`;
     const h = p.homogeneity;
-    if (h) $('#homNote').textContent = `Near identical receipts: of ${h.pairs} same-merchant pairs, ${h.identicalFilePairs} are the same file twice and share an id, ${h.distinctFilesSharingId} different files share an id, and in ${h.pairsWithSwaps} of the ${h.pairsCheckedForSwaps} pairs that were both run a value from the other receipt turned up. The id hashes the file, so the same paper photographed twice becomes two documents. That limit is known and not fixed.`;
+    if (h) $('#homNote').textContent = `Some receipts in the set look almost the same. Of ${h.pairs} pairs from the same shop, ${h.identicalFilePairs} were one file saved twice, so they share an id. Different files shared an id in ${h.distinctFilesSharingId} pairs. A value from one receipt showed up in the other in ${h.pairsWithSwaps} of the ${h.pairsCheckedForSwaps} pairs that were both read. The id is made from the file, so one paper receipt photographed twice becomes two records. That gap is known and not fixed.`;
   }
 
   /* reliability diagrams */
@@ -852,29 +918,38 @@
       ${bins.filter((b) => b.n > 0).map((b) => `<rect class="${cls}" x="${xx(b.lo) + 1}" y="${yy(b.accuracy)}" width="${Math.max(1, xx(b.hi) - xx(b.lo) - 2)}" height="${yy(0) - yy(b.accuracy)}"><title>${b.n} fields, right ${(b.accuracy * 100).toFixed(0)}%</title></rect>`).join('')}
       <line x1="${xx(0)}" x2="${xx(1)}" y1="${yy(0)}" y2="${yy(0)}" stroke="var(--ink)" stroke-width="1.5"/></svg>`;
   }
+  // One plain sentence per field, then a verdict. The error is in percentage points.
+  function honesty(f) {
+    const a = f.verbalized.ece, b = f.calibrated.ece;
+    const said = `Its confidence was off by about ${sig2(a * 100)} points before calibration and ${sig2(b * 100)} after.`;
+    const verdict = b > a ? (b <= 0.05 ? 'It was close to honest already, and calibration did not help.' : 'Calibration made it worse.')
+      : b <= 0.05 ? 'Close to honest now.' : b <= 0.1 ? 'Closer, not there yet.' : 'Still not honest enough.';
+    return `${said} ${verdict}`;
+  }
   function renderRel() {
     if (!V.calibration) return;
-    $('#rel').innerHTML = V.calibration.fields.map((f) => `<div class="cell"><h3>${lab(f.field)} <span>right ${pct(f.testAccuracy)} of ${f.n.test}</span></h3>
-      <div class="pair2"><figure>${mini(f.reliabilityVerbalized, 'rb-s')}<figcaption>stated</figcaption></figure><figure>${mini(f.reliabilityCalibrated, 'rb-c')}<figcaption>calibrated</figcaption></figure></div>
-      <p>ECE ${num(f.verbalized.ece)} stated, ${num(f.calibrated.ece)} calibrated. AUROC ${num(f.verbalized.auroc)} to ${num(f.calibrated.auroc)}.</p></div>`).join('');
+    $('#rel').innerHTML = V.calibration.fields.map((f) => `<div class="cell"><h3>${lab(f.field)} <span>read right ${sig2(f.testAccuracy * 100)}% of the time, ${f.n.test} test receipts</span></h3>
+      <div class="pair2"><figure>${mini(f.reliabilityVerbalized, 'rb-s')}<figcaption>model's own</figcaption></figure><figure>${mini(f.reliabilityCalibrated, 'rb-c')}<figcaption>after calibration</figcaption></figure></div>
+      <p>${honesty(f)} <span class="mtag">ECE ${num(f.verbalized.ece)} to ${num(f.calibrated.ece)}, AUROC ${num(f.verbalized.auroc)} to ${num(f.calibrated.auroc)}</span></p></div>`).join('');
   }
 
   /* routing */
   function renderRouting() {
     const r = V.routing; if (!r) return;
     $('#routeTiles').innerHTML = [
-      leader('Small model got every field right', pct(r.router.smallSufficesRate)),
-      leader('Router predicted that correctly', pct(r.router.accuracy)),
-      leader('Sent to the small model', pct(r.router.routedSmallShare)),
-      leader('Claude on every photo, per 1,000', '$' + num(r.cost.claudeEstimatePer1k, 2), 'total'),
-      leader('With the router, per 1,000', '$' + num(r.cost.routedEstimatePer1k, 2), 'total'),
+      leader('Photos the small model read with every field right', pct(r.router.smallSufficesRate)),
+      leader('Photos where the check guessed that right', pct(r.router.accuracy)),
+      `<li class="verdict">${r.router.accuracy < 0.75 ? 'Better than a coin toss, but not by much.' : 'Right most of the time.'}</li>`,
+      leader('Photos the check sent to the small model', pct(r.router.routedSmallShare)),
+      leader('Cost per 1,000 photos, all read by Claude', '$' + num(r.cost.claudeEstimatePer1k, 2), 'total'),
+      leader('Cost per 1,000 photos, with the check choosing', '$' + num(r.cost.routedEstimatePer1k, 2), 'total'),
     ].join('');
     const p = r.paths, c = r.constrainedVsUnconstrained;
     const row = (name, s) => `<tr><td>${name}</td><td>${pct(s.schemaValidFirstTry)}</td><td>${pct(s.schemaValidAfterRepair)}</td><td>${num(s.overall ?? s.contentAccuracy)}</td></tr>`;
-    $('#pathTable').innerHTML = `<table class="t"><thead><tr><th>path</th><th>valid first try</th><th>valid after repair</th><th>field accuracy</th></tr></thead><tbody>
-      ${row('Claude Haiku 4.5, 42 hand checked', p.claudeHaikuRecorded)}${row('Qwen 3.5 9B with grammar, 42 hand checked', p.smallConstrained)}${row('Qwen 3.5 9B no grammar, 42 hand checked', p.smallUnconstrained)}
-      ${row('Qwen 3.5 9B with grammar, ' + c.n + ' photos', c.constrained)}${row('Qwen 3.5 9B no grammar, ' + c.n + ' photos', c.unconstrained)}</tbody></table>`;
-    $('#costNote').textContent = 'Claude cost on photos is an estimate from Anthropic\'s image token rule, not a measured bill: no Bedrock credentials were available for the public receipts. The small model runs locally and has no API cost.';
+    $('#pathTable').innerHTML = `<table class="t"><caption>How often each reader answered in the right format, and how many fields it read right. Held to the format means the small model could only write answers that fit it.</caption><thead><tr><th>reader</th><th>Answers in the right format, first try</th><th>after one repair</th><th>share of fields right</th></tr></thead><tbody>
+      ${row('Claude Haiku 4.5, 42 receipts checked by hand', p.claudeHaikuRecorded)}${row('Qwen 3.5 9B held to the format, 42 checked by hand', p.smallConstrained)}${row('Qwen 3.5 9B free to answer, 42 checked by hand', p.smallUnconstrained)}
+      ${row('Qwen 3.5 9B held to the format, ' + c.n + ' photos', c.constrained)}${row('Qwen 3.5 9B free to answer, ' + c.n + ' photos', c.unconstrained)}</tbody></table>`;
+    $('#costNote').textContent = 'The Claude cost for photos is an estimate, not a real bill. These public receipts were never sent to Claude, so the cost uses Anthropic\'s published rule for pricing an image. The small model runs on a local computer and costs nothing per photo.';
   }
 
   /* upload: recorded match, else router statistics measured in the browser */
@@ -919,10 +994,10 @@
       img.onload = () => {
         const s = statsFromImage(img, file.size); URL.revokeObjectURL(url); busy(false);
         const r = V.router;
-        if (!r || !r.weights || !r.weights.length) { out.innerHTML = '<p class="empty">The router has not been fitted yet.</p>'; return; }
+        if (!r || !r.weights || !r.weights.length) { out.innerHTML = '<p class="empty">The photo check has no saved settings yet, so it cannot choose.</p>'; return; }
         const p = routerScore(r, s), small = p >= r.threshold;
         out.innerHTML = `<span class="tag">${small ? 'Small model' : 'Claude'}</span>
-          <p>The router gives this photo a ${(p * 100).toFixed(0)} percent chance that the small model reads every field right. Its cut is ${(r.threshold * 100).toFixed(0)} percent, so it ${small ? 'goes to the small model first, and to Claude only if that answer fails the format check' : 'goes straight to Claude'}.</p>
+          <p>The photo check gives the small model a ${(p * 100).toFixed(0)} percent chance of reading every field right. It needs ${(r.threshold * 100).toFixed(0)} percent, so this photo ${small ? 'goes to the small model first, and to Claude only if that answer fails the format check' : 'goes straight to Claude'}.</p>
           <pre>measured in your browser\nsharpness ${s.sharpness.toFixed(5)}\nbrightness ${s.brightness.toFixed(2)}, contrast ${s.contrast.toFixed(2)}\nink ${s.inkDensity.toFixed(3)}, printed lines ${s.textLines}\n${s.width} x ${s.height} px</pre>
           <p>No fields were read. That needs a model, and this page has none.</p>`;
       };
@@ -945,6 +1020,7 @@
     $('#bars').innerHTML = FIELDS.map((f) => leader(lab(f), `<span data-v="${e.perField[f]}">${e.perField[f].toFixed(3)}</span>`)).join('');
     const big = $('#evalOverall');
     big.textContent = e.overall.toFixed(3);
+    $('#evalVerdict').textContent = e.overall >= 0.98 ? 'Almost every field was right.' : e.overall >= 0.9 ? 'Most fields were right.' : 'Too many fields were wrong.';
     // Count up once when the section is reached, the only entrance on the page.
     const io = new IntersectionObserver((en) => {
       if (!en.some((x) => x.isIntersecting)) return;
@@ -956,6 +1032,13 @@
   }
 
   renderStp(); renderDials(); renderScn(); renderRel(); renderRouting(); renderPert(); renderEval();
+
+  // The one theme flip. It holds from the hand checked numbers down through the footer.
+  const flipAt = $('#evalTitle').closest('section');
+  let flipRaf = 0;
+  const flip = () => { flipRaf = 0; document.body.classList.toggle('flip', flipAt.getBoundingClientRect().top < innerHeight * 0.6); };
+  addEventListener('scroll', () => { if (!flipRaf) flipRaf = requestAnimationFrame(flip); }, { passive: true });
+  flip();
 </script>
 </body>
 </html>
