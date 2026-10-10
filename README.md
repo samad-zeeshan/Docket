@@ -1,24 +1,24 @@
 # Docket
 
-Docket reads a photo or PDF of a receipt and turns it into clean, checked data. It refuses to save anything that fails a strict format check, because a model will happily invent a field, and a retry can never create a duplicate. Every field also gets a confidence score, and a receipt goes to a person whenever one of its fields looks doubtful.
+Docket reads a photo or PDF of a receipt and turns it into clean, checked data. It does not save an answer that fails a strict format check, because a model can invent a field. A retry never makes a duplicate record. Every field also gets a confidence score. A receipt goes to a person when one of its fields looks doubtful.
 
-**[Open the demo](https://samad-zeeshan.github.io/Docket/)**. It replays recorded results: no login, no waiting, no model behind it. A 90 second walkthrough is in [docs/demo.mp4](docs/demo.mp4).
+**[Open the demo](https://samad-zeeshan.github.io/Docket/)**. It shows recorded results, so it needs no login, no wait and no model. A short recording is in [docs/demo.mp4](docs/demo.mp4).
 
 ![Docket demo](docs/demo.gif)
 
 ## How it works
 
 ![System overview](docs/diagrams/overview.png)
-A receipt put in S3 goes through EventBridge and SQS to a Lambda that reads it with a model and writes the result to DynamoDB.
+When a receipt arrives in S3, EventBridge and SQS pass it to a Lambda function. The Lambda reads the receipt with a model and writes the result to DynamoDB.
 
-![Pre-inference router](docs/diagrams/router.png)
-Before any model call, the router looks at the photo and picks a small local model or Claude on Bedrock.
+![Photo check](docs/diagrams/router.png)
+Before a model reads the receipt, a photo check picks the small local model or Claude on Bedrock.
 
 ![Confidence and review](docs/diagrams/review-flow.png)
-The schema gate decides whether an answer can be stored. Confidence only decides whether a person looks first.
+The format check decides if Docket can store an answer. Confidence only decides if a person looks first.
 
-![Straight-through decision](docs/diagrams/stp-decision.png)
-The threshold is set on one group of receipts and judged on another, and the least confident field decides. The upload flow, document states and deployment are in `docs/diagrams/` too, each with an interactive version.
+![Straight through decision](docs/diagrams/stp-decision.png)
+Docket sets the threshold on one group of receipts and tests it on another. The least confident field decides. The `docs/diagrams/` folder also shows the upload flow, document states and deployment. Each diagram has an interactive version.
 
 ## Data
 
@@ -28,27 +28,31 @@ The threshold is set on one group of receipts and judged on another, and the lea
 | SROIE (Malaysia, scans) | 446 | merchant, date, total | CC BY 4.0 per the mirror |
 | CORD v2 (Indonesia, photos) | 160 | line items, subtotal, tax, total | CC BY 4.0 |
 
-The small model read 606 of the 1,987 downloaded receipts before its time budget ran out, 149 of them in the test split.
+The small model read 606 of the 1,987 downloaded receipts before its time ran out. The test set holds 149 of these receipts.
 <!-- /results -->
 
-The run stopped at a time limit because the GPU is shared. The order was fixed first (SROIE, then CORD), so results did not pick the cut, and it falls short of the thousand receipts planned. SROIE company, date and total map to merchant, date and total. CORD menu lines, subtotal, tax and total map to the same fields. Neither set labels currency, so it is not scored, and no field is scored where a set does not label it. `npm run data:fetch` downloads both against pinned sha256 sums. The repo keeps only ids, splits and image hashes, plus three CORD images for the demo.
+The run stopped at a time limit because other jobs share the GPU. The order of receipts was fixed first, SROIE and then CORD, so the results did not pick the cut. The run read fewer than the thousand receipts in the plan, which is a gap. SROIE company, date and total map to merchant, date and total. CORD menu lines, subtotal, tax and total map to the same fields.
 
-## Straight-through processing
+Docket scores a field only where a set labels it. Neither set labels currency, so Docket does not score currency. `npm run data:fetch` downloads both sets and checks pinned sha256 sums. The repo keeps only ids, splits and image hashes, plus three CORD images for the demo.
+
+## Straight through
 
 <!-- results:stp -->
-| Field error budget | Threshold (from val) | Straight through (test) | Field error (test) | Same rule on stated confidence | Highest ladder rung held |
+| Wrong field target | Threshold (tuning) | Straight through (test) | Wrong fields (test) | Model's own confidence | Ladder step held |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 1.0% | 0.94 | 7.4% | 0.0% | 0.0% | fit-val split |
 | 5.0% | 0.88 | 18.1% | 3.9% | 0.0% | fit-val split |
 | 10.0% | 0.61 | 46.3% | 6.5% | 0.0% | fit-val split |
 
-At a 1.0% field error budget, 11 of 149 test receipts (7.4%) pass with no person, and 0 of their 32 fields are wrong. Thresholds were picked on 161 validation receipts. By set that is 11 SROIE and 0 CORD receipts. Judged on all six fields at once, as the pipeline does today, no threshold meets any of the 3 budgets, so the pipeline sends every small model receipt to a person.
+At the tightest target of 1% wrong fields, 11 of 149 test receipts go straight through. That is about 7.4%, which is low. None of their 32 fields is wrong, so this meets the target. The thresholds come from 161 separate tuning receipts. Of the receipts that go straight through, 11 come from SROIE and 0 from CORD.
+
+Docket itself checks all six fields at once. Under that rule, no threshold meets any of the 3 targets. So every receipt from the small model goes to a person. This is safe, but it saves no work yet.
 <!-- /results -->
 
-The table judges each receipt on the fields calibrated for its set, which assumes the document type is known. The pipeline does not know it yet. On the confidence the model writes down, no threshold met any budget. The fit and val rung of the validity ladder (arXiv 2608.14639) holds, which bounds error on average and certifies nothing. The exact binomial rungs certify nothing yet because the validation split is small.
+The table checks each receipt only on the fields calibrated for its set. This assumes that Docket knows the document type, but Docket does not know it yet. With the model's own confidence, no threshold met any target. The fit and tuning step of the validity ladder (arXiv 2608.14639) holds. That step limits the average error but gives no guarantee. The stricter exact binomial steps give no guarantee yet, because the tuning set is small.
 
 <!-- results:calibration -->
-| Field | Test fields | Right | ECE stated | ECE calibrated | AUROC stated | AUROC calibrated |
+| Field | Test fields | Correct | Error, own `ECE` | Error, calibrated | Ranking, own `AUROC` | Ranking, calibrated |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | merchant | 111 | 74.8% | 0.217 | 0.177 | 0.606 | 0.771 |
 | date | 104 | 93.3% | 0.045 | 0.047 | 0.543 | 0.802 |
@@ -58,43 +62,57 @@ The table judges each receipt on the fields calibrated for its set, which assume
 | line items | 36 | 44.4% | 0.477 | 0.216 | 0.613 | 0.564 |
 <!-- /results -->
 
-ECE is the average gap between stated confidence and how often a field is right. Calibration helps most on subtotal and tax, where the model said it was sure and was often wrong. Date does not improve, and line items rank worse after calibration, so line items are the weakest part of the decision.
+The error columns show the average gap between confidence and how often a field is correct. Lower is better. The ranking columns show how well confidence puts correct fields above wrong ones. A score of 0.5 is a coin toss, and 1 is perfect. Calibration helps most on subtotal and tax, where the model was sure but often wrong. Date does not improve, and line items rank worse after calibration, so line items are the weakest part.
 
-## Routing and cost
+## Model choice and cost
 
 <!-- results:routing -->
-| Path | Receipts | Valid first try | Valid after repair | Field accuracy |
+| Model and input | Receipts | Right format, first try | After one repair | Fields correct |
 | --- | ---: | ---: | ---: | ---: |
 | Claude Haiku 4.5, hand checked text | 42 | 100.0% | 100.0% | 0.999 |
-| Qwen 3.5 9B with grammar, hand checked text | 42 | 100.0% | 100.0% | 0.984 |
-| Qwen 3.5 9B without grammar, hand checked text | 42 | 100.0% | 100.0% | 0.987 |
-| Qwen 3.5 9B with grammar, public photos | 20 | 100.0% | 100.0% | 0.909 |
-| Qwen 3.5 9B without grammar, public photos | 20 | 85.0% | 85.0% | 0.559 |
+| Qwen 3.5 9B held to the format, hand checked text | 42 | 100.0% | 100.0% | 0.984 |
+| Qwen 3.5 9B free to answer, hand checked text | 42 | 100.0% | 100.0% | 0.987 |
+| Qwen 3.5 9B held to the format, public photos | 20 | 100.0% | 100.0% | 0.909 |
+| Qwen 3.5 9B free to answer, public photos | 20 | 85.0% | 85.0% | 0.559 |
 
-Without the grammar, 3 of 20 photo answers never became valid JSON. On the test split the small model got every field right on 55.0% of receipts. The router predicts that with 64.4% accuracy and sends 43.6% to the small model, where field error is 10.0% against 35.9% on the rest. Claude on every photo would cost an estimated $2.32 per 1,000 receipts, $1.31 with the router.
+When free to answer, the small model failed the format check on 3 of 20 photos, even after one repair. When held to the format, it never failed.
+
+On the test receipts, the small model read every field correctly on about 55% of receipts. The photo check guesses this outcome correctly for about 64% of receipts. A coin toss gets 50%, so the photo check is only a little better. The photo check sends about 44% of receipts to the small model. On those receipts, the small model gets about 10% of fields wrong. On the other receipts, it gets about 36% wrong, so the photo check keeps the hard photos away from it.
+
+If Claude reads every photo, the estimated cost is about $2.3 for each 1,000 receipts. With the photo check, the estimated cost is about $1.3.
 <!-- /results -->
 
-The small model is Qwen 3.5 9B on a local GPU. Claude Haiku 4.5 ran only on the hand checked receipts, from saved Bedrock responses. There were no Bedrock credentials for the public sets, so Claude on public photos is not run and its cost there is an estimate from the published image token rule. The router beats a coin but not by much, the warning in arXiv 2608.06607: routing pays only when the cheap model's failures show in the image.
+The small model is Qwen 3.5 9B on a local GPU. Claude Haiku 4.5 read only the hand checked receipts, and the repo keeps its saved Bedrock answers. Docket had no Bedrock credentials for the public sets. So Claude did not read the public photos, and its cost there is an estimate from the published image token rule. The photo check is only a little better than a coin toss. arXiv 2608.06607 warns about this, because such a check helps only when the small model fails on photos that look bad.
 
-## Robustness
+## Damaged photos
 
 <!-- results:robustness -->
-On 4 receipts, field accuracy is 0.667 clean and, at the worst level of each damage, blur 0.071, rotation 0.786, crop 0.857, darker 0.786, jpeg compression 0.643. Near identical receipts: of 371 same-merchant SROIE pairs, 6 are the same file shipped twice and share an id as they should, and 0 different files share an id. Of the 85 pairs where both receipts were read, 0 had a date or total from the other receipt turn up.
+The damage test used 4 receipts. With no damage, the small model read 67% of fields correctly. At the worst level of each kind of damage, it read this share of fields correctly:
+
+- Blur: 7.1%
+- Tilt: 79%
+- Crop: 86%
+- Darkness: 79%
+- JPEG compression: 64%
+
+Blur does the most harm. With only 4 receipts, all of these figures are rough.
+
+Some receipts look almost the same. Of 371 SROIE pairs from the same shop, 6 pairs are one file saved twice. These pairs share an id, which is correct. No two different files share an id, which is good. The small model read both receipts in 85 pairs. No date or total from one receipt went into the other, which is good.
 <!-- /results -->
 
 ## What this does not show
 
-- Claude's accuracy on the public photos. Every public number is the small model.
-- Small differences. The test split is small enough that a few points are noise, and the damage suite is a smoke test, not a curve.
-- Production use. Docket was deployed to a test account and torn down. It serves no one. The review queue is a table with no screen.
-- Duplicate photos. The id hashes the file, so one receipt photographed twice gets two ids.
+- Claude's accuracy on the public photos. Every public number comes from the small model.
+- Small differences. The test set is small, so a change of a few points can be noise. The damage test is a quick check, not a full curve.
+- Production use. The only deployment went to a test account, and it is now deleted. Docket serves no one. The review queue is a table with no screen.
+- Duplicate photos. Docket makes the id from the file, so two photos of one receipt get two ids.
 
-## Design decisions
+## Design choices
 
-- **Ids come from content**: a hash of bucket, key and ETag plus a conditional write, so redelivery or a dead letter replay never makes a second record.
-- **Bad data becomes FAILED, and only broken infrastructure retries**, so the dead letter queue alarm means an outage. Every answer gets a Zod schema check and exactly one repair.
-- **Confidence decides review, never correctness.** It runs after the gate, applies only to the route it was fitted on, and writes the record and its review queue item in one transaction. On the Claude path, which has no token probabilities, only the arithmetic checks can send a receipt to review.
-- **The alarm topic grants CloudWatch the right to publish, in writing.** TLS enforcement had silently removed the default grant and every alarm went quiet. To test an alarm, force it with `aws cloudwatch set-alarm-state` and read its history. Card numbers, emails and phone numbers are scrubbed before storage, and uploads expire after a month.
+- **Ids come from content.** Each id is a hash of bucket, key and ETag. A conditional write stores it once, so a second delivery or a replay from the dead letter queue never makes a second record.
+- **Bad data becomes FAILED.** Only broken infrastructure gets a retry, so the dead letter queue alarm means an outage. Every answer gets one format check with Zod and one repair.
+- **Confidence decides review, never correctness.** The confidence step runs after the format check. It applies only to the model path that it was fitted on. It writes the record and its review queue item in one transaction. Claude gives no token probabilities, so on the Claude path only the arithmetic checks can send a receipt to review.
+- **The alarm topic gives CloudWatch the right to publish, in writing.** The TLS rule silently removed the default grant, and then no alarm could send a message. To test an alarm, force it with `aws cloudwatch set-alarm-state` and read its history. Docket removes card numbers, emails and phone numbers before storage. Uploads expire after a month.
 
 ## Run it
 
@@ -116,4 +134,4 @@ npm run demo                                                  # the demo page on
 
 ## Licence
 
-MIT, see [LICENSE](LICENSE). SROIE and CORD belong to their authors and are used under CC BY 4.0.
+The code uses the MIT licence, see [LICENSE](LICENSE). SROIE and CORD belong to their authors, and Docket uses them under CC BY 4.0.
