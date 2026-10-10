@@ -6,7 +6,7 @@
 <title>Docket demo</title>
 <meta name="description" content="Docket turns receipt photos into checked data and sends doubtful ones to a person. This page replays recorded results." />
 <meta property="og:title" content="Docket demo" />
-<meta property="og:description" content="Drag the confidence threshold and watch 149 recorded test receipts move between straight through and a person." />
+<meta property="og:description" content="Move the confidence threshold and see how many of 149 test receipts go straight through or to a person." />
 <meta name="theme-color" content="#c9ccc6" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#0e0f10" media="(prefers-color-scheme: dark)" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M7 3h18v24l-3-2-3 2-3-2-3 2-3-2-3 2z' fill='%23f6f6f1' stroke='%231f2224' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M11 10h10M11 15h10M11 20h6' stroke='%23b3372b' stroke-width='2'/%3E%3C/svg%3E" />
@@ -311,20 +311,20 @@
 <div class="counter">
 <main class="roll" id="main">
   <header class="head">
-    <div><p class="eyebrow">Receipts to checked data</p><h1>Docket</h1></div>
+    <div><p class="eyebrow">Checked receipt data</p><h1>Docket</h1></div>
     <p class="lede">Docket reads a receipt photo and stores it as checked data. Every field gets a confidence score, and a receipt goes to a person when any field looks doubtful.</p>
     <dl class="meta">
       <div><dt>Numbers from</dt><dd>recorded results</dd></div>
-      <div><dt>Model on this page</dt><dd>none</dd></div>
+      <div><dt>Model on page</dt><dd>none</dd></div>
       <div><dt>Test receipts</dt><dd id="metaTest">-</dd></div>
     </dl>
-    <p class="notice"><strong>This page replays recorded results.</strong> Every number and receipt below came from an earlier model run and was saved. Nothing here calls a model. The small model is Qwen 3.5 9B, running on a graphics card in a local computer. The Claude numbers are saved answers from Claude, run on Amazon's cloud.</p>
+    <p class="notice"><strong>This page replays recorded results.</strong> Every number and receipt below comes from an earlier model run. Nothing here calls a model. The small model is Qwen 3.5 9B. It runs on a graphics card in a local computer. The Claude numbers are saved answers from Claude Haiku 4.5, which ran on Amazon's cloud.</p>
   </header>
 
   <section aria-labelledby="h-rec">
     <p class="eyebrow">01 The receipts</p>
     <h2 id="h-rec">Four receipts</h2>
-    <p class="intro">Pick one to see what Docket stored, how sure it was of each field, and where the receipt went.</p>
+    <p class="intro">Select one to see what Docket stored, how sure it was of each field, and where the receipt went.</p>
     <div class="picks" id="scn"></div>
     <div class="bench">
       <div class="photo" id="left"></div>
@@ -337,37 +337,37 @@
   </section>
 
   <section aria-labelledby="h-stp">
-    <p class="eyebrow">02 The line</p>
+    <p class="eyebrow">02 The threshold</p>
     <h2 id="h-stp">Straight through, or to a person</h2>
-    <p class="intro">Drag the red line. A receipt skips the person only when its least sure field clears the line. Each slip below is one of the <span id="stpN">-</span> test receipts, which were kept out of everything used to pick the line. Each one is judged on calibrated confidence, which is the model's own score corrected on receipts with known answers.</p>
+    <p class="intro">Drag the red threshold. A receipt goes straight through only when its least sure field is above the threshold. Each slip below is one of the <span id="stpN">-</span> test receipts. No test receipt helped to pick a threshold. Each receipt uses calibrated confidence. That is the model's own score, corrected on receipts with known answers.</p>
     <div class="tape" id="tape">
       <div class="track" id="track">
-        <div class="handle" id="thr" role="slider" tabindex="0" aria-label="Confidence line" data-demo="threshold" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0.945"><span class="tab" id="thrVal">0.945</span></div>
+        <div class="handle" id="thr" role="slider" tabindex="0" aria-label="Confidence threshold" data-demo="threshold" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0.945"><span class="tab" id="thrVal">0.945</span></div>
       </div>
       <div class="scale" aria-hidden="true"><span style="left:0">0</span><span style="left:25%">0.25</span><span style="left:50%">0.50</span><span style="left:75%">0.75</span><span style="left:100%">1</span></div>
       <div class="ends" aria-hidden="true"><span>lower: more go straight through</span><span>higher: more go to a person</span></div>
     </div>
-    <div class="presets" id="presets"><span class="lbl">Lines picked on separate receipts to keep wrong fields at or under</span></div>
+    <div class="presets" id="presets"><span class="lbl">Wrong field targets</span></div>
     <div class="piles" id="piles">
       <div class="pile st"><header><h3>Straight through</h3><span class="count" id="nSt">0</span></header><div class="well" id="wellSt"></div></div>
       <div class="pile pp"><header><h3>To a person</h3><span class="count" id="nPp">0</span></header><div class="well" id="wellPp"></div></div>
       <div class="slips" id="slips" aria-hidden="true"></div>
     </div>
     <dl class="totals" id="readout">
-      <div><dt>Share that skip the person</dt><dd id="rStp">-</dd></div>
-      <div><dt>Share of their fields that were wrong</dt><dd id="rErr">-</dd></div>
-      <div><dt>Receipts that skip the person</dt><dd id="rPass">-</dd></div>
-      <div><dt>Wrong fields that got through</dt><dd id="rWrong">-</dd></div>
+      <div><dt>Straight through rate</dt><dd id="rStp">-</dd></div>
+      <div><dt>Wrong field rate</dt><dd id="rErr">-</dd></div>
+      <div><dt>Straight through receipts</dt><dd id="rPass">-</dd></div>
+      <div><dt>Wrong fields passed</dt><dd id="rWrong">-</dd></div>
     </dl>
     <div class="chart" id="stpChart"></div>
-    <div class="key"><span><i></i>calibrated confidence</span><span><i class="d"></i>the model's own confidence</span></div>
+    <div class="key"><span><i></i>calibrated confidence</span><span><i class="d"></i>model's own confidence</span></div>
     <p class="fine" id="stpNote"></p>
   </section>
 
   <section aria-labelledby="h-dmg">
     <p class="eyebrow">03 Bad photos</p>
     <h2 id="h-dmg">When the photo is bad</h2>
-    <p class="intro">Blur, tilt, darken or squash the receipt photo, the same ways the tests did. Under each slider is the share of fields the small model read right at the nearest damage level that was tested.</p>
+    <p class="intro">Blur, tilt, darken or compress the receipt photo in the same ways as the tests. Under each slider, you see the share of fields that the small model read correctly at the nearest tested damage level.</p>
     <div class="lab">
       <figure class="dmg">
         <div class="frame"><img id="dmgImg" src="v2/standard.jpg" loading="lazy" decoding="async" alt="The selected receipt photo with the chosen damage applied" width="520" height="780" /></div>
@@ -387,14 +387,14 @@
   <section aria-labelledby="h-rel">
     <p class="eyebrow">04 Honest scores</p>
     <h2 id="h-rel">Is the confidence honest?</h2>
-    <p class="intro">When the model says it is 80 percent sure, it should be right about 80 percent of the time. Each bar shows how often fields were right at one level of confidence, on the test receipts. Honest confidence puts every bar on the dashed line. Grey is the confidence the model gives itself. Black is the same field after calibration.</p>
+    <p class="intro">When the model says it is 80 percent sure, it should be right about 80 percent of the time. Each bar shows how often fields were right at one level of confidence, on the test receipts. Honest confidence puts every bar on the dashed line. Grey bars show the model's own confidence. Black bars show the same field after calibration.</p>
     <div class="rel" id="rel"></div>
   </section>
 
   <section aria-labelledby="h-route">
-    <p class="eyebrow">05 Picking a reader</p>
+    <p class="eyebrow">05 Model choice</p>
     <h2 id="h-route">Which model reads it</h2>
-    <p class="intro">Before any model reads the receipt, a quick check of the photo picks one of two readers. One is the small model on a local computer, which costs nothing per photo. The other is Claude, which is paid per photo.</p>
+    <p class="intro">A quick photo check picks one of two models before any model reads the receipt. One is the small model on a local computer, which costs nothing per photo. The other is Claude, which costs money for each photo.</p>
     <ul class="ledger" id="routeTiles"></ul>
     <div class="tw" id="pathTable"></div>
     <p class="fine" id="costNote"></p>
@@ -407,35 +407,35 @@
       <div>
         <div class="drop" id="drop" tabindex="0" role="button" aria-label="Choose a receipt photo">
           <span class="dt">Drop a JPEG or PNG, or <u>choose a file</u></span>
-          <span class="dh">It stays in your browser. Nothing is uploaded.</span>
+          <span class="dh">The photo stays in your browser. This page uploads nothing.</span>
           <input type="file" id="file" accept="image/png,image/jpeg,.png,.jpg,.jpeg" hidden />
         </div>
-        <p class="byo-hint">If the photo is one of the recorded receipts, you get its saved result. For any other photo, this page measures the image the way the photo check does and says which model it would go to. Reading the fields needs a model, and this page has none.</p>
+        <p class="byo-hint">If the photo is one of the recorded receipts, the page shows its saved result. For other photos, the page measures the image in the same way as the photo check. Then it shows which model would get the photo. Only a model can read the fields, and this page has no model.</p>
       </div>
-      <div class="out" id="byoOut" aria-live="polite"><p class="empty">Your photo's route shows up here.</p></div>
+      <div class="out" id="byoOut" aria-live="polite"><p class="empty">This box shows where your photo goes.</p></div>
     </div>
   </section>
 
   <section aria-labelledby="evalTitle">
     <p class="eyebrow">07 Hand checked</p>
-    <h2 id="evalTitle">The 42 hand checked receipts</h2>
-    <p class="intro">Claude Haiku 4.5 read the text of 42 receipts that a person had labelled by hand. These are its saved answers.</p>
+    <h2 id="evalTitle">Hand checked receipts</h2>
+    <p class="intro">Claude Haiku 4.5 read the text of 42 receipts. Before the test, a person labelled each receipt by hand. This section shows the saved answers from Claude.</p>
     <div class="gold">
-      <div><div class="big" id="evalOverall">-</div><p>Share of fields Claude read right, where 1 means every field. <span id="evalVerdict"></span></p></div>
+      <div><div class="big" id="evalOverall">-</div><p>This number is the share of fields that Claude read correctly. A score of 1 means every field. <span id="evalVerdict"></span></p></div>
       <ul class="ledger" id="bars"></ul>
     </div>
   </section>
 
 </main>
 <footer class="end">
-  <p class="eyebrow">End of the roll</p>
+  <p class="eyebrow">End of demo</p>
   <p class="word" aria-hidden="true">Docket</p>
-  <p class="voice">A model will happily invent a field. Docket checks every one and hands the doubtful receipts to a person.</p>
+  <p class="voice">A model can invent a field. Docket checks every field and sends doubtful receipts to a person.</p>
   <div class="endrow">
     <a href="https://github.com/samad-zeeshan/Docket">github.com/samad-zeeshan/Docket</a>
-    <span>Recorded results. No model runs on this page.</span>
-    <span>Receipt images from CORD v2, pair values from SROIE, both CC BY 4.0.</span>
-    <span>Code under the MIT licence.</span>
+    <span>This page shows recorded results. No model runs on this page.</span>
+    <span>The receipt images come from CORD v2 and the pair values from SROIE. Both use the CC BY 4.0 licence.</span>
+    <span>The code uses the MIT licence.</span>
   </div>
 </footer>
 </div>
@@ -455,7 +455,7 @@
   const sig2 = (x) => String(Number(Number(x).toPrecision(2)));
   // Public CORD ids look like cord-train-105. A reader can hold on to the number, so the id becomes a tag.
   const plainId = (id) => { const m = /^cord-(?:train|dev|test)-(\d+)$/.exec(id); return m ? `Receipt ${m[1]} from the public CORD set` : `Receipt ${id}`; };
-  const DAMAGE = { blur: 'blurred', rotate: 'tilted', dark: 'darkened', jpeg: 'squashed by compression', crop: 'cropped' };
+  const DAMAGE = { blur: 'blurred', rotate: 'tilted', dark: 'darkened', jpeg: 'compressed', crop: 'cropped' };
   const plainVariant = (v) => { const m = /^(\w+)-(\d)$/.exec(v); return m && DAMAGE[m[1]] ? `${DAMAGE[m[1]]} on purpose, level ${m[2]}` : v; };
   const FIELD = { lineItems: 'item lines', paymentMethod: 'payment method' };
   const owner = (f) => { const n = FIELD[f] || f; return `The ${n}${n.endsWith('s') ? "'" : "'s"}`; };
@@ -487,26 +487,26 @@
   /* the four receipts */
   const EX = V.examples || {};
   const SCN = [
-    { key: 'standard', title: 'A standard receipt', desc: 'Clean photo, every labelled field read right.' },
-    { key: 'hard', title: 'A hard receipt', desc: 'The model gets fields wrong. Does the confidence notice?' },
-    { key: 'blurred', title: 'A blurred receipt', desc: 'The same kind of photo, blurred on purpose.' },
-    { key: 'pair', title: 'Two near identical receipts', desc: 'Same shop, same layout. Can they be told apart?' },
+    { key: 'standard', title: 'A standard receipt', desc: 'The photo is clean, and every labelled field is correct.' },
+    { key: 'hard', title: 'A hard receipt', desc: 'The model reads some fields wrong. Does the confidence show it?' },
+    { key: 'blurred', title: 'A blurred receipt', desc: 'This test photo has extra blur on purpose.' },
+    { key: 'pair', title: 'Two similar receipts', desc: 'They come from the same shop and use the same layout. Does Docket keep them apart?' },
   ];
   let current = 'standard';
 
   function stampOf(e) {
-    if (e.status === 'FAILED') return '<span class="stamp fail">Failed the format check</span>';
+    if (e.status === 'FAILED') return '<span class="stamp fail">Format check failed</span>';
     return e.needsReview ? '<span class="stamp pp">To a person</span>' : '<span class="stamp st">Straight through</span>';
   }
 
   // The pipeline writes reasons like "date confidence 0.073 under 1". Say it in words and keep the original as a tag.
   function plainReason(r) {
     let m = /^(\w+) confidence ([\d.]+) under ([\d.]+)$/.exec(r);
-    if (m) { const c = Number(m[2]), t = Number(m[3]); return `${owner(m[1])} confidence was ${Number(c.toFixed(2))}, ${t - c > 0.3 ? 'far ' : ''}under the line, so a person checks it.`; }
+    if (m) { const c = Number(m[2]), t = Number(m[3]); return `${owner(m[1])} confidence was ${Number(c.toFixed(2))}, ${t - c > 0.3 ? 'far ' : ''}under the threshold, so a person checks it.`; }
     m = /^lowest field (\w+) at ([\d.]+)$/.exec(r);
-    if (m) return `Every field cleared the line. ${owner(m[1])} confidence was the lowest, at ${Number(Number(m[2]).toFixed(2))}.`;
+    if (m) return `Every field is above the threshold. ${owner(m[1])} confidence was the lowest, at ${Number(Number(m[2]).toFixed(2))}.`;
     const fixed = {
-      'failed the schema gate': 'The answer was not in the right format, even after one repair, so nothing was stored.',
+      'failed the schema gate': 'The answer was not in the right format, even after one repair, so Docket stored nothing.',
       'totals do not reconcile': 'The totals do not add up, so a person checks it.',
       'line items do not sum to the subtotal': 'The item lines do not add up to the subtotal, so a person checks it.',
       'implausible date': 'The date cannot be right, so a person checks it.',
@@ -518,7 +518,7 @@
   function fieldLine(f) {
     const show = (v) => v === null ? 'empty' : typeof v === 'object' ? (Array.isArray(v) ? v.length + (v.length === 1 ? ' line' : ' lines') : '…') : String(v);
     const conf = f.confidence === null ? 'n/a' : num(f.confidence, 2);
-    const labelRow = f.correct ? '' : `<span class="lab">the right answer is ${esc(show(f.label))}</span>`;
+    const labelRow = f.correct ? '' : `<span class="lab">the correct answer is ${esc(show(f.label))}</span>`;
     return `<li><span class="f">${lab(f.field)}</span><span class="v">${esc(show(f.predicted))}</span><span class="c" title="confidence">${conf}</span><span class="${f.correct ? 'ok' : 'no'}">${f.correct ? 'right' : 'wrong'}</span>${labelRow}</li>`;
   }
 
@@ -544,17 +544,17 @@
     $('#note').innerHTML = `<b>What this shows.</b> ${note}`;
     $('#result').innerHTML = `<div class="stamprow">${stampOf(e)}${why(e.reason)}</div>
       <ul class="lines">${lineHead()}${e.fields.map(fieldLine).join('')}</ul>
-      ${e.receipt ? `<details class="stored"><summary>What was stored</summary><pre class="json">${highlight(e.receipt)}</pre></details>` : `<div class="badout">${esc(e.failureReason || '')}</div>`}`;
+      ${e.receipt ? `<details class="stored"><summary>Stored data</summary><pre class="json">${highlight(e.receipt)}</pre></details>` : `<div class="badout">${esc(e.failureReason || '')}</div>`}`;
     if (animate) printIn($('#result'));
   }
 
   function notes(e, kind) {
     const wrong = e.fields.filter((f) => !f.correct).map((f) => lab(f.field));
-    if (kind === 'standard') return e.needsReview ? 'Every labelled field is right, and still the low confidence sends it to a person. That is the price of a strict line.' : 'Every labelled field is right, every confidence clears the line, and it is stored with no person involved.';
+    if (kind === 'standard') return e.needsReview ? 'Every labelled field is correct. But the confidence is low, so the receipt goes to a person. A strict threshold has this cost.' : 'Every labelled field is correct, and every confidence is above the threshold. Docket stores the receipt with no person.';
     const list = wrong.length > 1 ? wrong.slice(0, -1).join(', ') + ' and ' + wrong[wrong.length - 1] : wrong.join('');
-    const what = wrong.length ? `The ${list} ${wrong.length > 1 ? 'are' : 'is'} wrong. ` : 'Every labelled field happens to be right. ';
-    if (e.status === 'FAILED') return what + 'The answer did not fit the format even after one repair, so nothing was stored.';
-    return what + (e.needsReview ? 'The confidence was low enough to send it to a person, so the mistake does not go through unseen.' : 'The confidence did not catch it, so this one would have gone through wrong. It is shown because it happened.');
+    const what = wrong.length ? `The ${list} ${wrong.length > 1 ? 'are' : 'is'} wrong. ` : 'Every labelled field is correct. ';
+    if (e.status === 'FAILED') return what + 'The answer did not fit the format even after one repair, so Docket stored nothing.';
+    return what + (e.needsReview ? 'The confidence was low, so the receipt went to a person. A person sees the mistake.' : 'The confidence did not show the mistake, so this receipt goes straight through with a wrong field. This page shows it because it happened.');
   }
 
   function showPair(animate) {
@@ -562,7 +562,7 @@
     $('#left').innerHTML = p.items.map((it, i) => `<div class="stub"><b>Receipt ${i + 1}</b><br/>${esc(p.merchant)}<br/>record id ${esc(it.docId.slice(0, 20))}…</div>`).join('') +
       '<p class="fine" style="max-width:360px">These two come from SROIE, a public set of shop receipts. The page shows their values, not pictures.</p>';
     const same = p.items[0].docId === p.items[1].docId;
-    $('#note').innerHTML = `<b>What this shows.</b> Each record gets an id made from the photo file itself. These two look alike, and they still get ${same ? 'the same id, which is a bug' : 'different ids'}. ${p.swaps.length ? 'Here a value from one receipt turned up in the other: ' + esc(p.swaps.join(', ')) + '.' : 'No value from one receipt turned up in the other.'}`;
+    $('#note').innerHTML = `<b>What this shows.</b> Docket makes each record id from the photo file. These two receipts look alike, ${same ? 'and they get the same id. That is a bug.' : 'but they get different ids.'} ${p.swaps.length ? 'A value from one receipt went into the other: ' + esc(p.swaps.join(', ')) + '.' : 'No value from one receipt went into the other.'}`;
     $('#result').innerHTML = p.items.map((it, i) => `<p class="pairhead">Receipt ${i + 1}</p><div class="stamprow">${stampOf(it)}${why(it.reason)}</div>
       <ul class="lines">${lineHead()}${it.fields.map(fieldLine).join('')}</ul>`).join('');
     if (animate) printIn($('#result'));
@@ -608,15 +608,15 @@
     xS = (v) => ML + v * (W - ML - MR); yS = (v) => H - MB - (v / yMax) * (H - MB - MT);
     const path = (pts) => pts.map((p, i) => `${i ? 'L' : 'M'}${xS(p.stpRate).toFixed(1)},${yS(p.fieldErrorRate).toFixed(1)}`).join('');
     const ticks = [0, 0.25, 0.5, 0.75, 1];
-    $('#stpChart').innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Share of receipts that skip the person against the share of their fields that were wrong, for calibrated and the model's own confidence">
+    $('#stpChart').innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Chart of the straight through rate against the wrong field rate, for calibrated confidence and the model's own confidence">
       ${ticks.map((t) => `<line class="grid-l" x1="${xS(0)}" x2="${xS(1)}" y1="${yS(t * yMax)}" y2="${yS(t * yMax)}"/><text x="${xS(0) - 8}" y="${yS(t * yMax) + 3}" text-anchor="end">${(t * yMax * 100).toFixed(1)}%</text><text x="${xS(t)}" y="${H - 16}" text-anchor="middle">${t * 100}%</text>`).join('')}
       <line class="axis-l" x1="${xS(0)}" x2="${xS(1)}" y1="${yS(0)}" y2="${yS(0)}"/>
       <path class="ver" d="${path(ver)}"/>
       <path class="cal" d="${path(cal)}"/>
       <line class="cross" id="crossX"/><line class="cross" id="crossY"/>
       <circle class="dot" id="dot" r="6"/>
-      <text x="${(ML + W) / 2}" y="${H}" text-anchor="middle">share of receipts that skip the person</text>
-      <text x="${ML}" y="${MT - 12}">share of their fields that were wrong</text>
+      <text x="${(ML + W) / 2}" y="${H}" text-anchor="middle">straight through rate</text>
+      <text x="${ML}" y="${MT - 12}">wrong field rate</text>
     </svg>`;
   }
 
@@ -768,9 +768,9 @@
     if (op && op.threshold !== null) {
       thr = op.threshold;
       const t = op.test;
-      $('#stpNote').textContent = `${t.stpRate < 0.25 ? 'Only a few' : 'Many'} receipts skip the person at the strictest line, ${op.threshold}: ${sig2(t.stpRate * 100)} percent of the test set. ${t.fieldErrors === 0 ? 'None of their fields were wrong, so the line is safe, but it saves little work.' : `${sig2(t.fieldErrorRate * 100)} percent of their fields were wrong, against a target of 1.`} That line was picked on separate receipts to keep wrong fields at 1 in 100 or fewer. This curve checks each receipt only on the fields calibrated for its kind of receipt. The pipeline in the code checks all six fields together, and under that rule ${(V.stp.pooled || []).some((o) => o.test) ? 'fewer receipts pass' : 'no line kept wrong fields that low, so every receipt the small model reads goes to a person'}.`;
+      $('#stpNote').textContent = `At the strictest threshold, ${op.threshold}, ${t.stpRate < 0.25 ? 'only a few' : 'many'} receipts go straight through. That is ${sig2(t.stpRate * 100)} percent of the test receipts. ${t.fieldErrors === 0 ? 'None of their fields were wrong. The threshold is safe, but it saves little work.' : `The wrong field rate was ${sig2(t.fieldErrorRate * 100)} percent, which ${t.fieldErrorRate <= 0.01 ? 'meets' : 'misses'} the target of 1 percent.`} Docket picked that threshold on separate tuning receipts. The target was 1 wrong field in 100 or fewer. This curve checks each receipt only on the fields calibrated for its kind of receipt. Docket itself checks all six fields together. ${(V.stp.pooled || []).some((o) => o.test) ? 'Under that rule, fewer receipts go straight through.' : 'Under that rule, no threshold meets the target. So every receipt from the small model goes to a person.'}`;
     } else {
-      $('#stpNote').textContent = 'No line kept wrong fields at 1 in 100 or fewer on the separate receipts, so the pipeline sends every receipt the small model reads to a person. The curve shows what looser targets would buy.';
+      $('#stpNote').textContent = 'On the tuning receipts, no threshold kept wrong fields at 1 in 100 or fewer. So every receipt from the small model goes to a person. The curve shows the result of looser targets.';
     }
     buildSlips();
     wireTape();
@@ -832,9 +832,9 @@
         const m = document.getElementById('m-' + d.kind);
         // The no damage figure is said once above the sliders, so each slider only speaks for its own level.
         if (n.level === 0) { m.textContent = 'No damage yet.'; }
-        else if (!rec) { m.textContent = 'Not tested at this level.'; }
+        else if (!rec) { m.textContent = 'This level has no test.'; }
         else {
-          if (!m.querySelector('b')) m.innerHTML = '<span class="w"></span>: <b></b> of fields right';
+          if (!m.querySelector('b')) m.innerHTML = '<span class="w"></span>: <b></b> of fields correct';
           m.querySelector('.w').textContent = `Level ${n.level}, ${d.lvl(n.at)}`;
           tick(m.querySelector('b'), rec.fieldAccuracy, (x) => pct(x));
         }
@@ -849,9 +849,9 @@
     });
     const clean = (byVariant().clean || {});
     const few = V.perturbation ? V.perturbation.subsetSize : 'a few';
-    $('#dmgBase').textContent = clean.fieldAccuracy === undefined ? 'The undamaged photo was not tested.' :
-      `With no damage, the small model read ${sig2(clean.fieldAccuracy * 100)} percent of fields right. That was measured on only ${clean.n} receipt${clean.n === 1 ? '' : 's'}, so treat it as rough.`;
-    $('#dmgNote').textContent = `The picture is a rough preview made in your browser. The figures are the recorded ones. Each kind of damage was tested on its own, on ${few} receipts, so damage combined was never measured.`;
+    $('#dmgBase').textContent = clean.fieldAccuracy === undefined ? 'No test used the photo without damage.' :
+      `With no damage, the small model read ${sig2(clean.fieldAccuracy * 100)} percent of fields correctly. This figure comes from only ${clean.n} receipt${clean.n === 1 ? '' : 's'}, so it is rough.`;
+    $('#dmgNote').textContent = `Your browser makes this picture as a rough preview. The figures come from the recorded tests. Each test used one kind of damage on ${few} receipts. No test combined two kinds of damage.`;
   }
 
   function applyDamage(reencode) {
@@ -896,7 +896,7 @@
     src.dataset.file = e.image.file;
     src.onload = () => { $('#dmgImg').src = src.src; applyDamage(true); };
     src.src = e.image.file;
-    $('#dmgCap').innerHTML = `${esc(plainId(e.id))}${e.variant !== 'clean' ? ', already ' + esc(plainVariant(e.variant)) : ''}. Pick another receipt above to damage it instead. <span class="mtag">${esc(e.id)}</span>`;
+    $('#dmgCap').innerHTML = `${esc(plainId(e.id))}${e.variant !== 'clean' ? ', already ' + esc(plainVariant(e.variant)) : ''}. To damage a different receipt, select it above. <span class="mtag">${esc(e.id)}</span>`;
   }
 
   function renderPert() {
@@ -904,18 +904,18 @@
     const by = byVariant();
     const kinds = { blur: 'blur', rotate: 'tilt', crop: 'crop', dark: 'darker', jpeg: 'JPEG compression' };
     const cell = (v) => { const a = v && v.fieldAccuracy; return `<td class="${a !== undefined && by.clean && a < by.clean.fieldAccuracy - 0.1 ? 'low' : ''}">${num(a)}</td>`; };
-    $('#pertTable').innerHTML = `<table class="t"><caption>Share of fields read right under each kind of damage, on ${p.subsetSize} receipts picked before any test ran. Red marks a drop of more than 10 points from no damage.</caption>
+    $('#pertTable').innerHTML = `<table class="t"><caption>This table shows the share of fields read correctly for each kind of damage. The test used ${p.subsetSize} receipts, picked before any test ran. Red shows a drop of more than 10 points from no damage.</caption>
       <thead><tr><th>damage</th><th>no damage</th><th>level 1</th><th>level 2</th><th>level 3</th></tr></thead><tbody>
       ${Object.entries(kinds).map(([k, n]) => `<tr><td>${n}</td><td>${num(by.clean && by.clean.fieldAccuracy)}</td>${[1, 2, 3].map((l) => cell(by[k + '-' + l])).join('')}</tr>`).join('')}</tbody></table>`;
     const h = p.homogeneity;
-    if (h) $('#homNote').textContent = `Some receipts in the set look almost the same. Of ${h.pairs} pairs from the same shop, ${h.identicalFilePairs} were one file saved twice, so they share an id. Different files shared an id in ${h.distinctFilesSharingId} pairs. A value from one receipt showed up in the other in ${h.pairsWithSwaps} of the ${h.pairsCheckedForSwaps} pairs that were both read. The id is made from the file, so one paper receipt photographed twice becomes two records. That gap is known and not fixed.`;
+    if (h) $('#homNote').textContent = `Some receipts in the public set look almost the same. Of ${h.pairs} pairs from the same shop, ${h.identicalFilePairs} pairs were one file saved twice, so they share an id. Different files shared an id in ${h.distinctFilesSharingId} pairs. A value from one receipt went into the other in ${h.pairsWithSwaps} of the ${h.pairsCheckedForSwaps} pairs that the model read. Docket makes the id from the file, so two photos of one paper receipt become two records. This problem is known, and it is not fixed.`;
   }
 
   /* reliability diagrams */
   function mini(bins, cls) {
     const w = 200, h = 130, m = 16, xx = (v) => m + v * (w - 2 * m), yy = (v) => h - m - v * (h - 2 * m);
     return `<svg viewBox="0 0 ${w} ${h}" aria-hidden="true"><line x1="${xx(0)}" y1="${yy(0)}" x2="${xx(1)}" y2="${yy(1)}" stroke="var(--ink-3)" stroke-dasharray="3 3"/>
-      ${bins.filter((b) => b.n > 0).map((b) => `<rect class="${cls}" x="${xx(b.lo) + 1}" y="${yy(b.accuracy)}" width="${Math.max(1, xx(b.hi) - xx(b.lo) - 2)}" height="${yy(0) - yy(b.accuracy)}"><title>${b.n} fields, right ${(b.accuracy * 100).toFixed(0)}%</title></rect>`).join('')}
+      ${bins.filter((b) => b.n > 0).map((b) => `<rect class="${cls}" x="${xx(b.lo) + 1}" y="${yy(b.accuracy)}" width="${Math.max(1, xx(b.hi) - xx(b.lo) - 2)}" height="${yy(0) - yy(b.accuracy)}"><title>${b.n} fields, ${(b.accuracy * 100).toFixed(0)}% correct</title></rect>`).join('')}
       <line x1="${xx(0)}" x2="${xx(1)}" y1="${yy(0)}" y2="${yy(0)}" stroke="var(--ink)" stroke-width="1.5"/></svg>`;
   }
   // One plain sentence per field, then a verdict. The error is in percentage points.
@@ -923,12 +923,12 @@
     const a = f.verbalized.ece, b = f.calibrated.ece;
     const said = `Its confidence was off by about ${sig2(a * 100)} points before calibration and ${sig2(b * 100)} after.`;
     const verdict = b > a ? (b <= 0.05 ? 'It was close to honest already, and calibration did not help.' : 'Calibration made it worse.')
-      : b <= 0.05 ? 'Close to honest now.' : b <= 0.1 ? 'Closer, not there yet.' : 'Still not honest enough.';
+      : b <= 0.05 ? 'It is close to honest now.' : b <= 0.1 ? 'It is closer, but not honest enough yet.' : 'It is still not honest enough.';
     return `${said} ${verdict}`;
   }
   function renderRel() {
     if (!V.calibration) return;
-    $('#rel').innerHTML = V.calibration.fields.map((f) => `<div class="cell"><h3>${lab(f.field)} <span>read right ${sig2(f.testAccuracy * 100)}% of the time, ${f.n.test} test receipts</span></h3>
+    $('#rel').innerHTML = V.calibration.fields.map((f) => `<div class="cell"><h3>${lab(f.field)} <span>read correctly ${sig2(f.testAccuracy * 100)}% of the time, on ${f.n.test} test receipts</span></h3>
       <div class="pair2"><figure>${mini(f.reliabilityVerbalized, 'rb-s')}<figcaption>model's own</figcaption></figure><figure>${mini(f.reliabilityCalibrated, 'rb-c')}<figcaption>after calibration</figcaption></figure></div>
       <p>${honesty(f)} <span class="mtag">ECE ${num(f.verbalized.ece)} to ${num(f.calibrated.ece)}, AUROC ${num(f.verbalized.auroc)} to ${num(f.calibrated.auroc)}</span></p></div>`).join('');
   }
@@ -937,19 +937,19 @@
   function renderRouting() {
     const r = V.routing; if (!r) return;
     $('#routeTiles').innerHTML = [
-      leader('Photos the small model read with every field right', pct(r.router.smallSufficesRate)),
-      leader('Photos where the check guessed that right', pct(r.router.accuracy)),
-      `<li class="verdict">${r.router.accuracy < 0.75 ? 'Better than a coin toss, but not by much.' : 'Right most of the time.'}</li>`,
-      leader('Photos the check sent to the small model', pct(r.router.routedSmallShare)),
+      leader('Photos where the small model read every field correctly', pct(r.router.smallSufficesRate)),
+      leader('Photos where the photo check guessed correctly', pct(r.router.accuracy)),
+      `<li class="verdict">${r.router.accuracy < 0.75 ? 'The photo check is better than a coin toss, but only a little.' : 'The photo check is right most of the time.'}</li>`,
+      leader('Photos that the photo check sent to the small model', pct(r.router.routedSmallShare)),
       leader('Cost per 1,000 photos, all read by Claude', '$' + num(r.cost.claudeEstimatePer1k, 2), 'total'),
-      leader('Cost per 1,000 photos, with the check choosing', '$' + num(r.cost.routedEstimatePer1k, 2), 'total'),
+      leader('Cost per 1,000 photos, when the photo check chooses', '$' + num(r.cost.routedEstimatePer1k, 2), 'total'),
     ].join('');
     const p = r.paths, c = r.constrainedVsUnconstrained;
     const row = (name, s) => `<tr><td>${name}</td><td>${pct(s.schemaValidFirstTry)}</td><td>${pct(s.schemaValidAfterRepair)}</td><td>${num(s.overall ?? s.contentAccuracy)}</td></tr>`;
-    $('#pathTable').innerHTML = `<table class="t"><caption>How often each reader answered in the right format, and how many fields it read right. Held to the format means the small model could only write answers that fit it.</caption><thead><tr><th>reader</th><th>Answers in the right format, first try</th><th>after one repair</th><th>share of fields right</th></tr></thead><tbody>
+    $('#pathTable').innerHTML = `<table class="t"><caption>This table shows how often each model answered in the right format. It also shows the share of fields that each model read correctly. Held to the format means that the small model can only write answers that fit the format.</caption><thead><tr><th>model</th><th>Answers in the right format, first try</th><th>after one repair</th><th>share of fields correct</th></tr></thead><tbody>
       ${row('Claude Haiku 4.5, 42 receipts checked by hand', p.claudeHaikuRecorded)}${row('Qwen 3.5 9B held to the format, 42 checked by hand', p.smallConstrained)}${row('Qwen 3.5 9B free to answer, 42 checked by hand', p.smallUnconstrained)}
       ${row('Qwen 3.5 9B held to the format, ' + c.n + ' photos', c.constrained)}${row('Qwen 3.5 9B free to answer, ' + c.n + ' photos', c.unconstrained)}</tbody></table>`;
-    $('#costNote').textContent = 'The Claude cost for photos is an estimate, not a real bill. These public receipts were never sent to Claude, so the cost uses Anthropic\'s published rule for pricing an image. The small model runs on a local computer and costs nothing per photo.';
+    $('#costNote').textContent = `The Claude cost for photos is an estimate, not a real bill. Docket never sent these public receipts to Claude. So the estimate uses the image price rule that Anthropic publishes. The small model runs on a local computer and costs nothing per photo.`;
   }
 
   /* upload: recorded match, else router statistics measured in the browser */
@@ -976,7 +976,7 @@
     return 1 / (1 + Math.exp(-z));
   }
   const drop = $('#drop'), fileInput = $('#file');
-  function busy(on) { drop.setAttribute('aria-busy', String(on)); drop.querySelector('.dt').innerHTML = on ? 'Measuring the photo…' : 'Drop a JPEG or PNG, or <u>choose a file</u>'; }
+  function busy(on) { drop.setAttribute('aria-busy', String(on)); drop.querySelector('.dt').innerHTML = on ? 'The page measures the photo…' : 'Drop a JPEG or PNG, or <u>choose a file</u>'; }
   async function onFile(file) {
     const out = $('#byoOut');
     if (!/^image\/(png|jpeg)$/.test(file.type)) { out.innerHTML = '<p class="err">That file is not a JPEG or PNG. Try a photo in one of those formats.</p>'; return; }
@@ -986,7 +986,7 @@
       const match = ['standard', 'hard', 'blurred'].find((k) => EX[k] && EX[k].image.sha256 === hash);
       if (match) {
         busy(false);
-        out.innerHTML = `<span class="tag">Recorded receipt</span><p>This photo is the ${match} example, so its saved result is now shown under Four receipts.</p>`;
+        out.innerHTML = `<span class="tag">Recorded receipt</span><p>This photo is the ${match} example. The Four receipts section now shows its saved result.</p>`;
         select(match, true); return;
       }
       const url = URL.createObjectURL(file), img = new Image();
@@ -997,9 +997,9 @@
         if (!r || !r.weights || !r.weights.length) { out.innerHTML = '<p class="empty">The photo check has no saved settings yet, so it cannot choose.</p>'; return; }
         const p = routerScore(r, s), small = p >= r.threshold;
         out.innerHTML = `<span class="tag">${small ? 'Small model' : 'Claude'}</span>
-          <p>The photo check gives the small model a ${(p * 100).toFixed(0)} percent chance of reading every field right. It needs ${(r.threshold * 100).toFixed(0)} percent, so this photo ${small ? 'goes to the small model first, and to Claude only if that answer fails the format check' : 'goes straight to Claude'}.</p>
+          <p>The photo check gives the small model a ${(p * 100).toFixed(0)} percent chance to read every field correctly. The check needs ${(r.threshold * 100).toFixed(0)} percent. ${small ? 'So this photo goes to the small model first. It goes to Claude only if the small model answer fails the format check.' : 'So this photo goes directly to Claude.'}</p>
           <pre>measured in your browser\nsharpness ${s.sharpness.toFixed(5)}\nbrightness ${s.brightness.toFixed(2)}, contrast ${s.contrast.toFixed(2)}\nink ${s.inkDensity.toFixed(3)}, printed lines ${s.textLines}\n${s.width} x ${s.height} px</pre>
-          <p>No fields were read. That needs a model, and this page has none.</p>`;
+          <p>The page did not read any fields. Only a model can read fields, and this page has no model.</p>`;
       };
       img.src = url;
     } catch (err) {

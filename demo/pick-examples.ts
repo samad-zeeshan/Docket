@@ -89,7 +89,7 @@ async function main(): Promise<void> {
         docId: deriveDocId('ingest', 'upload/receipt.jpg', etag(id)),
       })),
     },
-    attribution: 'Receipt images from CORD v2 (Park et al., NAVER Clova), CC BY 4.0, resized; the blurred one is blurred on purpose.',
+    attribution: 'The receipt images come from CORD v2 (Park et al., NAVER Clova) under CC BY 4.0. This page shows them smaller. The blur on one photo is on purpose.',
   };
   writeFileSync(path.join(OUT, 'examples.json'), JSON.stringify(examples, null, 1) + '\n');
   console.log(`picked ${standard.l.id}, ${hard.l.id}, ${blurred.l.id} and the pair ${pair.a} ${pair.b}`);
