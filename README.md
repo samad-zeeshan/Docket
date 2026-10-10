@@ -4,6 +4,8 @@ Docket reads a photo or PDF of a receipt and turns it into clean, checked data. 
 
 **[Open the demo](https://samad-zeeshan.github.io/Docket/)**. It shows recorded results, so it needs no login, no wait and no model. A short recording is in [docs/demo.mp4](docs/demo.mp4).
 
+A 27-second explainer video is in [docs/explainer.mp4](docs/explainer.mp4).
+
 ![Docket demo](docs/demo.gif)
 
 ## How it works
