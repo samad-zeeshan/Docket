@@ -26,6 +26,10 @@ const BANNED = [
 // Plain English rules for the page and the README: 25 words a sentence, no filler, no em dash or semicolon.
 const MAX_WORDS = 25;
 const FILLER = /\b(comprehensive|robust|seamless|cutting-edge|state-of-the-art|powerful|leverage|utilize|ensure|delve|showcase|crucial|various|numerous|simply|just|really|basically|actually)\b/i;
+// Rough passive check: a form of "be", then within one word an -ed word or a common irregular participle.
+const PASSIVE = /\b(?:is|are|was|were|be|been|being)\s+(?:\S+\s+)?(?:\w+ed|made|done|found|given|held|kept|left|run|seen|sent|shown|taken|written|built|caught)\b/i;
+// Sentences that must keep a match. Each entry needs a reason.
+const PASSIVE_OK: string[] = [];
 
 function sentences(text: string): string[] {
   // A bold lead like "**Ids come from content.**" ends its own sentence.
@@ -63,6 +67,7 @@ function checkProse(list: string[], where: string) {
     expect(s, where).not.toMatch(FILLER);
     // A prose semicolon is followed by a word. Code ends a statement with one.
     expect(s, where).not.toMatch(/—|&mdash;|;\s+[a-z]/);
+    if (!PASSIVE_OK.includes(s)) expect(s, `${where} passive`).not.toMatch(PASSIVE);
   }
 }
 
