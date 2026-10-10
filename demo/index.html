@@ -318,7 +318,7 @@
       <div><dt>Model on page</dt><dd>none</dd></div>
       <div><dt>Test receipts</dt><dd id="metaTest">-</dd></div>
     </dl>
-    <p class="notice"><strong>This page replays recorded results.</strong> Every number and receipt below comes from an earlier model run. Nothing here calls a model. The small model is Qwen 3.5 9B. It runs on a graphics card in a local computer. The Claude numbers are saved answers from Claude Haiku 4.5, which ran on Amazon's cloud.</p>
+    <p class="notice"><strong>This page replays recorded results.</strong> Every number and receipt below comes from an earlier model run. Nothing here calls a model. The small model is Qwen 3.5 9B. It runs on a graphics card in a local computer. The Claude numbers come from answers that Claude Haiku 4.5 gave earlier on Amazon's cloud.</p>
   </header>
 
   <section aria-labelledby="h-rec">
@@ -339,7 +339,7 @@
   <section aria-labelledby="h-stp">
     <p class="eyebrow">02 The threshold</p>
     <h2 id="h-stp">Straight through, or to a person</h2>
-    <p class="intro">Drag the red threshold. A receipt goes straight through only when its least sure field is above the threshold. Each slip below is one of the <span id="stpN">-</span> test receipts. No test receipt helped to pick a threshold. Each receipt uses calibrated confidence. That is the model's own score, corrected on receipts with known answers.</p>
+    <p class="intro">Drag the red threshold. A receipt goes straight through only when its least sure field is above the threshold. Each slip below is one of the <span id="stpN">-</span> test receipts. No test receipt helped to pick a threshold. Each receipt uses calibrated confidence. That is the model's own score after a correction on receipts with known answers.</p>
     <div class="tape" id="tape">
       <div class="track" id="track">
         <div class="handle" id="thr" role="slider" tabindex="0" aria-label="Confidence threshold" data-demo="threshold" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0.945"><span class="tab" id="thrVal">0.945</span></div>
@@ -370,7 +370,7 @@
     <p class="intro">Blur, tilt, darken or compress the receipt photo in the same ways as the tests. Under each slider, you see the share of fields that the small model read correctly at the nearest tested damage level.</p>
     <div class="lab">
       <figure class="dmg">
-        <div class="frame"><img id="dmgImg" src="v2/standard.jpg" loading="lazy" decoding="async" alt="The selected receipt photo with the chosen damage applied" width="520" height="780" /></div>
+        <div class="frame"><img id="dmgImg" src="v2/standard.jpg" loading="lazy" decoding="async" alt="The receipt photo that you selected, with the damage that you chose" width="520" height="780" /></div>
         <figcaption id="dmgCap"></figcaption>
       </figure>
       <div>
@@ -489,7 +489,7 @@
   const SCN = [
     { key: 'standard', title: 'A standard receipt', desc: 'The photo is clean, and every labelled field is correct.' },
     { key: 'hard', title: 'A hard receipt', desc: 'The model reads some fields wrong. Does the confidence show it?' },
-    { key: 'blurred', title: 'A blurred receipt', desc: 'This test photo has extra blur on purpose.' },
+    { key: 'blurred', title: 'A blurry receipt', desc: 'This test photo has extra blur on purpose.' },
     { key: 'pair', title: 'Two similar receipts', desc: 'They come from the same shop and use the same layout. Does Docket keep them apart?' },
   ];
   let current = 'standard';
@@ -768,7 +768,7 @@
     if (op && op.threshold !== null) {
       thr = op.threshold;
       const t = op.test;
-      $('#stpNote').textContent = `At the strictest threshold, ${op.threshold}, ${t.stpRate < 0.25 ? 'only a few' : 'many'} receipts go straight through. That is ${sig2(t.stpRate * 100)} percent of the test receipts. ${t.fieldErrors === 0 ? 'None of their fields were wrong. The threshold is safe, but it saves little work.' : `The wrong field rate was ${sig2(t.fieldErrorRate * 100)} percent, which ${t.fieldErrorRate <= 0.01 ? 'meets' : 'misses'} the target of 1 percent.`} Docket picked that threshold on separate tuning receipts. The target was 1 wrong field in 100 or fewer. This curve checks each receipt only on the fields calibrated for its kind of receipt. Docket itself checks all six fields together. ${(V.stp.pooled || []).some((o) => o.test) ? 'Under that rule, fewer receipts go straight through.' : 'Under that rule, no threshold meets the target. So every receipt from the small model goes to a person.'}`;
+      $('#stpNote').textContent = `At the strictest threshold, ${op.threshold}, ${t.stpRate < 0.25 ? 'only a few' : 'many'} receipts go straight through. That is ${sig2(t.stpRate * 100)} percent of the test receipts. ${t.fieldErrors === 0 ? 'None of their fields were wrong. The threshold is safe, but it saves little work.' : `The wrong field rate was ${sig2(t.fieldErrorRate * 100)} percent, which ${t.fieldErrorRate <= 0.01 ? 'meets' : 'misses'} the target of 1 percent.`} Docket picked that threshold on separate tuning receipts. The target was 1 wrong field in 100 or fewer. This curve checks each receipt only on the fields that Docket calibrated for its kind of receipt. Docket itself checks all six fields together. ${(V.stp.pooled || []).some((o) => o.test) ? 'Under that rule, fewer receipts go straight through.' : 'Under that rule, no threshold meets the target. So every receipt from the small model goes to a person.'}`;
     } else {
       $('#stpNote').textContent = 'On the tuning receipts, no threshold kept wrong fields at 1 in 100 or fewer. So every receipt from the small model goes to a person. The curve shows the result of looser targets.';
     }
@@ -904,11 +904,11 @@
     const by = byVariant();
     const kinds = { blur: 'blur', rotate: 'tilt', crop: 'crop', dark: 'darker', jpeg: 'JPEG compression' };
     const cell = (v) => { const a = v && v.fieldAccuracy; return `<td class="${a !== undefined && by.clean && a < by.clean.fieldAccuracy - 0.1 ? 'low' : ''}">${num(a)}</td>`; };
-    $('#pertTable').innerHTML = `<table class="t"><caption>This table shows the share of fields read correctly for each kind of damage. The test used ${p.subsetSize} receipts, picked before any test ran. Red shows a drop of more than 10 points from no damage.</caption>
+    $('#pertTable').innerHTML = `<table class="t"><caption>This table shows the share of fields that the small model read correctly for each kind of damage. The test used ${p.subsetSize} receipts. Docket picked them before any test ran. Red shows a drop of more than 10 points from no damage.</caption>
       <thead><tr><th>damage</th><th>no damage</th><th>level 1</th><th>level 2</th><th>level 3</th></tr></thead><tbody>
       ${Object.entries(kinds).map(([k, n]) => `<tr><td>${n}</td><td>${num(by.clean && by.clean.fieldAccuracy)}</td>${[1, 2, 3].map((l) => cell(by[k + '-' + l])).join('')}</tr>`).join('')}</tbody></table>`;
     const h = p.homogeneity;
-    if (h) $('#homNote').textContent = `Some receipts in the public set look almost the same. Of ${h.pairs} pairs from the same shop, ${h.identicalFilePairs} pairs were one file saved twice, so they share an id. Different files shared an id in ${h.distinctFilesSharingId} pairs. A value from one receipt went into the other in ${h.pairsWithSwaps} of the ${h.pairsCheckedForSwaps} pairs that the model read. Docket makes the id from the file, so two photos of one paper receipt become two records. This problem is known, and it is not fixed.`;
+    if (h) $('#homNote').textContent = `Some receipts in the public set look almost the same. Of ${h.pairs} pairs from the same shop, ${h.identicalFilePairs} pairs were the same file twice, so they share an id. Different files shared an id in ${h.distinctFilesSharingId} pairs. A value from one receipt went into the other in ${h.pairsWithSwaps} of the ${h.pairsCheckedForSwaps} pairs that the model read. Docket makes the id from the file, so two photos of one paper receipt become two records. Docket does not fix this problem yet.`;
   }
 
   /* reliability diagrams */
